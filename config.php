@@ -1,8 +1,8 @@
 <?php ob_start();
 	session_start();
 	$endereco = "localhost";
-	$usuario = "mulheresapp_sistema";
-	$senha = "Natal2020";
+	$usuario = "root";
+	$senha = "";
 	$banco = "mulheresapp_natal";
 	$MySQLi = new mysqli ($endereco, $usuario, $senha, $banco, 3306);
 	if (mysqli_connect_errno()) {
