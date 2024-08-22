@@ -10,7 +10,7 @@ Novos recursos:
 
 	- Anexos da mulher (documentos)
  
-	- Limitar o acesso aos dados (cadastro) apenas para usuários que tem permissão ou que preencheram o cadastro (estão em atendimento).
+	- Limitar o acesso aos dados (cadastro) apenas para usuários que tem permissão ou que preencheram o cadastro (estão em atendimento). ( MEIO FEITO )
  
 	- Registrar quem viu os dados (ficha)
  
