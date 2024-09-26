@@ -1,25 +1,58 @@
-<?php 
-ob_start();
-session_start();
+<?php
+// Início do arquivo: verifique a inicialização da sessão.
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Definindo as tabelas visíveis
+$dbVisTables = "tb_abrigamentos,tb_acompanhamento_abrigamentos,tb_agressores,tb_alternativas,tb_atendimentos,tb_cargos,tb_chamados,tb_check_agr,tb_check_mul,tb_check_pes,tb_componentes_abrigamento,tb_encaminhamentos,tb_logs,tb_lotacoes,tb_mensagens,tb_mulheres,tb_ocorrencias,tb_perguntas,tb_pessoas,tb_tecnicos";
+
+// Verifica se o usuário está autenticado
+if (!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+} else {
+    $user_id = $_SESSION['id'];  // Obtém o ID do usuário da sessão
+}
 
 // Configurações de Conexão ao Banco de Dados
 $endereco = "localhost";  // Endereço do servidor MySQL
 $usuario = "root";  // Usuário MySQL
-$senha = "";  // Senha do MySQL (vazia, se for local)
-$banco = "mulheresapp_relatorios";  // Nome do banco de dados
-$MySQLi = new mysqli($endereco, $usuario, $senha, $banco, 3306);  // Conectando ao banco de dados
+$senha = "";  // Senha do MySQL (vazia para local)
 
-
-
-// Verificando conexão
-if ($MySQLi->connect_errno) {
-    die("Falha na conexão: " . $MySQLi->connect_error);
-    exit();
+// Conexão com o banco de dados mulheresapp_natal
+$mysqli_natal = new mysqli($endereco, $usuario, $senha, "mulheresapp_natal");
+if ($mysqli_natal->connect_error) {
+    die("Falha na conexão com mulheresapp_natal: " . $mysqli_natal->connect_error);
 }
 
-// Definindo o fuso horário e charset
+// Conexão com o banco de dados mulheresapp_relatorios
+$mysqli_relatorios = new mysqli($endereco, $usuario, $senha, "mulheresapp_relatorios");
+if ($mysqli_relatorios->connect_error) {
+    die("Falha na conexão com mulheresapp_relatorios: " . $mysqli_relatorios->connect_error);
+}
+
+// Definindo o charset para a conexão correta
+$mysqli_natal->set_charset("utf8");
+$mysqli_relatorios->set_charset("utf8"); // Adicionei a configuração do charset para mulheresapp_relatorios
+
+// Definindo a variável $MySQLi como a conexão de relatórios
+$MySQLi = $mysqli_relatorios; // Torna o objeto de conexão disponível
+
+// Executa a query para contar as mensagens não lidas no banco mulheresapp_natal
+$query = "SELECT COUNT(men_codigo) AS totalMensagens FROM tb_mensagens WHERE men_tec_destinatario = $user_id AND men_lida = 0";
+// Substituímos "id_mensagem" por "men_codigo"
+$result = $mysqli_natal->query($query);
+
+if ($result) {
+    $row = $result->fetch_assoc();
+    $totalMensagens = $row['totalMensagens'];
+} else {
+    echo "Erro na query: " . $mysqli_natal->error;
+}
+
+// Definindo o fuso horário
 date_default_timezone_set('America/Sao_Paulo');
-$MySQLi->set_charset("utf8");
 
 // Funções de formatação de data e hora
 function data($data) {
@@ -74,5 +107,4 @@ function datamulher($timestamp) {
     $mes_nome = $meses[(int)$mes_num];  // Convertendo o número do mês para o nome
     return $mes_nome . ' de ' . $ano;
 }
-
 ?>

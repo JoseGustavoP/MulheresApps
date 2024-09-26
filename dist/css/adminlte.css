@@ -31219,3 +31219,38 @@ a.text-muted:hover {
   color: #ffffff;
 }
 /*# sourceMappingURL=adminlte.css.map */
+
+.content {
+  padding: 20px; /* Espaçamento */
+}
+
+.card {
+  margin: 0 auto; /* Centraliza o card */
+  max-width: 800px; /* Define uma largura máxima para o card */
+}
+
+h3 {
+  margin-top: 20px; /* Espaço entre o título e o conteúdo */
+}
+
+ul {
+  padding-left: 20px; /* Adiciona uma margem à esquerda para as listas */
+}
+
+blockquote {
+  border-left: 5px solid #007bff; /* Estilo para a citação */
+  padding-left: 15px; /* Espaçamento da citação */
+  margin-bottom: 20px; /* Espaço abaixo da citação */
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .content {
+      margin-left: 0; /* Remove o margin-left em telas menores */
+      padding: 10px; /* Reduz o padding em telas menores */
+  }
+
+  .card {
+      max-width: 100%; /* Permite que o card ocupe toda a largura em telas pequenas */
+  }
+}
