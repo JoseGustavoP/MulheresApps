@@ -25,6 +25,7 @@ $nolidas = $naolidas ? $naolidas->fetch_assoc() : ['nolidas' => 0];
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <link rel="icon" type="image/png" href="../imagens/logomc.png" sizes="310x310">
   <meta name="google-signin-client_id" content="seu-google-client-id">
+  
 </head>
 
 <body class="hold-transition sidebar-mini" onLoad="initVars();">
@@ -189,3 +190,5 @@ $nolidas = $naolidas ? $naolidas->fetch_assoc() : ['nolidas' => 0];
     }
   </script>
   <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
+  

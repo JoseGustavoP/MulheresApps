@@ -4,17 +4,17 @@ require_once('includes/config.php');
 
 // Ensure $dbVisTables is defined
 if (!isset($dbVisTables)) {
-    die("A variável dbVisTables não está definida. Verifique o arquivo config.php.");
+  die("A variável dbVisTables não está definida. Verifique o arquivo config.php.");
 }
 
 // Explode dbVisTables into an array
 $visTables = explode(",", $dbVisTables);
 if (count($visTables) == 1) {
-    if ($visTables[0] != "") {
-        $_SESSION['selectedTables'] = "`" . $visTables[0] . "`";
-        header("Location:selectFields.php");
-        exit; // Exit after header to prevent further execution
-    }
+  if ($visTables[0] != "") {
+    $_SESSION['selectedTables'] = "`" . $visTables[0] . "`";
+    header("Location:selectFields.php");
+    exit; // Exit after header to prevent further execution
+  }
 }
 
 // Use the already created mysqli connection for mulheresapp_natal
@@ -22,7 +22,7 @@ $connDB = $mysqli_natal;
 
 // Check the connection
 if ($connDB->connect_error) {
-    die("Connection failed: " . $connDB->connect_error);
+  die("Connection failed: " . $connDB->connect_error);
 }
 
 // Get tables
@@ -31,7 +31,7 @@ $recGetTables = $connDB->query($query_recGetTables);
 
 // Check if query was successful
 if (!$recGetTables) {
-    die("Query failed: " . $connDB->error);
+  die("Query failed: " . $connDB->error);
 }
 
 // Get the first row of results
@@ -50,9 +50,8 @@ include("design1.php");
 ?>
 
 <script language="javascript" type="text/javascript">
-// Your JavaScript code remains here
+  // Your JavaScript code remains here
 </script>
-
 <section class="content">
   <div class="container-fluid">
     <div class="card card-primary card-outline">
@@ -61,52 +60,56 @@ include("design1.php");
       </div>
       <div class="card-body">
         <?php if ($_SESSION['txtReportName'] != "") {
-            echo "<h2>Edição: " . $_SESSION['txtReportName'] . "</h2>";
+          echo "<h2>Edição: " . $_SESSION['txtReportName'] . "</h2>";
         } else {
-            echo "<h2>Novo Relatório</h2>";
+          echo "<h2>Novo Relatório</h2>";
         } ?>
 
         <div class="row">
-          <div class="col-md-5">
+          <div class="col-md-5 col-12">
             Lista de tabelas disponíveis
             <select name="lstAllTables" size="10" multiple id="lstAllTables" class='form-control'>
               <?php
               do {
-                  if ($dbVisTables != "") {
-                      $visTables = explode(",", $dbVisTables);
-                      for ($x = 0; $x <= count($visTables) - 1; $x += 1) {
-                          if ($row_recGetTables[0] == trim($visTables[$x])) {
-              ?>
-                          <option value="<?php echo "`" . $row_recGetTables[0] . "`"; ?>"><?php echo $row_recGetTables[0]; ?></option>
-              <?php
-                          }
-                      }
-                  } else {
-              ?>
-                  <option value="<?php echo "`" . $row_recGetTables[0] . "`"; ?>"><?php echo $row_recGetTables[0]; ?></option>
-              <?php
+                if ($dbVisTables != "") {
+                  $visTables = explode(",", $dbVisTables);
+                  for ($x = 0; $x <= count($visTables) - 1; $x += 1) {
+                    if ($row_recGetTables[0] == trim($visTables[$x])) {
+                      ?>
+                      <option value="<?php echo "`" . $row_recGetTables[0] . "`"; ?>"><?php echo $row_recGetTables[0]; ?>
+                      </option>
+                      <?php
+                    }
                   }
+                } else {
+                  ?>
+                  <option value="<?php echo "`" . $row_recGetTables[0] . "`"; ?>"><?php echo $row_recGetTables[0]; ?>
+                  </option>
+                  <?php
+                }
               } while ($row_recGetTables = mysqli_fetch_array($recGetTables));
               ?>
             </select>
           </div>
 
-          <div class="col-md-2 card-body text-center">
-            <a href="javascript:cmdSelectTables_onclick();" class="btn btn-sm btn-primary m-2"><i class="fas fa-arrow-right"></i></a><br>
-            <a href="javascript:cmdRemoveTables_onclick();" class="btn btn-sm btn-primary"><i class="fas fa-arrow-left"></i></a>
+          <div class="col-md-2 col-12 card-body text-center">
+            <a href="javascript:cmdSelectTables_onclick();" class="btn btn-sm btn-primary m-2"><i
+                class="fas fa-arrow-right"></i></a><br>
+            <a href="javascript:cmdRemoveTables_onclick();" class="btn btn-sm btn-primary"><i
+                class="fas fa-arrow-left"></i></a>
           </div>
 
-          <div class="col-md-5">
+          <div class="col-md-5 col-12">
             Tabelas selecionadas
             <select name="lstTables" size="10" multiple id="lstTables" class='form-control'>
               <?php
               $tmpTables = explode("~", $_SESSION['selectedTables']);
               for ($x = 0; $x <= count($tmpTables) - 1; $x += 1) {
-                  if ($tmpTables[$x] != "") {
-              ?>
-              <option value="<?php echo $tmpTables[$x]; ?>"><?php echo $tmpTables[$x]; ?></option>
-              <?php
-                  }
+                if ($tmpTables[$x] != "") {
+                  ?>
+                  <option value="<?php echo $tmpTables[$x]; ?>"><?php echo $tmpTables[$x]; ?></option>
+                  <?php
+                }
               }
               ?>
             </select>
@@ -116,16 +119,70 @@ include("design1.php");
 
         <form action="selectFields.php" method="post" name="frmTables" id="frmTables">
           <div class="margin">
-            <button name="cmdNew" type="button" class="btn btn-info" id="cmdNew" onclick="cmdNew_onClick();"><i class="fas fa-file"></i> Reiniciar como novo relatório</button>
-            <button name="cmdBack" type="button" class="btn btn-success m-2" id="cmdBack" onclick="jumpURL('index.php');"><i class="fas fa-arrow-left"></i> Voltar</button>
-            <button name="cmdNext" type="submit" class="btn btn-success" id="cmdNext" <?php if ($_SESSION['selectedTables'] == "") { echo ("disabled='disabled'"); } ?>>Avançar <i class="fas fa-arrow-right"></i></button>
+            <button name="cmdNew" type="button" class="btn btn-info" id="cmdNew" onclick="cmdNew_onClick();"><i
+                class="fas fa-file"></i> Reiniciar como novo relatório</button>
+            <button name="cmdBack" type="button" class="btn btn-success m-2" id="cmdBack"
+              onclick="jumpURL('index.php');"><i class="fas fa-arrow-left"></i> Voltar</button>
+            <button name="cmdNext" type="submit" class="btn btn-success" id="cmdNext" <?php if ($_SESSION['selectedTables'] == "") {
+              echo ("disabled='disabled'");
+            } ?>>Avançar <i
+                class="fas fa-arrow-right"></i></button>
           </div>
-          <input name="selectedTables" type="hidden" id="selectedTables" value="<?php echo($_SESSION['selectedTables']); ?>">
+          <input name="selectedTables" type="hidden" id="selectedTables"
+            value="<?php echo ($_SESSION['selectedTables']); ?>">
         </form>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* Estilo para garantir que o conteúdo principal não fique atrás da sidebar */
+  .content {
+    margin-left: 250px;
+    /* Ajuste de acordo com a largura da sidebar */
+    padding: 20px;
+    /* Espaçamento interno para o conteúdo */
+  }
+
+  /* Sidebar fixa */
+  .main-sidebar {
+    position: fixed;
+    /* Manter a sidebar fixa */
+    height: 100%;
+    /* Ocupa toda a altura da página */
+    overflow-y: auto;
+    /* Rolagem vertical se necessário */
+  }
+
+  /* Wrapper para flexbox */
+  .wrapper {
+    display: flex;
+    /* Flexbox para melhor layout */
+  }
+
+  /* Estilos responsivos */
+  @media (max-width: 768px) {
+    .content {
+      margin-left: 0;
+      /* Remove a margem da sidebar em telas menores */
+      padding: 10px;
+      /* Ajusta o espaçamento interno */
+    }
+
+    .main-sidebar {
+      position: relative;
+      /* Altera a posição para se adaptar ao layout */
+      height: auto;
+      /* Ajusta a altura da sidebar */
+    }
+
+    .row {
+      flex-direction: column;
+      /* Altera a direção para coluna em telas menores */
+    }
+  }
+</style>
 
 <?php
 include('design2.php');

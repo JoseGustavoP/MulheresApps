@@ -63,32 +63,37 @@ function cmdDelete_onClick(recID) {
   }
 }
 </script>
-<!-- Main content -->
-<section class="content">
-    <div class="container-fluid">
-        <div class="card card-primary card-outline">
-            <div class="card-body">
-                <blockquote>
-                    Siga as instruções abaixo para obter melhores resultados.
-                </blockquote>
-                <h3>Como usar relatórios</h3>
-                <ul>
-                    <li>Escolha, na lista da esquerda, algum dos relatórios já cadastrados.</li>
-                    <li>É possível buscar qualquer valor na tabela, usando o campo <b>Pesquisar</b> (à direita, acima da tabela).</li>
-                    <li>Se clicar no nome da coluna, ela será ordenada automaticamente &#8593;&#8595;.</li>
-                    <li>Caso a tabela tenha muitas colunas, será criado um ícone azul (+) dentro da primeira coluna, para expandir os resultados.</li>
-                    <li>Caso deseje, use o botão <b><i class="nav-icon fas fa-file-excel"></i> Exportar para Excel</b>, no fim da tabela, para salvar os resultados.</li>
-                </ul>
-                <h3>Como editar ou criar um novo relatório?</h3>
-                <ul>
-                    <li>Ao clicar em <b>configurar relatório</b>, o sistema exibe as opções de personalizar o último relatório utilizado.</li>
-                    <li>Para criar um novo relatório, clique em <b>Configurar Relatório</b> e depois em <b>Reiniciar como novo formulário</b>.</li>
-                    <li>Estes relatórios acessam todo o banco de dados do sistema.</li>
-                </ul>
+<div class="wrapper">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-body">
+                        <blockquote>
+                            Siga as instruções abaixo para obter melhores resultados.
+                        </blockquote>
+                        <h3>Como usar relatórios</h3>
+                        <ul>
+                            <li>Escolha, na lista da esquerda, algum dos relatórios já cadastrados.</li>
+                            <li>É possível buscar qualquer valor na tabela, usando o campo <b>Pesquisar</b> (à direita, acima da tabela).</li>
+                            <li>Se clicar no nome da coluna, ela será ordenada automaticamente &#8593;&#8595;.</li>
+                            <li>Caso a tabela tenha muitas colunas, será criado um ícone azul (+) dentro da primeira coluna, para expandir os resultados.</li>
+                            <li>Caso deseje, use o botão <b><i class="nav-icon fas fa-file-excel"></i> Exportar para Excel</b>, no fim da tabela, para salvar os resultados.</li>
+                        </ul>
+                        <h3>Como editar ou criar um novo relatório?</h3>
+                        <ul>
+                            <li>Ao clicar em <b>configurar relatório</b>, o sistema exibe as opções de personalizar o último relatório utilizado.</li>
+                            <li>Para criar um novo relatório, clique em <b>Configurar Relatório</b> e depois em <b>Reiniciar como novo formulário</b>.</li>
+                            <li>Estes relatórios acessam todo o banco de dados do sistema.</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
-</section>
+</div>
+
 
 
 <?php
