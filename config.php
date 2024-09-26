@@ -1,17 +1,14 @@
-<?php
-    // config.php
-    ob_start();
-    session_start();
-    $endereco = "localhost";
-    $usuario = "root";
-    $senha = "";
-    $banco = "mulheresapp_natal";
-    $MySQLi = new mysqli($endereco, $usuario, $senha, $banco, 3306);
-
-    // Verifica se a conexão com o banco de dados foi estabelecida
-    if ($MySQLi->connect_error) {
-        die("Erro: Conexão com o banco de dados não estabelecida: " . $MySQLi->connect_error);
-    }
+<?php ob_start();
+	session_start();
+	$endereco = "localhost";
+	$usuario = "root";
+	$senha = "";
+	$banco = "mulheresapp_natal";
+	$MySQLi = new mysqli ($endereco, $usuario, $senha, $banco, 3306);
+	if (mysqli_connect_errno()) {
+		die(mysqli_connect_error());
+		exit();
+	}
 	date_default_timezone_set('America/Sao_Paulo');
 	mysqli_set_charset($MySQLi, "utf8");
 	function data($data){
