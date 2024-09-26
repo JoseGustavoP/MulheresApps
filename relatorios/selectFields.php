@@ -1,19 +1,30 @@
 <?php
 session_start();
-if ($_POST["selectedTables"] != "") {
-   $_SESSION['selectedTables'] = $_POST["selectedTables"];
+
+// Initialize session variables if not already set
+if (!isset($_SESSION['selectedTables'])) {
+    $_SESSION['selectedTables'] = ''; // Default value
 }
+if (!isset($_SESSION['selectedFields'])) {
+    $_SESSION['selectedFields'] = ''; // Default value
+}
+
+// Check for POST data and update session variable
+if (isset($_POST["selectedTables"]) && $_POST["selectedTables"] != "") {
+    $_SESSION['selectedTables'] = $_POST["selectedTables"];
+}
+
 $design_titulo = "Relatórios";
-$design_ativo = "r3"; // coloca o class="nav-link active" no menu correto
+$design_ativo = "r3"; // Active menu item
 $design_migalha1_texto = "Relatórios";
 $design_migalha1_link = "index.php";
 $design_migalha2_texto = "Editar: Parte 2";
 $design_migalha2_link = "";
 
-?>
-<?php require_once('includes/config.php');
+require_once('includes/config.php');
 include("design1.php");
 ?>
+
 <script language="javascript" type="text/javascript" src="ajaxlib.js"></script>
 <script language="javascript" type="text/javascript">
    var lstSelectedFields;
@@ -35,7 +46,6 @@ include("design1.php");
    }
 
    function cmdSelectFields_onclick() {
-
       initVars();
 
       var addIndex = lstAllFields.selectedIndex;
@@ -44,7 +54,6 @@ include("design1.php");
 
       for (i = 0; i < lstAllFields.options.length; i++) {
          if (lstAllFields.options[i].selected) {
-
             var tmpFound = 0;
             for (var x = 0; x <= ((lstSelectedFields.options.length) - 1); x++) {
                if (lstSelectedFields.options[x].value == lstAllFields.options[i].value) {
@@ -69,14 +78,12 @@ include("design1.php");
    }
 
    function cmdRemoveFields_onclick() {
-
       var selIndex = lstSelectedFields.selectedIndex;
       var itemCount = lstSelectedFields.options.length;
       if (selIndex < 0)
          return;
 
       for (i = 0; i < itemCount; i++) {
-
          for (x = 0; x < lstSelectedFields.options.length; x++) {
             if (lstSelectedFields.options[x].selected) {
                lstSelectedFields.removeChild(lstSelectedFields.options.item(x))
@@ -89,11 +96,9 @@ include("design1.php");
       if (lstSelectedFields.options.length == 0) {
          cmdNext.disabled = true;
       }
-
    }
 
    function updateFields() {
-
       selectedFields.value = "";
       for (var x = 0; x <= ((lstSelectedFields.options.length) - 1); x++) {
          selectedFields.value = selectedFields.value + lstSelectedFields.options[x].value + "~";
@@ -105,7 +110,6 @@ include("design1.php");
    }
 
    function moveUpList() {
-
       if (lstSelectedFields.length == -1) {
          alert("Não existem itens para mover!");
       } else {
@@ -129,7 +133,6 @@ include("design1.php");
                   lstSelectedFields[selected - 1].value = moveValue2;
                   lstSelectedFields.selectedIndex = selected - 1;
                   updateFields();
-
                }
             }
          }
@@ -137,7 +140,6 @@ include("design1.php");
    }
 
    function moveDownList() {
-
       if (lstSelectedFields.length == -1) {
          alert("Não existem itens para mover!");
       } else {
@@ -178,8 +180,10 @@ include("design1.php");
          window.open("newReport.php", "_self");
       }
    }
+
    initVars();
 </script>
+
 <div class="wrapper">
    <!-- Main content -->
    <div class="content-wrapper">
@@ -191,11 +195,9 @@ include("design1.php");
                </div> <!-- /.card-header -->
 
                <div class="card-body">
-
                   <?php
                   echo "<h2>" . ($_SESSION['txtReportName'] ?? "Novo Relatório") . "</h2>";
                   ?>
-
                   <div class="row">
                      <div class="col-md-2 col-12">
                         <b>Tabelas:</b>
@@ -239,32 +241,35 @@ include("design1.php");
                               </select>
                            </div>
                            <div class="col-md-2 col-12">
-                              <a href="javascript:moveUpList(lstSelectedFields);" class="btn btn-xs btn-primary"><i
+                              <a href="javascript:moveUpList();" class="btn btn-xs btn-primary"><i
                                     class="fas fa-arrow-up"></i></a>
-                              <a href="javascript:moveDownList(lstSelectedFields);" class="btn btn-xs btn-primary"><i
+                              <a href="javascript:moveDownList();" class="btn btn-xs btn-primary"><i
                                     class="fas fa-arrow-down"></i></a>
-                              <a href="javascript:cmdRemoveFields_onclick();" class="btn btn-xs btn-danger"><i
-                                    class="fas fa-trash-alt"></i></a>
                            </div>
                         </div>
                      </div>
                   </div>
 
-               </div> <!-- /.card-body -->
-            </div> <!-- /.card -->
-         </div> <!-- /.container-fluid -->
+                  <div class="row">
+                     <div class="col-md-10 col-12">
+                        <button type="button" id="cmdSelectFields" class="btn btn-primary"
+                           onClick="cmdSelectFields_onclick();">Selecionar</button>
+                        <button type="button" id="cmdRemoveFields" class="btn btn-primary"
+                           onClick="cmdRemoveFields_onclick();">Remover</button>
+                     </div>
+                     <div class="col-md-2 col-12">
+                        <input type="hidden" name="selectedFields" id="selectedFields" />
+                        <input type="button" id="cmdNext" class="btn btn-primary" value="Próximo" disabled="disabled"
+                           onClick="jumpURL('report2.php');" />
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
       </section>
    </div>
 </div>
 
-
-<input type="hidden" name="selectedFields" id="selectedFields" value="<?php echo $_SESSION['selectedFields']; ?>">
-
-<button class="btn btn-primary" id="cmdNext" <?php if ($_SESSION['selectedFields'] == "") {
-   print " disabled";
-} ?>
-   onClick="jumpURL('editReport3.php');">Avançar</button>
-
-</div>
-</section>
-<?php include("design2.php"); ?>
+<?php
+include("design2.php");
+?>

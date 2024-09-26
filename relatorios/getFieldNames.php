@@ -1,30 +1,48 @@
-<?php require_once('includes/config.php'); ?>
 <?php
+require_once('includes/config.php');
 
-function dmyError() {
-	print "Table Not Found.";
+// Verifica se a tabela foi passada
+if (!isset($_POST["tableName"])) {
+    die("Nome da tabela não fornecido.");
 }
 
-mysql_select_db($database_connDB, $connDB);
-$query_recGetFields = "SHOW columns FROM " . $_POST["tableName"];
-$recGetFields = mysql_query($query_recGetFields, $connDB) or die(dmyError());
-$row_recGetFields = mysql_fetch_array($recGetFields);
-$totalRows_recGetFields = mysql_num_rows($recGetFields);
-?>
-<select name="lstAllFields" size="10" multiple id="lstAllFields"  class="form-control">
-	<?php do {  ?>
-	<option value="<?php echo ($_POST["tableName"] . ".`" . $row_recGetFields[0]) . "`"?>"><?php echo $row_recGetFields[0]?></option>
-	<?php
-		} while ($row_recGetFields = mysql_fetch_array($recGetFields));
-	  		$rows = mysql_num_rows($recGetFields);
-	 		if($rows > 0) {
-		  		mysql_data_seek($recGetFields, 0);
-		  		$row_recGetFields = mysql_fetch_array($recGetFields);
-			}
-		?>
-</select>
-<a href="javascript:cmdSelectFields_onclick();" name="cmdSelectFields" type="button" id="cmdSelectFields" class="btn btn-block bg-gradient-primary"><i class="fas fa-arrow-down"></i> Adicionar Coluna</a>
-<?php
-mysql_free_result($recGetFields);
-?>
+$tableName = $_POST["tableName"];
+if (empty($tableName)) {
+    die("Nome da tabela está vazio.");
+}
 
+// Imprime o nome da tabela para debug
+echo "Tabela: " . htmlspecialchars($tableName);
+
+// Verifica as tabelas existentes
+$tabelas = $mysqli_natal->query("SHOW TABLES");
+$tabelasExistentes = [];
+while ($row = $tabelas->fetch_array(MYSQLI_NUM)) {
+    $tabelasExistentes[] = $row[0]; // Adiciona os nomes das tabelas ao array
+}
+
+if (!in_array($tableName, $tabelasExistentes)) {
+    die("Tabela não encontrada: " . htmlspecialchars($tableName));
+}
+
+// Usa a conexão mysqli
+$query_recGetFields = "SHOW COLUMNS FROM " . $mysqli_natal->real_escape_string($tableName);
+$recGetFields = $mysqli_natal->query($query_recGetFields);
+
+if (!$recGetFields) {
+    die(dmyError());
+}
+?>
+<select name="lstAllFields" size="10" multiple id="lstAllFields" class="form-control">
+    <?php while ($row_recGetFields = $recGetFields->fetch_array(MYSQLI_ASSOC)) { ?>
+        <option value="<?php echo ($_POST["tableName"] . ".`" . $row_recGetFields['Field'] . "`"); ?>">
+            <?php echo $row_recGetFields['Field']; ?>
+        </option>
+    <?php } ?>
+</select>
+<a href="javascript:cmdSelectFields_onclick();" name="cmdSelectFields" type="button" id="cmdSelectFields" class="btn btn-block bg-gradient-primary">
+    <i class="fas fa-arrow-down"></i> Adicionar Coluna
+</a>
+<?php
+$recGetFields->free(); // Libera o resultado
+?>
