@@ -1,8 +1,8 @@
-<?php require_once('includes/config.php'); ?>
+<?php 
+require_once('includes/config.php'); 
 
-<?php
+// Variáveis para paginação
 $currentPage = $_SERVER["PHP_SELF"];
-
 $maxRows_recReports = 10;
 $pageNum_recReports = 0;
 if (isset($_GET['pageNum_recReports'])) {
@@ -10,19 +10,24 @@ if (isset($_GET['pageNum_recReports'])) {
 }
 $startRow_recReports = $pageNum_recReports * $maxRows_recReports;
 
-mysql_select_db($database_connSave, $connSave);
+// Consultando o banco de dados
 $query_recReports = "SELECT * FROM tblreports WHERE status = 0 ORDER BY id DESC";
 $query_limit_recReports = sprintf("%s LIMIT %d, %d", $query_recReports, $startRow_recReports, $maxRows_recReports);
-$recReports = mysql_query($query_limit_recReports, $connSave) or die(mysql_error());
-$row_recReports = mysql_fetch_assoc($recReports);
+$recReports = $MySQLi->query($query_limit_recReports);
 
+if (!$recReports) {
+    die("Erro na consulta: " . $MySQLi->error);
+}
+
+// Verificando o total de registros
 if (isset($_GET['totalRows_recReports'])) {
   $totalRows_recReports = $_GET['totalRows_recReports'];
 } else {
-  $all_recReports = mysql_query($query_recReports);
-  $totalRows_recReports = mysql_num_rows($all_recReports);
+  $all_recReports = $MySQLi->query($query_recReports);
+  $totalRows_recReports = $all_recReports->num_rows;
 }
-$totalPages_recReports = ceil($totalRows_recReports/$maxRows_recReports)-1;
+
+$totalPages_recReports = ceil($totalRows_recReports / $maxRows_recReports) - 1;
 
 $queryString_recReports = "";
 if (!empty($_SERVER['QUERY_STRING'])) {
@@ -48,63 +53,47 @@ $design_migalha2_texto = "";
 $design_migalha2_link = "";
 
 include("design1.php");
-
 ?>
 
 <script language="javascript" type="text/javascript">
-
 function cmdDelete_onClick(recID) {
-	var tmpVal= confirm("Please Confirm Action");
-	
-	if (tmpVal== true){
-		window.open("delReport.php?id=" + recID,"_self");
-	} 
+  var tmpVal = confirm("Please Confirm Action");
+  if (tmpVal == true) {
+    window.open("delReport.php?id=" + recID, "_self");
+  }
 }
-
 </script>
 
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-primary card-outline">
-
-          <div class="card-body">
-
-        <!--<div class="row">-->
-        <!--  <div class="col-12">-->
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <div class="card card-primary card-outline">
+      <div class="card-body">
         <blockquote>
-            Siga as instruções abaixo para obter melhor resultados
+            Siga as instruções abaixo para obter melhores resultados.
         </blockquote>
         <h3>Como usar relatórios</h3>
         <ul>
-            <li>Escolha, na lista da esquerda, algum dos relatórios já cadastrados</li>
-            <li>É possível buscar qualquer valor na tabela, usando o campo <b>Pesquisar</b> (à direita, acima da tabela)</li>
-            <li>Se clicar no nome da coluna, ela será ordenada automaticamente &#8593;&#8595;</li>
-            <li>Caso a tabela tenha muitas colunas, será criado um icone azul (+) dentro da primeira coluna, para expandir os resultados</li>
-            <li>Caso deseje, use o botão <b><i class="nav-icon fas fa-file-excel"></i> Exportar para Excel</b>, no fim da tabela, para salvar os resultados</li>
+            <li>Escolha, na lista da esquerda, algum dos relatórios já cadastrados.</li>
+            <li>É possível buscar qualquer valor na tabela, usando o campo <b>Pesquisar</b> (à direita, acima da tabela).</li>
+            <li>Se clicar no nome da coluna, ela será ordenada automaticamente &#8593;&#8595;.</li>
+            <li>Caso a tabela tenha muitas colunas, será criado um ícone azul (+) dentro da primeira coluna, para expandir os resultados.</li>
+            <li>Caso deseje, use o botão <b><i class="nav-icon fas fa-file-excel"></i> Exportar para Excel</b>, no fim da tabela, para salvar os resultados.</li>
         </ul>
         <h3>Como editar ou criar um novo relatório?</h3>
         <ul>
-            <li>Quando você clica em <b>configurar relatório</b> o sistema exibe as opções de personalizar o último relatório utilizado</li>
-            <li>Para criar um novo relatório basta clicar em <b>Configurar Relatório</b> e em seguida clicar em <b>Reiniciar como novo formulário</b></li>
-            <li>Estes relatórios acessam todo o banco de dados do sistema, em qualquer de suas tabelas</li>
-            <li>As tabelas chamadas <b>Mulheres</b> e <b>Abrigamentos</b> são tabelas calculadas, já com valores definitivos. Use-as para obter resultados mais completos</li>
-            <li>As tabelas iniciadas com tb_ ou com vw_ armazenam integralmente todos os dados, mas as vezes a compreensão delas pode ser mais complexa, pois alguns valores são numéricos 
-                (por exemplo, o bairro aparece em código, e não em nome do bairro.</li>
-            <li>Caso escolha duas tabelas iniciadas em tb_ ao mesmo tempo, você deverá adicionar um filtro de igualdade para "juntar" as tabelas, onde, por exemplo: 
-                <i>agr_mul_codigo é igual a mul_codigo</i>, ou seja, a tabela de partes adversas se une a tabela de mulheres através da coluna agr_mul_codigo 
-                (código da mulher ligada a este agressor) e mul_codigo (código da mulher)</li>
+            <li>Ao clicar em <b>configurar relatório</b>, o sistema exibe as opções de personalizar o último relatório utilizado.</li>
+            <li>Para criar um novo relatório, clique em <b>Configurar Relatório</b> e depois em <b>Reiniciar como novo formulário</b>.</li>
+            <li>Estes relatórios acessam todo o banco de dados do sistema.</li>
         </ul>
-        
-
-                       
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
 </section>
+
 <?php
 include("design2.php");
 
-mysql_free_result($recReports);
+// Liberando os resultados
+$recReports->free();
 ?>

@@ -11,7 +11,7 @@
     			$_SESSION['nome'] = $resultado['tec_apelido'];
     			$_SESSION['admin'] = $resultado['tec_admin'];
     			$_SESSION['foto'] =  'imagens/tecnicos/' . $_SESSION['id'] . '.jpg';
-    			header("Location: /relatorios/index.php");
+    			header("Location: index.php");
 	        }
         }else{
             header("Location: /index.php");

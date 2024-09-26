@@ -1,46 +1,78 @@
-<?php session_start();
-    if(!isset($_SESSION['id'])){
-		header("Location: ../login.php");
-	}
-// Basic Parameters
-$pageTitle = "Gerenciador de Relatórios"; 
+<?php 
+ob_start();
+session_start();
 
-// Database To Be Queired
-$hostname_connDB = "localhost"; 	// The host name of the MySql server
-$database_connDB = "mulheres_natal2"; 			// The name of the Database to be queired
-$username_connDB = "mulheres_sistema";			// Username to login to the server
-$password_connDB = "Natal2020";			// Password to the MySQL server
-$dbVisTables = "";			// The name of the tables to be displayed seperated by commas. 
-					// Leave this blank if all the tables and views are to be displayed.
-					// eg $dbVisTables = "table1,table2,table3";
-
-//Databse To Save Reports
-$hostname_connSave = "localhost"; 	// The host name of the MySql server where the generated reports are to be saved
-$database_connSave = "mulheres_relatorios"; 	// The name of the Database to save the generated reports
-$username_connSave = "mulheres_sistema";		// Username to login to the server
-$password_connSave = "Natal2020";		// Password to the MySQL server
-
-//Do not edit after this point
-$connDB = @mysql_pconnect($hostname_connDB, $username_connDB, $password_connDB) or trigger_error(mysql_error(),E_USER_ERROR); 
-$connSave = @mysql_pconnect($hostname_connSave, $username_connSave, $password_connSave) or trigger_error(mysql_error(),E_USER_ERROR); 
+// Configurações de Conexão ao Banco de Dados
+$endereco = "localhost";  // Endereço do servidor MySQL
+$usuario = "root";  // Usuário MySQL
+$senha = "";  // Senha do MySQL (vazia, se for local)
+$banco = "mulheresapp_relatorios";  // Nome do banco de dados
+$MySQLi = new mysqli($endereco, $usuario, $senha, $banco, 3306);  // Conectando ao banco de dados
 
 
-mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'", $connDB);
-mysql_query("SET character_set_results = 'utf8', character_set_client = 'utf8', character_set_connection = 'utf8', character_set_database = 'utf8', character_set_server = 'utf8'", $connSave);
 
-//header( 'content-type: text/html; charset=utf-8' );
+// Verificando conexão
+if ($MySQLi->connect_errno) {
+    die("Falha na conexão: " . $MySQLi->connect_error);
+    exit();
+}
 
-	date_default_timezone_set('America/Sao_Paulo');
-//  	mysqli_set_charset($connDB, "utf8");
+// Definindo o fuso horário e charset
+date_default_timezone_set('America/Sao_Paulo');
+$MySQLi->set_charset("utf8");
 
-//error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
-error_reporting(0);
+// Funções de formatação de data e hora
+function data($data) {
+    return date("d/m/Y", strtotime($data));
+}
 
-// $connDB = new mysqli($hostname_connDB, $username_connDB, $password_connDB,$database_connDB); 
-// $connSave = new mysqli($hostname_connSave, $username_connSave, $password_connSave,$database_connSave); 
-// if (mysqli_connect_errno()) {
-// 		die(mysqli_connect_error());
-// 		exit();
-// 	}
-	
+function hora($data) {
+    return date("d/m/Y H:i", strtotime($data));
+}
+
+function day($data) {
+    return date("Y-m-d", strtotime($data));
+}
+
+function tempo($data) {
+    return date("H:i", strtotime($data));
+}
+
+function mes($data) {
+    return date("Y-m", strtotime($data));
+}
+
+// Função para formatar a data em português
+function dataEmPortugues($timestamp) {
+    $dia_mes = date("d", $timestamp);  // Dia do mês
+    $mes_num = date("m", $timestamp);  // Número do mês
+
+    // Associando números dos meses aos nomes em português
+    $meses = [
+        1 => "Janeiro", 2 => "Fevereiro", 3 => "Março", 4 => "Abril",
+        5 => "Maio", 6 => "Junho", 7 => "Julho", 8 => "Agosto",
+        9 => "Setembro", 10 => "Outubro", 11 => "Novembro", 12 => "Dezembro"
+    ];
+
+    $mes_nome = $meses[(int)$mes_num];  // Convertendo o número do mês para o nome
+    return $dia_mes . " de " . $mes_nome;
+}
+
+// Função para datas na timeline das mulheres
+function datamulher($timestamp) {
+    $dia_mes = date("d", $timestamp);  // Dia do mês
+    $mes_num = date("m", $timestamp);  // Número do mês
+    $ano = date("Y", $timestamp);  // Ano
+
+    // Associando números dos meses aos nomes em português
+    $meses = [
+        1 => "Janeiro", 2 => "Fevereiro", 3 => "Março", 4 => "Abril",
+        5 => "Maio", 6 => "Junho", 7 => "Julho", 8 => "Agosto",
+        9 => "Setembro", 10 => "Outubro", 11 => "Novembro", 12 => "Dezembro"
+    ];
+
+    $mes_nome = $meses[(int)$mes_num];  // Convertendo o número do mês para o nome
+    return $mes_nome . ' de ' . $ano;
+}
+
 ?>
