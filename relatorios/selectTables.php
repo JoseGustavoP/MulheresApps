@@ -59,11 +59,12 @@ include("design1.php");
         <h3 class="card-title">Selecione a(s) tabela(s) que compõem este relatório</h3>
       </div>
       <div class="card-body">
-        <?php if ($_SESSION['txtReportName'] != "") {
+        <?php if (isset($_SESSION['txtReportName']) && $_SESSION['txtReportName'] != "") {
           echo "<h2>Edição: " . $_SESSION['txtReportName'] . "</h2>";
         } else {
           echo "<h2>Novo Relatório</h2>";
         } ?>
+
 
         <div class="row">
           <div class="col-md-5 col-12">
