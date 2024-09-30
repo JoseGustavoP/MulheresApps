@@ -92,19 +92,24 @@ function updateHiddenField() {
     // Habilita o botão Avançar se houver tabelas selecionadas
     document.getElementById('cmdNext').disabled = selectedTables.length === 0;
 }
-
 function cmdNew_onClick() {
     var tmpVal = confirm("Confirme a Ação");
 
     if (tmpVal) {
-        // Redefine as variáveis de sessão
-        <?php
-        $_SESSION['selectedTables'] = '';
-        $_SESSION['selectedFields'] = '';
-        ?>
-        window.location.href = "selectFields.php"; // Ou o nome da página que você deseja redirecionar
+        // Redefine as variáveis de sessão no servidor
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "resetSession.php", true); // crie um novo arquivo resetSession.php
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                window.location.href = "selectFields.php"; // Redireciona após redefinir a sessão
+            }
+        };
+        xhr.send();
     }
 }
+
+
 </script>
 
 <section class="content">
