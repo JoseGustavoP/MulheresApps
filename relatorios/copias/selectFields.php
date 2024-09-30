@@ -171,13 +171,6 @@ function jumpURL(tmpURL) {
 	window.location.href = tmpURL;
 }
 
-function cmdNew_onClick() {
-	var tmpVal= confirm("Please Confirm Action");
-	
-	if (tmpVal== true){
-		window.open("newReport.php","_self");
-	} 
-}
 initVars();
 </script>
 

@@ -3,15 +3,15 @@ session_start();
 
 // Initialize session variables if not already set
 if (!isset($_SESSION['selectedTables'])) {
-    $_SESSION['selectedTables'] = ''; // Default value
+   $_SESSION['selectedTables'] = ''; // Default value
 }
 if (!isset($_SESSION['selectedFields'])) {
-    $_SESSION['selectedFields'] = ''; // Default value
+   $_SESSION['selectedFields'] = ''; // Default value
 }
 
 // Check for POST data and update session variable
 if (isset($_POST["selectedTables"]) && $_POST["selectedTables"] != "") {
-    $_SESSION['selectedTables'] = $_POST["selectedTables"];
+   $_SESSION['selectedTables'] = $_POST["selectedTables"];
 }
 
 $design_titulo = "Relatórios";
@@ -47,35 +47,32 @@ include("design1.php");
 
    function cmdSelectFields_onclick() {
       initVars();
-
       var addIndex = lstAllFields.selectedIndex;
-      if (addIndex < 0)
-         return;
+      if (addIndex < 0) return;
 
       for (i = 0; i < lstAllFields.options.length; i++) {
          if (lstAllFields.options[i].selected) {
-            var tmpFound = 0;
-            for (var x = 0; x <= ((lstSelectedFields.options.length) - 1); x++) {
+            var tmpFound = false;
+            for (var x = 0; x < lstSelectedFields.options.length; x++) {
                if (lstSelectedFields.options[x].value == lstAllFields.options[i].value) {
-                  tmpFound = 1;
+                  tmpFound = true;
+                  break;
                }
             }
-
-            if (tmpFound != 1) {
-               newOption = document.createElement('option');
-               newText = document.createTextNode(lstAllFields.options[i].value);
-
-               newOption.appendChild(newText);
-               newOption.setAttribute("value", lstAllFields.options[i].value);
-
+            if (!tmpFound) {
+               var newOption = document.createElement('option');
+               newOption.text = lstAllFields.options[i].text;
+               newOption.value = lstAllFields.options[i].value;
                lstSelectedFields.appendChild(newOption);
-
-               updateFields();
-               cmdNext.disabled = false;
             }
          }
       }
+
+      updateFields(); // Atualiza os campos
+      console.log('Selected fields:', lstSelectedFields.options.length); // Debug
+      cmdNext.disabled = lstSelectedFields.options.length === 0; // Habilita ou desabilita o botão
    }
+
 
    function cmdRemoveFields_onclick() {
       var selIndex = lstSelectedFields.selectedIndex;
@@ -93,17 +90,18 @@ include("design1.php");
 
       updateFields();
 
-      if (lstSelectedFields.options.length == 0) {
-         cmdNext.disabled = true;
-      }
+      cmdNext.disabled = lstSelectedFields.options.length === 0; // Atualiza o botão "Próximo"
    }
 
    function updateFields() {
-      selectedFields.value = "";
-      for (var x = 0; x <= ((lstSelectedFields.options.length) - 1); x++) {
-         selectedFields.value = selectedFields.value + lstSelectedFields.options[x].value + "~";
+      selectedFields.value = ""; // Reinicializa o valor
+      for (var x = 0; x < lstSelectedFields.options.length; x++) {
+         selectedFields.value += lstSelectedFields.options[x].value + "~";
       }
+      // Habilita o botão se houver campos selecionados
+      cmdNext.disabled = selectedFields.value === "";
    }
+
 
    function displayFields(fieldData) {
       dispFields.innerHTML = fieldData;
@@ -138,47 +136,43 @@ include("design1.php");
          }
       }
    }
-
    function moveDownList() {
-      if (lstSelectedFields.length == -1) {
+      if (lstSelectedFields.options.length == 0) {
          alert("Não existem itens para mover!");
-      } else {
-         var selected = lstSelectedFields.selectedIndex;
-         if (selected == -1) {
-            alert("Você deve selecionar um item para mover!");
-         } else {
-            if (lstSelectedFields.length == 0) {
-               alert("Só há uma entrada!\nEla permanecerá no mesmo lugar.");
-            } else {
-               if (selected == lstSelectedFields.length - 1) {
-                  alert("O último item da lista não pode ser movido para baixo.");
-               } else {
-                  var moveText1 = lstSelectedFields[selected + 1].text;
-                  var moveText2 = lstSelectedFields[selected].text;
-                  var moveValue1 = lstSelectedFields[selected + 1].value;
-                  var moveValue2 = lstSelectedFields[selected].value;
-                  lstSelectedFields[selected].text = moveText1;
-                  lstSelectedFields[selected].value = moveValue1;
-                  lstSelectedFields[selected + 1].text = moveText2;
-                  lstSelectedFields[selected + 1].value = moveValue2;
-                  lstSelectedFields.selectedIndex = selected + 1;
-                  updateFields();
-               }
-            }
-         }
+         return;
       }
+
+      var selected = lstSelectedFields.selectedIndex;
+      if (selected == -1) {
+         alert("Você deve selecionar um item para mover!");
+         return;
+      }
+
+      if (selected >= lstSelectedFields.options.length - 1) {
+         alert("O último item da lista não pode ser movido para baixo.");
+         return;
+      }
+
+      // Troca os itens
+      var moveText1 = lstSelectedFields[selected + 1].text;
+      var moveText2 = lstSelectedFields[selected].text;
+      var moveValue1 = lstSelectedFields[selected + 1].value;
+      var moveValue2 = lstSelectedFields[selected].value;
+
+      lstSelectedFields[selected].text = moveText1;
+      lstSelectedFields[selected].value = moveValue1;
+      lstSelectedFields[selected + 1].text = moveText2;
+      lstSelectedFields[selected + 1].value = moveValue2;
+
+      // Atualiza a seleção
+      lstSelectedFields.selectedIndex = selected + 1;
+
+      updateFields(); // Atualiza os campos
    }
+
 
    function jumpURL(tmpURL) {
       window.location.href = tmpURL;
-   }
-
-   function cmdNew_onClick() {
-      var tmpVal = confirm("Confirme a Ação");
-
-      if (tmpVal == true) {
-         window.open("newReport.php", "_self");
-      }
    }
 
    initVars();
@@ -240,36 +234,36 @@ include("design1.php");
                                  ?>
                               </select>
                            </div>
-                           <div class="col-md-2 col-12">
-                              <a href="javascript:moveUpList();" class="btn btn-xs btn-primary"><i
-                                    class="fas fa-arrow-up"></i></a>
-                              <a href="javascript:moveDownList();" class="btn btn-xs btn-primary"><i
-                                    class="fas fa-arrow-down"></i></a>
-                           </div>
+                        </div>
+                        <div class="col-md-2 col-12">
+                           <a href="javascript:moveUpList();" class="btn btn-xs btn-primary"><i
+                                 class="fas fa-arrow-up"></i></a>
+                           <a href="javascript:moveDownList();" class="btn btn-xs btn-primary"><i
+                                 class="fas fa-arrow-down"></i></a>
                         </div>
                      </div>
                   </div>
+               </div>
 
-                  <div class="row">
-                     <div class="col-md-10 col-12">
-                        <button type="button" id="cmdSelectFields" class="btn btn-primary"
-                           onClick="cmdSelectFields_onclick();">Selecionar</button>
-                        <button type="button" id="cmdRemoveFields" class="btn btn-primary"
-                           onClick="cmdRemoveFields_onclick();">Remover</button>
-                     </div>
-                     <div class="col-md-2 col-12">
-                        <input type="hidden" name="selectedFields" id="selectedFields" />
-                        <input type="button" id="cmdNext" class="btn btn-primary" value="Próximo" disabled="disabled"
-                           onClick="jumpURL('report2.php');" />
-                     </div>
+               <div class="row">
+                  <div class="col-md-10 col-12">
+                     <button type="button" id="cmdSelectFields" class="btn btn-primary"
+                        onClick="cmdSelectFields_onclick();">Selecionar</button>
+                     <button type="button" id="cmdRemoveFields" class="btn btn-primary"
+                        onClick="cmdRemoveFields_onclick();">Remover</button>
+                  </div>
+                  <div class="col-md-2 col-12">
+                     <input type="hidden" name="selectedFields" id="selectedFields" />
+                     <input type="button" id="cmdNext" class="btn btn-primary" value="Próximo" disabled="disabled"
+                        onClick="jumpURL('newReport.php');" />
                   </div>
                </div>
             </div>
          </div>
-      </section>
    </div>
+   </section>
 </div>
-
 <?php
 include("design2.php");
 ?>
+</div>

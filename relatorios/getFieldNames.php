@@ -7,12 +7,14 @@ if (!isset($_POST["tableName"])) {
 }
 
 $tableName = $_POST["tableName"];
-if (empty($tableName)) {
+$tableNameClean = trim($tableName, '`'); // Remove acentos graves
+
+if (empty($tableNameClean)) {
     die("Nome da tabela está vazio.");
 }
 
-// Imprime o nome da tabela para debug
-echo "Tabela: " . htmlspecialchars($tableName);
+// Debug: imprime o nome da tabela
+echo "Tabela: " . htmlspecialchars($tableNameClean) . "<br>";
 
 // Verifica as tabelas existentes
 $tabelas = $mysqli_natal->query("SHOW TABLES");
@@ -21,28 +23,32 @@ while ($row = $tabelas->fetch_array(MYSQLI_NUM)) {
     $tabelasExistentes[] = $row[0]; // Adiciona os nomes das tabelas ao array
 }
 
-if (!in_array($tableName, $tabelasExistentes)) {
-    die("Tabela não encontrada: " . htmlspecialchars($tableName));
+// Debug: imprime as tabelas existentes
+echo "Tabelas existentes: " . implode(", ", $tabelasExistentes) . "<br>";
+
+if (!in_array($tableNameClean, $tabelasExistentes)) {
+    die("Tabela não encontrada: " . htmlspecialchars($tableNameClean));
 }
 
-// Usa a conexão mysqli
-$query_recGetFields = "SHOW COLUMNS FROM " . $mysqli_natal->real_escape_string($tableName);
+// Usa a conexão mysqli para obter as colunas
+$query_recGetFields = "SHOW COLUMNS FROM " . $mysqli_natal->real_escape_string($tableNameClean);
 $recGetFields = $mysqli_natal->query($query_recGetFields);
 
 if (!$recGetFields) {
-    die(dmyError());
+    die("Erro na consulta: " . $mysqli_natal->error);
 }
-?>
-<select name="lstAllFields" size="10" multiple id="lstAllFields" class="form-control">
-    <?php while ($row_recGetFields = $recGetFields->fetch_array(MYSQLI_ASSOC)) { ?>
-        <option value="<?php echo ($_POST["tableName"] . ".`" . $row_recGetFields['Field'] . "`"); ?>">
-            <?php echo $row_recGetFields['Field']; ?>
-        </option>
-    <?php } ?>
-</select>
-<a href="javascript:cmdSelectFields_onclick();" name="cmdSelectFields" type="button" id="cmdSelectFields" class="btn btn-block bg-gradient-primary">
-    <i class="fas fa-arrow-down"></i> Adicionar Coluna
-</a>
-<?php
+
+// Gera o HTML das colunas
+echo '<select name="lstAllFields" size="10" multiple id="lstAllFields" class="form-control">';
+while ($row_recGetFields = $recGetFields->fetch_array(MYSQLI_ASSOC)) {
+    echo '<option value="' . htmlspecialchars($tableNameClean . ".`" . $row_recGetFields['Field'] . "`") . '">';
+    echo htmlspecialchars($row_recGetFields['Field']);
+    echo '</option>';
+}
+echo '</select>';
+
+echo '<a href="javascript:cmdSelectFields_onclick();" name="cmdSelectFields" type="button" id="cmdSelectFields" class="btn btn-block bg-gradient-primary">';
+echo '<i class="fas fa-arrow-down"></i> Adicionar Coluna</a>';
+
 $recGetFields->free(); // Libera o resultado
 ?>

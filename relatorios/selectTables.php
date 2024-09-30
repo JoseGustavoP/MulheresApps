@@ -88,6 +88,22 @@ function updateHiddenField() {
     
     // Atualiza o campo oculto
     document.getElementById('selectedTables').value = selectedTables.join('~');
+    
+    // Habilita o botão Avançar se houver tabelas selecionadas
+    document.getElementById('cmdNext').disabled = selectedTables.length === 0;
+}
+
+function cmdNew_onClick() {
+    var tmpVal = confirm("Confirme a Ação");
+
+    if (tmpVal) {
+        // Redefine as variáveis de sessão
+        <?php
+        $_SESSION['selectedTables'] = '';
+        $_SESSION['selectedFields'] = '';
+        ?>
+        window.location.href = "selectFields.php"; // Ou o nome da página que você deseja redirecionar
+    }
 }
 </script>
 
@@ -156,7 +172,7 @@ function updateHiddenField() {
                     <div class="margin">
                         <button name="cmdNew" type="button" class="btn btn-info" id="cmdNew" onclick="cmdNew_onClick();"><i class="fas fa-file"></i> Reiniciar como novo relatório</button>
                         <button name="cmdBack" type="button" class="btn btn-success m-2" id="cmdBack" onclick="jumpURL('index.php');"><i class="fas fa-arrow-left"></i> Voltar</button>
-                        <button name="cmdNext" type="submit" class="btn btn-success" id="cmdNext" <?php if ($_SESSION['selectedTables'] == "") { echo ("disabled='disabled'"); } ?>>Avançar <i class="fas fa-arrow-right"></i></button>
+                        <button name="cmdNext" type="submit" class="btn btn-success" id="cmdNext" disabled>Avançar <i class="fas fa-arrow-right"></i></button>
                     </div>
                     <input name="selectedTables" type="hidden" id="selectedTables" value="<?php echo ($_SESSION['selectedTables']); ?>">
                 </form>

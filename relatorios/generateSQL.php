@@ -1,11 +1,9 @@
 <?php
 session_start();
-?>
+require_once('includes/config.php');
 
-<?php require_once('includes/config.php'); ?>
-
-<?php
-function dmyError(){
+function dmyError()
+{
 	$_SESSION["dmyError"] = "An error has occurred in generating the report. <br/> This is usually caused when a DB table required/used for this report has been deleted.";
 	$_SESSION["dmyErrorUrl"] = "selectTables.php";
 	print "<script language=\"JavaScript\">";
@@ -13,242 +11,212 @@ function dmyError(){
 	print "</script>";
 }
 
-function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "") 
+function GetSQLValueString($theValue, $theType, $theDefinedValue = "", $theNotDefinedValue = "")
 {
-  $theValue = (!get_magic_quotes_gpc()) ? addslashes($theValue) : $theValue;
+	$theValue = (!get_magic_quotes_gpc()) ? addslashes($theValue) : $theValue;
 
-  switch ($theType) {
-    case "text":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;    
-    case "long":
-    case "int":
-      $theValue = ($theValue != "") ? intval($theValue) : "NULL";
-      break;
-    case "double":
-      $theValue = ($theValue != "") ? "'" . doubleval($theValue) . "'" : "NULL";
-      break;
-    case "date":
-      $theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
-      break;
-    case "defined":
-      $theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
-      break;
-  }
-  return $theValue;
+	switch ($theType) {
+		case "text":
+			$theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+			break;
+		case "long":
+		case "int":
+			$theValue = ($theValue != "") ? intval($theValue) : "NULL";
+			break;
+		case "double":
+			$theValue = ($theValue != "") ? "'" . doubleval($theValue) . "'" : "NULL";
+			break;
+		case "date":
+			$theValue = ($theValue != "") ? "'" . $theValue . "'" : "NULL";
+			break;
+		case "defined":
+			$theValue = ($theValue != "") ? $theDefinedValue : $theNotDefinedValue;
+			break;
+	}
+	return $theValue;
 }
 
-if ($_POST["txtReportName"] != "") {
-	$_SESSION['appliedConditions'] = $_POST["appliedConditions"]; 
-	$_SESSION['txtReportName'] = $_POST["txtReportName"]; 
-	$_SESSION['lstSortName'] = $_POST["lstSortName"]; 
-	$_SESSION['lstSortOrder'] = $_POST["lstSortOrder"]; 
-	$_SESSION['txtRecPerPage'] = $_POST["txtRecPerPage"]; 
+// Inicializa a sessão se não existir
+if (!isset($_SESSION['txtReportName'])) {
+	$_SESSION['txtReportName'] = "";
+}
 
-	if ($_POST["lstSave"]==1){
-	    $deleteSQL = "DELETE FROM tblreports where txtReportName = '".$_SESSION['txtReportName']."'";
-		mysql_select_db($database_connSave, $connSave);
-		$Result2 = mysql_query($deleteSQL, $connSave) or die(mysql_error());
-		
-		$insertSQL = sprintf("INSERT INTO tblreports (appliedConditions, txtReportName, lstSortName, lstSortOrder, txtRecPerPage, selectedFields, selectedTables) VALUES (%s, %s, %s, %s, %s, %s, %s)",
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST["txtReportName"])) {
+	$_SESSION['appliedConditions'] = $_POST["appliedConditions"];
+	$_SESSION['txtReportName'] = $_POST["txtReportName"];
+	$_SESSION['lstSortName'] = $_POST["lstSortName"];
+	$_SESSION['lstSortOrder'] = $_POST["lstSortOrder"];
+	$_SESSION['txtRecPerPage'] = $_POST["txtRecPerPage"];
+	$_SESSION['selectedFields'] = $_POST["selectedFields"];
+	$_SESSION['selectedTables'] = $_POST["selectedTables"];
+
+	if ($_POST["lstSave"] == 1) {
+		$deleteSQL = "DELETE FROM tblreports WHERE txtReportName = '" . $_SESSION['txtReportName'] . "'";
+		$mysqli_natal->query($deleteSQL);
+
+		$insertSQL = sprintf(
+			"INSERT INTO tblreports (appliedConditions, txtReportName, lstSortName, lstSortOrder, txtRecPerPage, selectedFields, selectedTables) VALUES (%s, %s, %s, %s, %s, %s, %s)",
 			GetSQLValueString($_SESSION['appliedConditions'], "text"),
 			GetSQLValueString($_SESSION['txtReportName'], "text"),
 			GetSQLValueString($_SESSION['lstSortName'], "text"),
 			GetSQLValueString($_SESSION['lstSortOrder'], "text"),
 			GetSQLValueString($_SESSION['txtRecPerPage'], "text"),
 			GetSQLValueString($_SESSION['selectedFields'], "text"),
-			GetSQLValueString($_SESSION['selectedTables'], "text"));
-		mysql_select_db($database_connSave, $connSave);
-		$Result1 = mysql_query($insertSQL, $connSave) or die(mysql_error());
+			GetSQLValueString($_SESSION['selectedTables'], "text")
+		);
+
+		$mysqli_natal->query($insertSQL);
 	}
 }
 
-// The code to generate the SQL statement
+// Geração da declaração SQL
 $tmpSQL = "SELECT ";
 
-$tmpFields = split("~",$_SESSION['selectedFields']);
-for ($x=0; $x<=count($tmpFields)-1; $x+=1) {
-	if ($tmpFields[$x]!=""){
-		$tmpSQL = $tmpSQL . $tmpFields[$x] . ", ";
+$tmpFields = explode("~", $_SESSION['selectedFields']);
+foreach ($tmpFields as $field) {
+	if ($field != "") {
+		$tmpSQL .= $field . ", ";
 	}
 }
 
-$tmpSQL = substr($tmpSQL, 0, (strlen($tmpSQL)-2) );
+$tmpSQL = substr($tmpSQL, 0, -2); // Remove a última vírgula
 
-$tmpSQL = $tmpSQL . " FROM ";
+$tmpSQL .= " FROM ";
 
-$tmpTables = split("~",$_SESSION['selectedTables']);
-for ($x=0; $x<=count($tmpTables)-1; $x+=1) {
-	if ($tmpTables[$x]!=""){
-		$tmpSQL = $tmpSQL . $tmpTables[$x] . ", ";
+$tmpTables = explode("~", $_SESSION['selectedTables']);
+foreach ($tmpTables as $table) {
+	if ($table != "") {
+		$tmpSQL .= $table . ", ";
 	}
 }
 
-$tmpSQL = substr($tmpSQL, 0, (strlen($tmpSQL)-2) );
+$tmpSQL = substr($tmpSQL, 0, -2); // Remove a última vírgula
 
-if ($_SESSION['appliedConditions']!="")	{
-	$tmpSQL = $tmpSQL . " WHERE ";
-	
-	$tmpCondition = split("~",$_SESSION['appliedConditions']);
-	for ($x=0; $x<=count($tmpCondition)-1; $x+=1) {
-		if ($tmpCondition[$x]!=""){
-			$tmpSQL = $tmpSQL . stripslashes($tmpCondition[$x]) . " ";
+if ($_SESSION['appliedConditions'] != "") {
+	$tmpSQL .= " WHERE ";
+	$tmpCondition = explode("~", $_SESSION['appliedConditions']);
+	foreach ($tmpCondition as $condition) {
+		if ($condition != "") {
+			$tmpSQL .= stripslashes($condition) . " ";
 		}
 	}
 }
 
-if ($_SESSION['lstSortName']!=""){
-	$tmpSQL = $tmpSQL . " ORDER BY " . $_SESSION['lstSortName'] . " " . $_SESSION['lstSortOrder'];
+if ($_SESSION['lstSortName'] != "") {
+	$tmpSQL .= " ORDER BY " . $_SESSION['lstSortName'] . " " . $_SESSION['lstSortOrder'];
 }
 
 $_SESSION["tmpSQL"] = $tmpSQL;
 
 $currentPage = $_SERVER["PHP_SELF"];
-
-if ($_SESSION['txtRecPerPage']==""){
-	$maxRows_recSQL = "18446744073709551615";
-}else{
-	$maxRows_recSQL = $_SESSION['txtRecPerPage'];
-}
-$pageNum_recSQL = 0;
-if (isset($_GET['pageNum_recSQL'])) {
-  $pageNum_recSQL = $_GET['pageNum_recSQL'];
-}
+$maxRows_recSQL = ($_SESSION['txtRecPerPage'] == "") ? "18446744073709551615" : $_SESSION['txtRecPerPage'];
+$pageNum_recSQL = (isset($_GET['pageNum_recSQL'])) ? $_GET['pageNum_recSQL'] : 0;
 $startRow_recSQL = $pageNum_recSQL * $maxRows_recSQL;
 
-mysql_select_db($database_connDB, $connDB);
 $query_recSQL = $tmpSQL;
-//$query_limit_recSQL = sprintf("%s LIMIT %d, %d", $query_recSQL, $startRow_recSQL, $maxRows_recSQL);
-$query_limit_recSQL = $query_recSQL;
-$recSQL = mysql_query($query_limit_recSQL, $connDB) or die(dmyError());
-$column_count = mysql_num_fields($recSQL) or die("display_db_query:" . mysql_error());
+$recSQL = $mysqli_natal->query($query_recSQL) or die(dmyError());
+$column_count = $recSQL->field_count;
 
 if (isset($_GET['totalRows_recSQL'])) {
-  $totalRows_recSQL = $_GET['totalRows_recSQL'];
+	$totalRows_recSQL = $_GET['totalRows_recSQL'];
 } else {
-  $all_recSQL = mysql_query($query_recSQL);
-  $totalRows_recSQL = mysql_num_rows($all_recSQL);
+	$all_recSQL = $mysqli_natal->query($query_recSQL);
+	$totalRows_recSQL = $all_recSQL->num_rows;
 }
-$totalPages_recSQL = ceil($totalRows_recSQL/$maxRows_recSQL)-1;
+$totalPages_recSQL = ceil($totalRows_recSQL / $maxRows_recSQL) - 1;
 
 $queryString_recSQL = "";
 if (!empty($_SERVER['QUERY_STRING'])) {
-  $params = explode("&", $_SERVER['QUERY_STRING']);
-  $newParams = array();
-  foreach ($params as $param) {
-	if (stristr($param, "pageNum_recSQL") == false && 
-		stristr($param, "totalRows_recSQL") == false) {
-	  array_push($newParams, $param);
+	$params = explode("&", $_SERVER['QUERY_STRING']);
+	$newParams = array();
+	foreach ($params as $param) {
+		if (stristr($param, "pageNum_recSQL") == false && stristr($param, "totalRows_recSQL") == false) {
+			array_push($newParams, $param);
+		}
 	}
-  }
-  if (count($newParams) != 0) {
-	$queryString_recSQL = "&" . htmlentities(implode("&", $newParams));
-  }
+	if (count($newParams) != 0) {
+		$queryString_recSQL = "&" . htmlentities(implode("&", $newParams));
+	}
 }
 
 $queryString_recSQL = sprintf("&totalRows_recSQL=%d%s", $totalRows_recSQL, $queryString_recSQL);
-
 
 $design_titulo = "Relatório";
 $design_ativo = ""; // coloca o class="nav-link active" no menu correto
 $design_migalha1_texto = "Relatórios";
 $design_migalha1_link = "index.php";
-$design_migalha2_texto = "Exibir retalório";
+$design_migalha2_texto = "Exibir relatório";
 $design_migalha2_link = "";
 
 include("design1.php");
 ?>
-  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-primary card-outline">
-          <div class="card-header">
-            <h3 class="card-title"><?php echo $_SESSION['txtReportName'];?></h3>
-          </div> <!-- /.card-body -->
-          <div class="card-body">
+<div class="wrapper">
+    <!-- Main content -->
+    <div class="content-wrapper">
+        <section class="content">
+            <div class="container-fluid">
+                <div class="card card-primary card-outline">
+                    <div class="card-header">
+                        <h3 class="card-title"><?php echo $_SESSION['txtReportName']; ?></h3>
+                    </div>
+                    <div class="card-body">
+                        <?php
+                        print("<TABLE class='table table-hover table-bordered dataTable dtr-inline no-footer' id='relatorio' role='grid'><thead> \n");
+                        print("<TR ALIGN=LEFT VALIGN=TOP>");
+                        for ($column_num = 0; $column_num < $column_count; $column_num++) {
+                            $field_name = $recSQL->fetch_field_direct($column_num)->name;
+                            print("<TD class='tableHeader'><b>$field_name</b></TD>");
+                        }
+                        print("</TR></thead><tbody>\n");
 
-
-
-
-                      <!--Registros <?php //echo ($startRow_recSQL + 1) ?> a <?php //echo min($startRow_recSQL + $maxRows_recSQL, $totalRows_recSQL) ?> de <?php //echo $totalRows_recSQL ?> -->
-                                
-                                <?php //if ($pageNum_recSQL > 0) { // Show if not first page ?>
-                           <!--     <a href="<?php //printf("%s?pageNum_recSQL=%d%s", $currentPage, 0, $queryString_recSQL); ?>"><b>Primeira</b></a>-->
-                                <?php //}else{echo"Primeira";} // Show if not first page ?>                       
-                                
-                            
-                            <?php //if ($pageNum_recSQL > 0) { // Show if not first page ?>
-                           <!--     <a href="<?php //printf("%s?pageNum_recSQL=%d%s", $currentPage, max(0, $pageNum_recSQL - 1), $queryString_recSQL); ?>"><b>Anterior</b></a>-->
-                                <?php //}else{echo"Anterior";} // Show if not first page ?>
-                                
-                            
-                                <?php //if ($pageNum_recSQL < $totalPages_recSQL) { // Show if not last page ?>
-                           <!--     <a href="<?php //printf("%s?pageNum_recSQL=%d%s", $currentPage, min($totalPages_recSQL, $pageNum_recSQL + 1), $queryString_recSQL); ?>"><b>Próxima</b></a>-->
-                                <?php //}else{echo"Próxima";} // Show if not last page ?>                         
-                                
-                           
-                           <?php// if ($pageNum_recSQL < $totalPages_recSQL) { // Show if not last page ?>
-                           <!--     <a href="<?php //printf("%s?pageNum_recSQL=%d%s", $currentPage, $totalPages_recSQL, $queryString_recSQL); ?>"><b>Última</b></a>-->
-                                <?php //}else{echo"Última";} // Show if not last page ?>                            
-                                
-                                
-                                
-				<?php
-					print("<TABLE class='table table-hover table-bordered dataTable dtr-inline no-footer' id='relatorio' role='grid'><thead> \n");
-					print("<TR ALIGN=LEFT VALIGN=TOP>");
-					for($column_num = 0; $column_num < $column_count; $column_num++) {
-						$field_name = mysql_field_name($recSQL, $column_num);
-						print("<TD class='tableHeader'><b>$field_name</b></TD>");
-					}
-					print("</TR></thead><tbody>\n");
-					
-					$row = mysql_fetch_row($recSQL);
-					do {
-						print("<TR ALIGN=LEFT VALIGN=TOP>");
-						for($column_num = 0; $column_num < $column_count; $column_num++) {
-							print("<TD>");
-							if ($row[$column_num]!=""){
-								print($row[$column_num]);
-							}else{
-								print("&nbsp;");
-							}
-							print("</TD>\n");
-						}
-						print("</TR>\n");
-					} while ($row = mysql_fetch_row($recSQL)); 
-					?></tbody>
-					</table>
-					<br>
-						<button name="cmdBack" type="button" class="btn btn-success m-2" id="cmdBack" onclick="javascript:window.location.href ='setConditions.php'"><i class="fas fa-arrow-left"></i> Editar</button>
-              			<button name="cmdExport" type="button" class="btn btn-warning" id="cmdExport" onclick="javascript:window.location.href ='export.php'">
-              			    <i class="nav-icon fas fa-file-excel"></i> Exportar para Excel </button>
-
-    </div></div></div></section>
+                        while ($row = $recSQL->fetch_row()) {
+                            print("<TR ALIGN=LEFT VALIGN=TOP>");
+                            foreach ($row as $cell) {
+                                print("<TD>" . ($cell != "" ? $cell : "&nbsp;") . "</TD>\n");
+                            }
+                            print("</TR>\n");
+                        }
+                        ?>
+                        </tbody>
+                        </table>
+                        <br>
+                        <button name="cmdBack" type="button" class="btn btn-success m-2" id="cmdBack"
+                            onclick="javascript:window.location.href ='setConditions.php'"><i class="fas fa-arrow-left"></i>
+                            Editar</button>
+                        <button name="cmdExport" type="button" class="btn btn-warning" id="cmdExport"
+                            onclick="javascript:window.location.href ='export.php'">
+                            <i class="nav-icon fas fa-file-excel"></i> Exportar para Excel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
 
 
 <?php
 include('design2.php');
-mysql_free_result($recSQL);
+$recSQL->free();
+$mysqli_natal->close();
 ?>
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
 <script>
-  $(function () {
-
-    $('#relatorio').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-  
-  
+	$(function () {
+		$('#relatorio').DataTable({
+			"paging": true,
+			"lengthChange": true,
+			"searching": true,
+			"ordering": true,
+			"info": true,
+			"autoWidth": false,
+			"responsive": true,
+		});
+	});
 </script>
