@@ -16,11 +16,11 @@ $design_migalha2_link = "";
    if(isset($_POST['cpf'])) {
         $cpf = $_POST['cpf'];
         $consulta = $MySQLi->query("SELECT mul_codigo FROM tb_mulheres WHERE mul_cpf = '$cpf'");
-        if($resultado = $consulta->fetch_assoc()) header("Location: /mulher-ver.php?codigo=" . $resultado['mul_codigo']);  
+        if($resultado = $consulta->fetch_assoc()) header("Location: mulher-ver.php?codigo=" . $resultado['mul_codigo']);  
         else{
             $consulta2 = $MySQLi->query("INSERT INTO tb_mulheres (mul_cpf) VALUES ('$cpf')");
             $id = mysqli_insert_id($MySQLi);
-            header("Location: /mulher-ver.php?codigo=" . $id . '&msg=1');
+            header("Location: mulher-ver.php?codigo=" . $id . '&msg=1');
         }
    }
    $consulta3 = $MySQLi->query("SELECT mul_foto, mul_nome, mul_codigo, ate_data FROM tb_atendimentos 
