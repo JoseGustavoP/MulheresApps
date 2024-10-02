@@ -1,200 +1,338 @@
 <?php
+// Ativar exibição de erros para depuração
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Incluir arquivos de configuração e permissões
 include("config.php");
 include("acesso.php");
 include("permisaoAdm.php");
-// Variáveis para definição antes de incluir o design1.php class="nav-link active"
 
+// Definir variáveis para o design
 $design_titulo = "Editar Abrigamento";
-$design_ativo = "m7"; // coloca o class="nav-link active" no menu correto
+$design_ativo = "m7"; // classe ativa no menu
 $design_migalha1_texto = "Abrigo";
 $design_migalha1_link = "abrigo.php";
 $design_migalha2_texto = "Editar Abrigamento";
 $design_migalha2_link = "";
 
-?>
+// Incluir o design1.php
+include("design1.php");
 
-<?php include("design1.php");
-     if(isset($_GET['delPes'])){
-        $pessoa = $_GET['delPes'];
-        $abrigo = $_GET['delAbr'];
-        $consulta6 = $MySQLi->query("DELETE FROM tb_componentes_abrigamento WHERE cab_abr_codigo = $abrigo AND cab_pes_codigo = $pessoa");
-        header("Location: ?codigo=$abrigo&msg=1");
+// Função para formatar a data para o input datetime-local
+function format_datetime_local($datetime) {
+    return date('Y-m-d\TH:i', strtotime($datetime));
+}
+
+// Manipular exclusão de dependente
+if (isset($_GET['delPes']) && isset($_GET['delAbr'])) {
+    $pessoa = intval($_GET['delPes']);
+    $abrigo = intval($_GET['delAbr']);
+    
+    // Usar Prepared Statement para prevenir SQL Injection
+    $stmt = $MySQLi->prepare("DELETE FROM tb_componentes_abrigamento WHERE cab_abr_codigo = ? AND cab_pes_codigo = ?");
+    if ($stmt) {
+        $stmt->bind_param("ii", $abrigo, $pessoa);
+        if ($stmt->execute()) {
+            $stmt->close();
+            header("Location: abrigamento-edit.php?codigo=$abrigo&msg=1");
+            exit();
+        } else {
+            echo "Erro ao executar a exclusão: " . $stmt->error;
+            exit();
+        }
+    } else {
+        echo "Erro ao preparar a exclusão: " . $MySQLi->error;
+        exit();
     }
+}
+
+// Obter mensagem de status, se existir
+$msg = isset($_GET['msg']) ? $_GET['msg'] : null;
+
+// Verificar se o código do abrigamento foi passado
+if (isset($_GET['codigo'])) {
+    $cod = intval($_GET['codigo']);
     
-    if(isset($_GET['msg'])) $msg=$_GET['msg'];
-    
-    if(isset($_GET['codigo'])){
-        $cod = $_GET['codigo'];
-        $consulta = $MySQLi->query("SELECT abr_codigo, abr_roldepertences, abr_mul_codigo, abr_tec_codigo, mul_nome, tec_apelido, abr_data_inicio, abr_data_fim, mul_codigo, tec_codigo FROM tb_abrigamentos 
-                                JOIN tb_mulheres ON abr_mul_codigo = mul_codigo
-                                JOIN tb_tecnicos ON abr_tec_codigo = tec_codigo
-                                WHERE abr_codigo = $cod");
-        $resultado = $consulta->fetch_assoc();
+    // Obter detalhes do abrigamento
+    $stmt = $MySQLi->prepare("SELECT abr_codigo, abr_roldepertences, abr_mul_codigo, abr_tec_codigo, mul_nome, tec_apelido, abr_data_inicio, abr_data_fim, mul_codigo, tec_codigo 
+                               FROM tb_abrigamentos 
+                               JOIN tb_mulheres ON abr_mul_codigo = mul_codigo
+                               JOIN tb_tecnicos ON abr_tec_codigo = tec_codigo
+                               WHERE abr_codigo = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $cod);
+        $stmt->execute();
+        $resultado = $stmt->get_result()->fetch_assoc();
+        if (!$resultado) {
+            echo "Abrigamento não encontrado.";
+            exit();
+        }
         $mulherCod = $resultado['mul_codigo'];
-        $consulta4 = $MySQLi->query("SELECT pes_nome, pes_codigo, cab_abr_codigo, TIMESTAMPDIFF(YEAR, pes_data_nasc, NOW()) as idade FROM tb_componentes_abrigamento 
-                                    JOIN tb_pessoas ON cab_pes_codigo = pes_codigo
-                                    JOIN tb_mulheres ON pes_mul_codigo = mul_codigo
-                                    WHERE cab_abr_codigo = $cod");
-        $consulta5 = $MySQLi->query("SELECT pes_codigo, pes_nome FROM tb_pessoas 
-                                    WHERE pes_codigo NOT IN (SELECT cab_pes_codigo FROM tb_componentes_abrigamento WHERE cab_abr_codigo = $cod) 
-                                    AND pes_mul_codigo = $mulherCod");
-    }else header("Location: abrigo.php");
-    
-    if(isset($_POST['pessoa'])){
-        $pessoa = $_POST['pessoa'];
-        $abrigo = $_POST['abrigo'];
-        $consulta7 = $MySQLi->query("INSERT INTO tb_componentes_abrigamento (cab_abr_codigo, cab_pes_codigo) VALUES ($abrigo, $pessoa)");   
-        header("Location: ?codigo=$abrigo&msg=2");
+        $stmt->close();
+    } else {
+        echo "Erro ao preparar a consulta: " . $MySQLi->error;
+        exit();
     }
     
-    if(isset($_POST['codigo'])){
-        $codigo = $_POST['codigo'];
-        $mulher = $_POST['mulher'];
-        $inicio = $_POST['inicio'];
-        $fim = $_POST['fim'];
-        $tecnico = $_POST['tecnico'];
-        if($fim!=''){
-            $consulta2 = $MySQLi->query("UPDATE tb_abrigamentos SET abr_mul_codigo = $mulher, abr_tec_codigo = $tecnico, abr_data_inicio = '$inicio', abr_data_fim = '$fim'
-                                    WHERE abr_codigo = $codigo");
+    // Obter dependentes do abrigamento
+    $stmt = $MySQLi->prepare("SELECT pes_nome, pes_codigo, cab_abr_codigo, TIMESTAMPDIFF(YEAR, pes_data_nasc, NOW()) as idade 
+                               FROM tb_componentes_abrigamento 
+                               JOIN tb_pessoas ON cab_pes_codigo = pes_codigo
+                               JOIN tb_mulheres ON pes_mul_codigo = mul_codigo
+                               WHERE cab_abr_codigo = ?");
+    if ($stmt) {
+        $stmt->bind_param("i", $cod);
+        $stmt->execute();
+        $consulta4 = $stmt->get_result();
+        $stmt->close();
+    } else {
+        echo "Erro ao preparar a consulta dos dependentes: " . $MySQLi->error;
+        exit();
+    }
+    
+    // Obter pessoas que não estão no abrigamento e são da mesma mulher
+    $stmt = $MySQLi->prepare("SELECT pes_codigo, pes_nome 
+                               FROM tb_pessoas 
+                               WHERE pes_codigo NOT IN (SELECT cab_pes_codigo FROM tb_componentes_abrigamento WHERE cab_abr_codigo = ?) 
+                               AND pes_mul_codigo = ?");
+    if ($stmt) {
+        $stmt->bind_param("ii", $cod, $mulherCod);
+        $stmt->execute();
+        $consulta5 = $stmt->get_result();
+        $stmt->close();
+    } else {
+        echo "Erro ao preparar a consulta das pessoas disponíveis: " . $MySQLi->error;
+        exit();
+    }
+} else {
+    header("Location: abrigo.php");
+    exit();
+}
+
+// Manipular adição de novo dependente
+if (isset($_POST['pessoa']) && isset($_POST['abrigo'])) {
+    $pessoa = intval($_POST['pessoa']);
+    $abrigo = intval($_POST['abrigo']);
+    
+    // Inserir novo dependente
+    $stmt = $MySQLi->prepare("INSERT INTO tb_componentes_abrigamento (cab_abr_codigo, cab_pes_codigo) VALUES (?, ?)");
+    if ($stmt) {
+        $stmt->bind_param("ii", $abrigo, $pessoa);
+        if ($stmt->execute()) {
+            $stmt->close();
+            header("Location: abrigamento-edit.php?codigo=$abrigo&msg=2");
+            exit();
+        } else {
+            echo "Erro ao adicionar dependente: " . $stmt->error;
+            exit();
         }
-        else{ 
-            $consulta2 = $MySQLi->query("UPDATE tb_abrigamentos SET abr_mul_codigo = $mulher, abr_tec_codigo = $tecnico, abr_data_inicio = '$inicio', abr_data_fim = null
-            WHERE abr_codigo = $codigo");
+    } else {
+        echo "Erro ao preparar a inserção do dependente: " . $MySQLi->error;
+        exit();
+    }
+}
+
+// Manipular atualização do abrigamento
+if (isset($_POST['codigo'])) {
+    $codigo = intval($_POST['codigo']);
+    $mulher = intval($_POST['mulher']);
+    $inicio = $_POST['inicio'];
+    $fim = $_POST['fim'];
+    $tecnico = intval($_POST['tecnico']);
+    $pertences = $_POST['pertences'];
+    
+    // Opcional: Sanitizar o conteúdo de "pertences" se necessário
+    // Por exemplo, usar HTML Purifier para limpar o HTML inserido
+    // $pertences = htmlspecialchars($pertences, ENT_QUOTES, 'UTF-8');
+    
+    if ($fim != '') {
+        $stmt = $MySQLi->prepare("UPDATE tb_abrigamentos 
+                                   SET abr_mul_codigo = ?, abr_tec_codigo = ?, abr_data_inicio = ?, abr_data_fim = ?, abr_roldepertences = ?
+                                   WHERE abr_codigo = ?");
+        if ($stmt) {
+            $stmt->bind_param("iisssi", $mulher, $tecnico, $inicio, $fim, $pertences, $codigo);
+        } else {
+            echo "Erro ao preparar a atualização: " . $MySQLi->error;
+            exit();
         }
+    } else {
+        $stmt = $MySQLi->prepare("UPDATE tb_abrigamentos 
+                                   SET abr_mul_codigo = ?, abr_tec_codigo = ?, abr_data_inicio = ?, abr_data_fim = NULL, abr_roldepertences = ?
+                                   WHERE abr_codigo = ?");
+        if ($stmt) {
+            $stmt->bind_param("iissi", $mulher, $tecnico, $inicio, $pertences, $codigo);
+        } else {
+            echo "Erro ao preparar a atualização sem data final: " . $MySQLi->error;
+            exit();
+        }
+    }
+    
+    if ($stmt->execute()) {
+        $stmt->close();
         header("Location: abrigamento-edit.php?codigo=$codigo&msg=2");
-        
+        exit();
+    } else {
+        echo "Erro ao atualizar o abrigamento: " . $stmt->error;
+        exit();
     }
-    $consulta3 = $MySQLi->query("SELECT tec_codigo, tec_apelido FROM tb_tecnicos WHERE tec_ativo = 1");
+}
+
+// Obter tecnicos ativos para o select
+$stmt = $MySQLi->prepare("SELECT tec_codigo, tec_apelido FROM tb_tecnicos WHERE tec_ativo = 1");
+if ($stmt) {
+    $stmt->execute();
+    $consulta3 = $stmt->get_result();
+    $stmt->close();
+} else {
+    echo "Erro ao preparar a consulta dos técnicos: " . $MySQLi->error;
+    exit();
+}
 ?>
 
-
-    <!-- Main content -->
-    <section class="content">
-      <div class="container-fluid">
-        <div class="card card-primary">
-              <div class="card-header">
-                <h3 class="card-title">Editar abrigamento</h3>
+<!-- Main content -->
+<section class="content">
+  <div class="container-fluid">
+    <!-- Card para editar abrigamento -->
+    <div class="card card-primary">
+      <div class="card-header">
+        <h3 class="card-title">Editar abrigamento</h3>
+      </div>
+      <!-- /.card-header -->
+      <!-- Formulário -->
+      <form role="form" action="abrigamento-edit.php?codigo=<?php echo $cod ?>" method="POST">
+        <div class="card-body">
+          <!-- Nome da Mulher (não editável) -->
+          <div class="form-group">
+            <label>Nome</label>
+            <input type="hidden" name="codigo" value="<?php echo $resultado['abr_codigo'] ?>">
+            <input type="hidden" name="mulher" value="<?php echo $resultado['mul_codigo'] ?>">
+            <input type="text" class="form-control" value="<?php echo htmlspecialchars($resultado['mul_nome']) ?>" disabled>
+          </div>
+          
+          <div class="row">
+            <!-- Data Inicial -->
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Data inicial</label>
+                <input name="inicio" required type="datetime-local" class="form-control"
+                  value="<?php echo format_datetime_local($resultado['abr_data_inicio']); ?>">
               </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-    
-              <form role="form" action="?" method="POST">
-                <div class="card-body">
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Nome</label>
-                    <input type="hidden" name="codigo" value="<?php echo $resultado['abr_codigo'] ?>">
-                    <input type="hidden" name="mulher" value="<?php echo $resultado['mul_codigo'] ?>">
-                    <input type="text" class="form-control" value="<?php echo $resultado['mul_nome'] ?>" disabled>
-                  </div>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Data inicial</label>
-                        <input name="inicio" required type="datetime-local" class="form-control" value="<?php echo day($resultado['abr_data_inicio']) . 'T' .  tempo($resultado['abr_data_inicio'])?>">
-                      </div>
-                    </div>
-                    <div class="col-sm-6">
-                      <div class="form-group">
-                        <label for="exampleInputEmail1">Data final</label>
-                        <input name="fim" type="datetime-local" class="form-control" value="<?php if($resultado['abr_data_fim']!='') echo day($resultado['abr_data_fim']) . 'T' .  tempo($resultado['abr_data_fim'])?>">
-                      </div>
-                    </div>
-                    
-                  </div>
-                  <div class="form-group">
-                        <label for="exampleInputEmail1">Técnico</label>
-                        <select name="tecnico" class="custom-select">
-                                <?php while ($resultado3 = $consulta3 -> fetch_assoc()) {?>
-                                <option value="<?php echo $resultado3['tec_codigo']; ?>" <?php if($resultado3['tec_codigo']==$resultado['tec_codigo']) echo 'selected' ?>><?php echo $resultado3['tec_apelido']; ?></option>
-                                <?php } ?>
-                        </select>
-                    </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Pertences</label>
-                    <textarea class="textarea" name="pertences" style="width: 100%; height: 200px; font-size: 14px;
-                            line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="mytextarea" disabled><?php echo $resultado['abr_roldepertences'] ?></textarea>
-                  </div>
-                    
-                </div>
-                <div class="card-footer">
-                  <center><button type="submit" class="btn btn-primary">Salvar</button></center>
-                </div>
-                <!-- /.card-body -->
-              </form>
-              
             </div>
-              
-              <div class="card card-secondary">
-                      <div class="card-header">
-                        <h3 class="card-title">
-                          <i class="fas"></i>
-                          Listagem de dependentes no Abrigamento
-                        </h3>
-                      </div>
-                      <div class="card-body">
-                         <?php if(@$msg==1) echo
-                             "<div id='alerta' class='alert alert-success' role='alert'>
-                                Dependente removido do abrigamento com sucesso!
-                             </div>";
-                        ?>
-                        <?php if(@$msg==2) echo
-                             "<div id='alerta' class='alert alert-success' role='alert'>
-                                Dependente adicionado ao abrigamento com sucesso!
-                             </div>";
-                        ?>
-                        <table class="table table-hover table-bordered" role="grid" aria-describedby="example1_info">
-                          <thead>
-                            <tr>
-                              <th>Nome</th>
-                              <th>Idade</th>
-                              <th>Ação</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <?php while ($resultado4 = $consulta4->fetch_assoc()){?>
-                            <tr>
-                              <td><?php echo $resultado4['pes_nome'] ?></td>
-                              <td><?php if($resultado4['idade']!='') echo $resultado4['idade'] . ' anos'; else echo '-' ?></td>
-                              <td><button type="button" onclick="window.location.href='?delPes=<?php echo $resultado4['pes_codigo']?>&delAbr=<?php echo $resultado4['cab_abr_codigo']?>&codigo=<?php echo $resultado4['cab_abr_codigo']?>'" class="btn btn-block bg-gradient-primary btn-sm">Remover</button></td>
-                            </tr>
-                            <?php } ?>
-                          </tbody>
-                        </table>
-                      
-                           
-            </div> 
-                <div class="card-footer row justify-content-md-center justify-content-sm-center justify-content-center">
-                    
-                  <div class="form-group">
-                      <form action="?" method="POST">
-                            <label>Adicionar dependente (do cadastro social)</label>
-                            <span class="input-group-append">
-                            <input name="abrigo" type="hidden" value="<?php echo $cod ?>">
-                            <select name="pessoa" class="custom-select">
-                                <?php while ($resultado5 = $consulta5 -> fetch_assoc()) {?>
-                                <option value="<?php echo $resultado5['pes_codigo']; ?>"><?php echo $resultado5['pes_nome']; ?></option>
-                                <?php } ?>
-                            </select>
-                        <button type="submit" class="btn btn-success" data-toggle="modal" data-target="#modal-dependente">Adicionar</button></span>
-                        </form>
-                        </div>
-                    
-                </div>
-                 
+            <!-- Data Final -->
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label>Data final</label>
+                <input name="fim" type="datetime-local" class="form-control"
+                  value="<?php echo $resultado['abr_data_fim'] ? format_datetime_local($resultado['abr_data_fim']) : ''; ?>">
+              </div>
+            </div>
+          </div>
+          
+          <!-- Seleção de Técnico -->
+          <div class="form-group">
+            <label>Técnico</label>
+            <select name="tecnico" class="custom-select">
+              <?php while ($resultado3 = $consulta3->fetch_assoc()) { ?>
+                <option value="<?php echo $resultado3['tec_codigo']; ?>" <?php if ($resultado3['tec_codigo'] == $resultado['tec_codigo']) echo 'selected'; ?>>
+                  <?php echo htmlspecialchars($resultado3['tec_apelido']); ?>
+                </option>
+              <?php } ?>
+            </select>
+          </div>
+          
+          <!-- Campo Pertences com TinyMCE -->
+          <div class="form-group">
+            <label>Pertences</label>
+            <!-- Incluir o script do TinyMCE -->
+            <script src="https://cdn.tiny.cloud/1/k7vhbf0ybiy0bsqxhlfwwfww6zcohn8dz5eo1rg71vgdzsx3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
+            <!-- Inicializar o TinyMCE -->
+            <script>
+              tinymce.init({
+                selector: '#mytextarea',
+                plugins: [
+                  'anchor', 'autolink', 'charmap', 'codesample', 'emoticons', 'image', 'link', 'lists', 'media', 'searchreplace', 'table', 'visualblocks', 'wordcount',
+                ],
+                toolbar: 'undo redo | bold italic underline | link image media | align | numlist bullist | emoticons charmap | removeformat',
+                branding: false,
+                height: 200,
+              });
+            </script>
+            <!-- Textarea para Pertences -->
+            <textarea id="mytextarea" name="pertences" style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+<?php echo htmlspecialchars($resultado['abr_roldepertences']); ?>
+            </textarea>
+          </div>
         </div>
-              
-              
-              
+        <!-- Botão de Salvar -->
+        <div class="card-footer">
+          <center><button type="submit" class="btn btn-primary">Salvar</button></center>
+        </div>
+      </form>
+    </div>
+
+    <!-- Card para listar dependentes -->
+    <div class="card card-secondary">
+      <div class="card-header">
+        <h3 class="card-title">Listagem de dependentes no Abrigamento</h3>
+      </div>
+      <div class="card-body">
+        <!-- Mensagens de Sucesso -->
+        <?php 
+        if ($msg == 1) {
+            echo "<div class='alert alert-success'>Dependente removido do abrigamento com sucesso!</div>";
+        }
+        if ($msg == 2) {
+            echo "<div class='alert alert-success'>Dependente adicionado ao abrigamento com sucesso!</div>";
+        }
+        ?>
         
-        
-      </div><!-- /.container-fluid -->
-    </section>
+        <!-- Tabela de Dependentes -->
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Idade</th>
+              <th>Ação</th>
+            </tr>
+          </thead>
+          <tbody>
+            <?php while ($resultado4 = $consulta4->fetch_assoc()) { ?>
+              <tr>
+                <td><?php echo htmlspecialchars($resultado4['pes_nome']); ?></td>
+                <td><?php echo $resultado4['idade'] ? $resultado4['idade'] . ' anos' : '-'; ?></td>
+                <td>
+                  <button type="button" onclick="window.location.href='abrigamento-edit.php?delPes=<?php echo $resultado4['pes_codigo']; ?>&delAbr=<?php echo $resultado4['cab_abr_codigo']; ?>&codigo=<?php echo $resultado4['cab_abr_codigo']; ?>'" class="btn btn-block bg-gradient-primary btn-sm">Remover</button>
+                </td>
+              </tr>
+            <?php } ?>
+          </tbody>
+        </table>
+      </div>
+      <!-- Formulário para adicionar novo dependente -->
+      <div class="card-footer">
+        <form action="abrigamento-edit.php?codigo=<?php echo $cod ?>" method="POST">
+          <input type="hidden" name="abrigo" value="<?php echo $cod; ?>">
+          <label>Adicionar novo dependente:</label>
+          <div class="input-group">
+            <select name="pessoa" class="custom-select">
+              <?php while ($resultado5 = $consulta5->fetch_assoc()) { ?>
+                <option value="<?php echo $resultado5['pes_codigo']; ?>"><?php echo htmlspecialchars($resultado5['pes_nome']); ?></option>
+              <?php } ?>
+            </select>
+            <span class="input-group-append">
+              <button type="submit" class="btn btn-primary btn-flat">Adicionar</button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
 
+<?php include("design2.php"); ?>
 
-
-<?php
-include("design2.php");
-?>
+<!-- Scripts adicionais -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- InputMask -->
 <script src="plugins/moment/moment.min.js"></script>
