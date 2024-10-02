@@ -116,10 +116,10 @@ if (isset($_GET['msg']))
                           </td>
                           <td><?php echo $resultado['dependentes'] ?></td>
                         <td>
-                          <a href="/abrigamento-edit.php?codigo=<?php echo $resultado['abr_codigo'] ?>"><button
+                          <a href="abrigamento-edit.php?codigo=<?php echo $resultado['abr_codigo'] ?>"><button
                               type="button" class="btn bg-gradient-primary btn-xs"><i
                                 class="nav-icon fas fa-pencil-alt"></i> Editar</button></a>
-                          <a href="/abrigamento-acompanhar.php?codigo=<?php echo $resultado['abr_codigo'] ?>"><button
+                          <a href="abrigamento-acompanhar.php?codigo=<?php echo $resultado['abr_codigo'] ?>"><button
                               type="button" class="btn bg-gradient-primary btn-xs"><i class="nav-icon fas fa-list"></i>
                               Acompanhamento</button></a>
                         </td>
