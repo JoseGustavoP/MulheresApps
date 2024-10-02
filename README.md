@@ -10,19 +10,19 @@ Novos recursos:
 
 	- Anexos da mulher (documentos)
  
-	- Limitar o acesso aos dados (cadastro) apenas para usuários que tem permissão ou que preencheram o cadastro (estão em atendimento). ( MEIO FEITO )
+	- Limitar o acesso aos dados (cadastro) apenas para usuários que tem permissão ou que preencheram o cadastro (estão em atendimento). !( MEIO FEITO )!
  
 	- Registrar quem viu os dados (ficha)
  
 	- Adicionar acesso para o Ministério Público - acesso para relatorios. Com usuario e senha, para ver apenas o relatorio de um caso especifico. FIca registrado no LOG
  
-	- Corrigir campos de text area, inserndo um editor wysiwyg
+	- Corrigir campos de text area, inserndo um editor wysiwyg !(FEITO)!
  
-	- Corrigir sistema de relatorios, que nao funciona
+	- Corrigir sistema de relatorios, que nao funciona !(QUASE FEITO KSKS)!
  
 	- Criar relatórios comuns e já deixá-los disponiveis no sistema (mulheres e telefones, atendimentos do mês)
  
-	- Corrigir falhas do modulo de Abrigamento (não funcional no momento).
+	- Corrigir falhas do modulo de Abrigamento (não funcional no momento). !(Feito)!
  
 	- Mostrar mais dados sobre os abrigados
  
