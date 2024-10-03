@@ -1,269 +1,289 @@
 <?php
 session_start();
 
-// Initialize session variables if not already set
+// Inicializa as variáveis de sessão se ainda não estiverem definidas
 if (!isset($_SESSION['selectedTables'])) {
-   $_SESSION['selectedTables'] = ''; // Default value
+    $_SESSION['selectedTables'] = ''; // Valor padrão
 }
 if (!isset($_SESSION['selectedFields'])) {
-   $_SESSION['selectedFields'] = ''; // Default value
+    $_SESSION['selectedFields'] = ''; // Valor padrão
+}
+if (!isset($_SESSION['txtReportName'])) {
+    $_SESSION['txtReportName'] = ''; // Valor padrão
 }
 
-// Check for POST data and update session variable
-if (isset($_POST["selectedTables"]) && $_POST["selectedTables"] != "") {
-   $_SESSION['selectedTables'] = $_POST["selectedTables"];
+// Verifica os dados POST e atualiza a variável de sessão
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST["txtReportName"]) && !empty($_POST["txtReportName"])) {
+        $_SESSION['txtReportName'] = $_POST["txtReportName"];
+    }
+    if (isset($_POST["selectedFields"]) && !empty($_POST["selectedFields"])) {
+        $_SESSION['selectedFields'] = $_POST["selectedFields"];
+    }
+}
+
+// Limpa as variáveis de sessão para reiniciar o relatório
+if (isset($_POST['reiniciar'])) {
+    $_SESSION['selectedFields'] = '';
+    $_SESSION['txtReportName'] = '';
 }
 
 $design_titulo = "Relatórios";
-$design_ativo = "r3"; // Active menu item
+$design_ativo = "r3"; // Item de menu ativo
 $design_migalha1_texto = "Relatórios";
 $design_migalha1_link = "index.php";
-$design_migalha2_texto = "Editar: Parte 2";
+$design_migalha2_texto = "Selecionar Campos";
 $design_migalha2_link = "";
 
 require_once('includes/config.php');
 include("design1.php");
 ?>
 
+<!-- Inclusão dos Scripts -->
 <script language="javascript" type="text/javascript" src="ajaxlib.js"></script>
 <script language="javascript" type="text/javascript">
-   var lstSelectedFields;
-   var lstAllFields;
-   var cmdNext;
-   var selectedFields;
-   var dispFields;
-   var lstTables;
+    var lstSelectedFields, lstAllFields, cmdNext, selectedFields, dispFields, lstTables;
 
-   function initVars() {
-      lstSelectedFields = document.getElementById("lstSelectedFields");
-      lstAllFields = document.getElementById("lstAllFields");
-      selectedFields = document.getElementById("selectedFields");
-      cmdNext = document.getElementById("cmdNext");
-      dispFields = document.getElementById("dispFields");
-      lstTables = document.getElementById("lstTables");
+    function initVars() {
+        lstSelectedFields = document.getElementById("lstSelectedFields");
+        selectedFields = document.getElementById("selectedFields");
+        cmdNext = document.getElementById("cmdNext");
+        dispFields = document.getElementById("dispFields");
+        lstTables = document.getElementById("lstTables");
 
-      doAjax('getFieldNames.php', 'tableName=' + lstTables.options[0].value, 'displayFields', 'post', 0, 'progress');
-   }
+        if (lstTables && lstTables.options.length > 0) {
+            doAjax('getFieldNames.php', 'tableName=' + encodeURIComponent(lstTables.options[0].value), 'displayFields', 'post', 0, 'progress');
+        }
 
-   function cmdSelectFields_onclick() {
-      initVars();
-      var addIndex = lstAllFields.selectedIndex;
-      if (addIndex < 0) return;
+        updateFields(); // Atualiza o estado inicial do botão "Próximo"
+    }
 
-      for (i = 0; i < lstAllFields.options.length; i++) {
-         if (lstAllFields.options[i].selected) {
-            var tmpFound = false;
-            for (var x = 0; x < lstSelectedFields.options.length; x++) {
-               if (lstSelectedFields.options[x].value == lstAllFields.options[i].value) {
-                  tmpFound = true;
-                  break;
-               }
+    function cmdSelectFields_onclick() {
+        if (!lstAllFields) {
+            console.error("Elemento lstAllFields não está disponível.");
+            alert("Erro: Não foi possível encontrar as colunas disponíveis.");
+            return;
+        }
+
+        var addIndex = lstAllFields.selectedIndex;
+        if (addIndex < 0) {
+            alert("Por favor, selecione pelo menos uma coluna para adicionar.");
+            return;
+        }
+
+        for (let i = 0; i < lstAllFields.options.length; i++) {
+            if (lstAllFields.options[i].selected) {
+                var tmpFound = false;
+                for (let x = 0; x < lstSelectedFields.options.length; x++) {
+                    if (lstSelectedFields.options[x].value === lstAllFields.options[i].value) {
+                        tmpFound = true;
+                        break;
+                    }
+                }
+                if (!tmpFound) {
+                    var newOption = document.createElement('option');
+                    newOption.text = lstAllFields.options[i].text;
+                    newOption.value = lstAllFields.options[i].value;
+                    lstSelectedFields.appendChild(newOption);
+                    console.log(`Campo adicionado: ${newOption.value}`);
+                } else {
+                    console.log(`Campo já existe: ${lstAllFields.options[i].value}`);
+                }
             }
-            if (!tmpFound) {
-               var newOption = document.createElement('option');
-               newOption.text = lstAllFields.options[i].text;
-               newOption.value = lstAllFields.options[i].value;
-               lstSelectedFields.appendChild(newOption);
-            }
-         }
-      }
+        }
 
-      updateFields(); // Atualiza os campos
-      console.log('Selected fields:', lstSelectedFields.options.length); // Debug
-      cmdNext.disabled = lstSelectedFields.options.length === 0; // Habilita ou desabilita o botão
-   }
+        updateFields(); // Atualiza os campos
+    }
 
+    function cmdRemoveFields_onclick() {
+        var selIndex = lstSelectedFields.selectedIndex;
+        var itemCount = lstSelectedFields.options.length;
+        if (selIndex < 0) {
+            alert("Por favor, selecione pelo menos uma coluna para remover.");
+            return;
+        }
 
-   function cmdRemoveFields_onclick() {
-      var selIndex = lstSelectedFields.selectedIndex;
-      var itemCount = lstSelectedFields.options.length;
-      if (selIndex < 0)
-         return;
-
-      for (i = 0; i < itemCount; i++) {
-         for (x = 0; x < lstSelectedFields.options.length; x++) {
+        for (let x = itemCount - 1; x >= 0; x--) {
             if (lstSelectedFields.options[x].selected) {
-               lstSelectedFields.removeChild(lstSelectedFields.options.item(x))
+                console.log(`Campo removido: ${lstSelectedFields.options[x].value}`);
+                lstSelectedFields.removeChild(lstSelectedFields.options[x]);
             }
-         }
-      }
+        }
 
-      updateFields();
+        updateFields();
+    }
 
-      cmdNext.disabled = lstSelectedFields.options.length === 0; // Atualiza o botão "Próximo"
-   }
+    function updateFields() {
+        selectedFields.value = ""; // Reinicializa o valor
+        for (let x = 0; x < lstSelectedFields.options.length; x++) {
+            selectedFields.value += lstSelectedFields.options[x].value + "~";
+        }
 
-   function updateFields() {
-      selectedFields.value = ""; // Reinicializa o valor
-      for (var x = 0; x < lstSelectedFields.options.length; x++) {
-         selectedFields.value += lstSelectedFields.options[x].value + "~";
-      }
-      // Habilita o botão se houver campos selecionados
-      cmdNext.disabled = selectedFields.value === "";
-   }
+        console.log("Selected fields:", selectedFields.value); // Verifique se os valores estão sendo atualizados
 
+        cmdNext.disabled = selectedFields.value === ""; // Habilita o botão se houver campos selecionados
+        console.log("cmdNext disabled status:", cmdNext.disabled); // Verifica se o botão está sendo habilitado corretamente
+    }
 
-   function displayFields(fieldData) {
-      dispFields.innerHTML = fieldData;
-   }
+    function displayFields(fieldData) {
+        dispFields.innerHTML = fieldData; // Mostra os campos disponíveis
 
-   function moveUpList() {
-      if (lstSelectedFields.length == -1) {
-         alert("Não existem itens para mover!");
-      } else {
-         var selected = lstSelectedFields.selectedIndex;
-         if (selected == -1) {
+        // Atualiza a referência para lstAllFields após a inserção do HTML
+        lstAllFields = document.getElementById("lstAllFields");
+        if (!lstAllFields) {
+            console.error("Elemento lstAllFields não encontrado após a chamada AJAX.");
+        } else {
+            console.log("Elemento lstAllFields encontrado após a chamada AJAX.");
+        }
+
+        updateFields(); // Atualiza o estado do botão "Próximo"
+    }
+
+    function moveUpList() {
+        if (lstSelectedFields.options.length === 0) {
+            alert("Não existem itens para mover!");
+            return;
+        }
+
+        var selected = lstSelectedFields.selectedIndex;
+        if (selected === -1) {
             alert("Você deve selecionar um item para mover!");
-         } else {
-            if (lstSelectedFields.length == 0) {
-               alert("Só há uma entrada!\nEla permanecerá no mesmo lugar.");
-            } else {
-               if (selected == 0) {
-                  alert("O primeiro item da lista não pode ser movido para cima.");
-               } else {
-                  var moveText1 = lstSelectedFields[selected - 1].text;
-                  var moveText2 = lstSelectedFields[selected].text;
-                  var moveValue1 = lstSelectedFields[selected - 1].value;
-                  var moveValue2 = lstSelectedFields[selected].value;
-                  lstSelectedFields[selected].text = moveText1;
-                  lstSelectedFields[selected].value = moveValue1;
-                  lstSelectedFields[selected - 1].text = moveText2;
-                  lstSelectedFields[selected - 1].value = moveValue2;
-                  lstSelectedFields.selectedIndex = selected - 1;
-                  updateFields();
-               }
-            }
-         }
-      }
-   }
-   function moveDownList() {
-      if (lstSelectedFields.options.length == 0) {
-         alert("Não existem itens para mover!");
-         return;
-      }
+            return;
+        }
 
-      var selected = lstSelectedFields.selectedIndex;
-      if (selected == -1) {
-         alert("Você deve selecionar um item para mover!");
-         return;
-      }
+        if (selected === 0) {
+            alert("O primeiro item da lista não pode ser movido para cima.");
+            return;
+        }
 
-      if (selected >= lstSelectedFields.options.length - 1) {
-         alert("O último item da lista não pode ser movido para baixo.");
-         return;
-      }
+        // Troca os itens
+        var moveText = lstSelectedFields.options[selected - 1].text;
+        var moveValue = lstSelectedFields.options[selected - 1].value;
+        lstSelectedFields.options[selected - 1].text = lstSelectedFields.options[selected].text;
+        lstSelectedFields.options[selected - 1].value = lstSelectedFields.options[selected].value;
+        lstSelectedFields.options[selected].text = moveText;
+        lstSelectedFields.options[selected].value = moveValue;
 
-      // Troca os itens
-      var moveText1 = lstSelectedFields[selected + 1].text;
-      var moveText2 = lstSelectedFields[selected].text;
-      var moveValue1 = lstSelectedFields[selected + 1].value;
-      var moveValue2 = lstSelectedFields[selected].value;
+        lstSelectedFields.selectedIndex = selected - 1; // Atualiza a seleção
+        updateFields(); // Atualiza os campos
+    }
 
-      lstSelectedFields[selected].text = moveText1;
-      lstSelectedFields[selected].value = moveValue1;
-      lstSelectedFields[selected + 1].text = moveText2;
-      lstSelectedFields[selected + 1].value = moveValue2;
+    function moveDownList() {
+        if (lstSelectedFields.options.length === 0) {
+            alert("Não existem itens para mover!");
+            return;
+        }
 
-      // Atualiza a seleção
-      lstSelectedFields.selectedIndex = selected + 1;
+        var selected = lstSelectedFields.selectedIndex;
+        if (selected === -1) {
+            alert("Você deve selecionar um item para mover!");
+            return;
+        }
 
-      updateFields(); // Atualiza os campos
-   }
+        if (selected >= lstSelectedFields.options.length - 1) {
+            alert("O último item da lista não pode ser movido para baixo.");
+            return;
+        }
 
+        // Troca os itens
+        var moveText = lstSelectedFields.options[selected + 1].text;
+        var moveValue = lstSelectedFields.options[selected + 1].value;
+        lstSelectedFields.options[selected + 1].text = lstSelectedFields.options[selected].text;
+        lstSelectedFields.options[selected + 1].value = lstSelectedFields.options[selected].value;
+        lstSelectedFields.options[selected].text = moveText;
+        lstSelectedFields.options[selected].value = moveValue;
 
-   function jumpURL(tmpURL) {
-      window.location.href = tmpURL;
-   }
+        lstSelectedFields.selectedIndex = selected + 1; // Atualiza a seleção
+        updateFields(); // Atualiza os campos
+    }
 
-   initVars();
+    window.onload = initVars;
 </script>
 
-<div class="wrapper">
-   <!-- Main content -->
-   <div class="content-wrapper">
-      <section class="content">
-         <div class="container-fluid">
-            <div class="card card-primary card-outline">
-               <div class="card-header">
-                  <h3 class="card-title">Seleção de Colunas do formulário (Formato: tabela.coluna)</h3>
-               </div> <!-- /.card-header -->
+<!-- Estrutura do Formulário -->
+<form method="post" action="newReport.php">
+    <div class="wrapper">
+        <!-- Conteúdo principal -->
+        <div class="content-wrapper">
+            <section class="content">
+                <div class="container-fluid">
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">Seleção de Colunas do formulário (Formato: tabela.coluna)</h3>
+                        </div> <!-- /.card-header -->
 
-               <div class="card-body">
-                  <?php
-                  echo "<h2>" . ($_SESSION['txtReportName'] ?? "Novo Relatório") . "</h2>";
-                  ?>
-                  <div class="row">
-                     <div class="col-md-2 col-12">
-                        <b>Tabelas:</b>
-                        <select name="lstTables" id="lstTables" class='form-control'
-                           onChange="doAjax('getFieldNames.php','tableName=' + this.value,'displayFields','post',0,'progress');">
-                           <?php
-                           $tmpTables = explode("~", $_SESSION['selectedTables']);
-                           for ($x = 0; $x <= count($tmpTables) - 1; $x += 1) {
-                              if ($tmpTables[$x] != "") {
-                                 ?>
-                                 <option value="<?php echo $tmpTables[$x]; ?>" <?php if ((count($tmpTables) - 1) == 1) {
-                                       print "selected='selected'";
-                                    } ?>> <?php echo $tmpTables[$x]; ?> </option>
-                                 <?php
-                              }
-                           }
-                           ?>
-                        </select>
-                     </div>
-                     <div class="col-md-10 col-12">
-                        <b>Colunas disponíveis:</b>
-                        <div id="dispFields"></div>
+                        <div class="card-body">
+                            <h2>Nome do Relatório:</h2>
+                            <input type="text" name="txtReportName" id="txtReportName" class="form-control" placeholder="Digite o nome do relatório" value="<?php echo htmlspecialchars($_SESSION['txtReportName'], ENT_QUOTES); ?>" />
 
-                        <b>Colunas escolhidas:</b>
-                        <div class="row">
-                           <div class="col-md-10 col-12">
-                              <select name="lstSelectedFields" size="5" multiple="multiple" id="lstSelectedFields"
-                                 class='form-control'>
-                                 <?php
-                                 $tmpFields = explode("~", $_SESSION['selectedFields']);
-                                 for ($x = 0; $x <= count($tmpFields) - 1; $x += 1) {
-                                    if ($tmpFields[$x] != "") {
-                                       ?>
-                                       <option value="<?php echo $tmpFields[$x]; ?>">
-                                          <?php echo $tmpFields[$x]; ?>
-                                       </option>
-                                       <?php
-                                    }
-                                 }
-                                 ?>
-                              </select>
-                           </div>
+                            <!-- Campo oculto para selectedFields -->
+                            <input type="hidden" id="selectedFields" name="selectedFields" value="<?php echo htmlspecialchars($_SESSION['selectedFields'], ENT_QUOTES); ?>" />
+
+                            <div class="row">
+                                <div class="col-md-2 col-12">
+                                    <b>Tabelas:</b>
+                                    <select name="lstTables" id="lstTables" class='form-control'
+                                        onChange="doAjax('getFieldNames.php','tableName=' + encodeURIComponent(this.value),'displayFields','post',0,'progress');">
+                                        <?php
+                                        $tmpTables = explode("~", $_SESSION['selectedTables']);
+                                        foreach ($tmpTables as $table) {
+                                            if ($table != "") {
+                                                echo "<option value='$table'>$table</option>";
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                                <div class="col-md-10 col-12">
+                                    <b>Campos Disponíveis:</b>
+                                    <div id="dispFields">
+                                        <select id="lstAllFields" multiple class="form-control" style="height: 250px;">
+                                            <!-- Campos serão preenchidos pelo AJAX -->
+                                        </select>
+                                    </div>
+                                </div>
+                            </div> <!-- /.row -->
+                            
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button type="button" onclick="cmdSelectFields_onclick();" class="btn btn-success">Adicionar Campos</button>
+                                    <button type="button" onclick="cmdRemoveFields_onclick();" class="btn btn-danger">Remover Campos</button>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <b>Campos Selecionados:</b>
+                                    <select id="lstSelectedFields" multiple class="form-control" style="height: 250px;">
+                                        <?php
+                                        $selectedFieldsArray = explode("~", $_SESSION['selectedFields']);
+                                        foreach ($selectedFieldsArray as $field) {
+                                            if ($field != "") {
+                                                echo "<option value='$field'>$field</option>";
+                                            }
+                                        }
+                                        ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <button type="button" onclick="moveUpList();" class="btn btn-warning">Mover para Cima</button>
+                                    <button type="button" onclick="moveDownList();" class="btn btn-warning">Mover para Baixo</button>
+                                </div>
+                            </div>
+                        </div> <!-- /.card-body -->
+                        <div class="card-footer">
+                            <input type="submit" name="reiniciar" value="Reiniciar" class="btn btn-secondary" />
+                            <input type="submit" id="cmdNext" name="cmdNext" value="Próximo" class="btn btn-primary" disabled />
                         </div>
-                        <div class="col-md-2 col-12">
-                           <a href="javascript:moveUpList();" class="btn btn-xs btn-primary"><i
-                                 class="fas fa-arrow-up"></i></a>
-                           <a href="javascript:moveDownList();" class="btn btn-xs btn-primary"><i
-                                 class="fas fa-arrow-down"></i></a>
-                        </div>
-                     </div>
-                  </div>
-               </div>
+                    </div> <!-- /.card -->
+                </div> <!-- /.container-fluid -->
+            </section> <!-- /.content -->
+        </div> <!-- /.content-wrapper -->
+    </div> <!-- /.wrapper -->
+</form>
 
-               <div class="row">
-                  <div class="col-md-10 col-12">
-                     <button type="button" id="cmdSelectFields" class="btn btn-primary"
-                        onClick="cmdSelectFields_onclick();">Selecionar</button>
-                     <button type="button" id="cmdRemoveFields" class="btn btn-primary"
-                        onClick="cmdRemoveFields_onclick();">Remover</button>
-                  </div>
-                  <div class="col-md-2 col-12">
-                     <input type="hidden" name="selectedFields" id="selectedFields" />
-                     <input type="button" id="cmdNext" class="btn btn-primary" value="Próximo" disabled="disabled"
-                        onClick="jumpURL('newReport.php');" />
-                  </div>
-               </div>
-            </div>
-         </div>
-   </div>
-   </section>
-</div>
-<?php
-include("design2.php");
-?>
-</div>
+<?php include("design2.php"); ?>

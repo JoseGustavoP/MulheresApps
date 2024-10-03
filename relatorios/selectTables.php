@@ -2,49 +2,71 @@
 session_start();
 require_once('includes/config.php');
 
-// Ensure $dbVisTables is defined
+// Verifique se $dbVisTables está definido
 if (!isset($dbVisTables)) {
     die("A variável dbVisTables não está definida. Verifique o arquivo config.php.");
 }
 
-// Explode dbVisTables into an array
+// Exploda dbVisTables em um array
 $visTables = explode(",", $dbVisTables);
 if (count($visTables) == 1) {
     if ($visTables[0] != "") {
         $_SESSION['selectedTables'] = "`" . $visTables[0] . "`";
-        header("Location:selectFields.php");
-        exit; // Exit after header to prevent further execution
+        header("Location: selectFields.php");
+        exit; // Sair após o cabeçalho para evitar execução adicional
     }
 }
 
-// Use the already created mysqli connection for mulheresapp_natal
+// Use a conexão mysqli já criada para mulheresapp_natal
 $connDB = $mysqli_natal;
 
-// Check the connection
+// Verifique a conexão
 if ($connDB->connect_error) {
     die("Connection failed: " . $connDB->connect_error);
 }
 
-// Get tables
+// Obtenha tabelas
 $query_recGetTables = "SHOW TABLES";
 $recGetTables = $connDB->query($query_recGetTables);
 
-// Check if query was successful
+// Verifique se a consulta foi bem-sucedida
 if (!$recGetTables) {
     die("Query failed: " . $connDB->error);
 }
 
-// Get the first row of results
+// Obtenha a primeira linha dos resultados
 $row_recGetTables = $recGetTables->fetch_array();
 $totalRows_recGetTables = $recGetTables->num_rows;
 
-// Remaining code...
+// Código restante...
 $design_titulo = "Relatórios";
 $design_ativo = "r3";
 $design_migalha1_texto = "Relatórios";
 $design_migalha1_link = "index.php";
 $design_migalha2_texto = "Editar: Parte 1";
 $design_migalha2_link = "";
+
+// Redefinição de sessão ao clicar em "Reiniciar como novo relatório"
+if (isset($_POST['cmdNew'])) {
+    // Limpe as variáveis de sessão relacionadas ao relatório
+    unset($_SESSION['selectedFields']);
+    unset($_SESSION['txtReportName']);
+    unset($_SESSION['appliedConditions']);
+    unset($_SESSION['lstSortName']);
+    unset($_SESSION['lstSortOrder']);
+    unset($_SESSION['txtRecPerPage']);
+    unset($_SESSION['status']);
+
+    // Reinicie as variáveis se necessário
+    $_SESSION['selectedTables'] = ""; // Mantém a variável de tabelas selecionadas vazia para permitir nova seleção
+}
+
+if (isset($_POST['cmdNext'])) {
+    // Salva as tabelas selecionadas na sessão ao clicar em "Avançar"
+    $_SESSION['selectedTables'] = $_POST['selectedTables'];
+    header("Location: selectFields.php"); // Redireciona para a página selectFields.php
+    exit; // Sair após o cabeçalho para evitar execução adicional
+}
 
 include("design1.php");
 ?>
@@ -92,23 +114,6 @@ function updateHiddenField() {
     // Habilita o botão Avançar se houver tabelas selecionadas
     document.getElementById('cmdNext').disabled = selectedTables.length === 0;
 }
-function cmdNew_onClick() {
-    var tmpVal = confirm("Confirme a Ação");
-
-    if (tmpVal) {
-        // Redefine as variáveis de sessão no servidor
-        var xhr = new XMLHttpRequest();
-        xhr.open("POST", "resetSession.php", true); // crie um novo arquivo resetSession.php
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.onload = function () {
-            if (xhr.status === 200) {
-                window.location.href = "selectFields.php"; // Redireciona após redefinir a sessão
-            }
-        };
-        xhr.send();
-    }
-}
-
 
 </script>
 
@@ -173,9 +178,9 @@ function cmdNew_onClick() {
                 </div>
                 <br>
 
-                <form action="selectFields.php" method="post" name="frmTables" id="frmTables">
+                <form action="" method="post" name="frmTables" id="frmTables">
                     <div class="margin">
-                        <button name="cmdNew" type="button" class="btn btn-info" id="cmdNew" onclick="cmdNew_onClick();"><i class="fas fa-file"></i> Reiniciar como novo relatório</button>
+                        <button name="cmdNew" type="submit" class="btn btn-info" id="cmdNew"><i class="fas fa-file"></i> Reiniciar como novo relatório</button>
                         <button name="cmdBack" type="button" class="btn btn-success m-2" id="cmdBack" onclick="jumpURL('index.php');"><i class="fas fa-arrow-left"></i> Voltar</button>
                         <button name="cmdNext" type="submit" class="btn btn-success" id="cmdNext" disabled>Avançar <i class="fas fa-arrow-right"></i></button>
                     </div>
@@ -185,6 +190,7 @@ function cmdNew_onClick() {
         </div>
     </div>
 </section>
+
 
 <style>
   /* Estilo para garantir que o conteúdo principal não fique atrás da sidebar */
