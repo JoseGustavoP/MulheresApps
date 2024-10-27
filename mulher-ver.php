@@ -603,7 +603,7 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="cadastro">
-
+                        
                 <!--Aqui inicia o cadastro de Mulher.-->
                 <!---->
                 <!---->
