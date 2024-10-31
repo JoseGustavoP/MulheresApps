@@ -269,6 +269,8 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                 echo "active"; ?>" href="#parteadversa" data-toggle="tab" id="parteadversa-tab" onclick="alternarAba('parteadversa')" class="btn btn-success">Parte Adversa</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "atendimento")
                 echo "active"; ?>" href="#atendimento" data-toggle="tab" id="atendimento-tab"onclick="alternarAba('atendimento')" class="btn btn-success">Atendimentos</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "anexos")
+                echo "active"; ?>" href="#anexos" data-toggle="tab" id="anexos-tab"onclick="alternarAba('anexos')" class="btn btn-success">Anexos</a></li>
             </ul>
           </div><!-- /.card-header -->
 
@@ -2639,6 +2641,11 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                   </div>
                 </form>
               </div>
+              <div class="tab-pane" id="anexos">
+
+                  OI
+
+              </div>
               <div class="<?php if ($aba == "atendimento")
                 echo "active" ?> tab-pane" id="atendimento">
                 <?php if (@$msg == 4)
@@ -2908,6 +2915,7 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
   </div>
   <!-- /.modal-dialog -->
 </div>
+
 
 
 <?php
