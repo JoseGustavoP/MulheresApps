@@ -30,3 +30,13 @@ Novos recursos:
  
 	- Separar a pagina de configurações do usuario e configurações do sistema
  
+
+OBSERVAÇÃO:
+FAÇA ISSO PARA O ADICIONAR IMAGENS FUNCIONAR(CASO DE ERRO): 
+Ative a extensão GD no PHP:
+
+Abra o arquivo php.ini, que está localizado em D:\XAMPP\php\php.ini.
+Procure pela linha que contém ;extension=gd e remova o ponto e vírgula (;) no início, deixando como extension=gd.
+Reinicie o Apache:
+
+Após salvar as alterações no php.ini, reinicie o Apache pelo painel do XAMPP para aplicar a modificação.
