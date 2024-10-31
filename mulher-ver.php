@@ -258,21 +258,38 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
           <div class="card-header p-2">
             <ul class="nav nav-pills">
               <li class="nav-item"><a class="nav-link <?php if ($aba == "timeline")
-                echo "active" ?>" href="#timeline" data-toggle="tab">Linha do Tempo</a></li>
-                <li class="nav-item"><a class="nav-link" href="#cadastro" data-toggle="tab">Cadastro</a></li>
-                <li class="nav-item"><a class="nav-link" href="#saude" data-toggle="tab">Saúde</a></li>
-                <li class="nav-item"><a class="nav-link <?php if ($aba == "pessoas")
-                echo "active" ?>" href="#social" data-toggle="tab">Família</a></li>
-                <li class="nav-item"><a class="nav-link <?php if ($aba == "adversa")
-                echo "active" ?>" href="#parteadversa" data-toggle="tab">Parte Adversa</a></li>
-                <li class="nav-item"><a class="nav-link <?php if ($aba == "atendimento")
-                echo "active" ?>" href="#atendimento" data-toggle="tab">Atendimentos</a></li>
-              </ul>
-            </div><!-- /.card-header -->
-            <div class="card-body">
-              <div class="tab-content">
-                <!-- /.tab-pane -->
-                <div class="<?php if ($aba == "timeline")
+                echo "active"; ?>" href="#timeline" data-toggle="tab" id="timeline-tab" onclick="alternarAba('timeline')" class="btn btn-primary">Linha do Tempo</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "cadastro")
+                echo "active"; ?>" href="#cadastro" data-toggle="tab" id="cadastro-tab" onclick="alternarAba('cadastro')" class="btn btn-secondary">Cadastro</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "saude")
+                echo "active"; ?>" href="#saude" data-toggle="tab" id="saude-tab" onclick="alternarAba('saude')" class="btn btn-success">Saúde</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "pessoas")
+                echo "active"; ?>" href="#social" data-toggle="tab" id="social-tab" onclick="alternarAba('social')" class="btn btn-success">Família</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "adversa")
+                echo "active"; ?>" href="#parteadversa" data-toggle="tab" id="parteadversa-tab" onclick="alternarAba('parteadversa')" class="btn btn-success">Parte Adversa</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "atendimento")
+                echo "active"; ?>" href="#atendimento" data-toggle="tab" id="atendimento-tab"onclick="alternarAba('atendimento')" class="btn btn-success">Atendimentos</a></li>
+            </ul>
+          </div><!-- /.card-header -->
+
+          <script>
+            // Função para alternar abas dinamicamente
+            function alternarAba(aba) {
+              // Remover a classe "active" de todas as abas
+              document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+
+              // Adicionar a classe "active" na aba selecionada
+              document.getElementById(`${aba}-tab`).classList.add('active');
+
+              // Exibir o conteúdo da aba correspondente
+              document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.remove('active'));
+              document.getElementById(aba).classList.add('active');
+            }
+          </script>
+          <div class="card-body">
+            <div class="tab-content">
+              <!-- /.tab-pane -->
+              <div class="<?php if ($aba == "timeline")
                 echo "active" ?> tab-pane" id="timeline">
 
 
@@ -603,7 +620,7 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
               </div>
               <!-- /.tab-pane -->
               <div class="tab-pane" id="cadastro">
-                        
+
                 <!--Aqui inicia o cadastro de Mulher.-->
                 <!---->
                 <!---->
