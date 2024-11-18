@@ -8,7 +8,7 @@ Falar sobre a aplicação da LGPD (FEITO)
 
 Novos recursos:
 
-	- Anexos da mulher (documentos)
+	- Anexos da mulher (documentos) (!!!!!!!feito!!!!!!)
  
 	- Limitar o acesso aos dados (cadastro) apenas para usuários que tem permissão ou que preencheram o cadastro (estão em atendimento). !( MEIO FEITO )!
  
