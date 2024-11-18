@@ -625,9 +625,20 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                     $arquivo = $_FILES['file'];
                     $mul_codigo = $codigo; // Utiliza o código já carregado na página
                   
-                    // Validação do upload
+                    // Verifica se o arquivo foi enviado sem erros
                     if ($arquivo['error'] === UPLOAD_ERR_OK) {
-                      $nomeArquivo = basename($arquivo['name']);
+                      // Obtém o nome original do arquivo
+                      $nomeArquivoOriginal = pathinfo($arquivo['name'], PATHINFO_FILENAME);
+                      $extensaoArquivo = pathinfo($arquivo['name'], PATHINFO_EXTENSION);
+
+                      // Verifica se foi fornecido um novo nome
+                      $novoNome = trim($_POST['novo_nome']);
+                      if (!empty($novoNome)) {
+                        $nomeArquivo = $novoNome . '.' . $extensaoArquivo;
+                      } else {
+                        $nomeArquivo = $nomeArquivoOriginal . '.' . $extensaoArquivo;
+                      }
+
                       $caminhoDestino = 'uploads/' . $nomeArquivo;
 
                       // Cria a pasta "uploads" se não existir
@@ -665,7 +676,6 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                     $consultaDocs->execute();
                     return $consultaDocs->get_result();
                   }
-
                   ?>
                   <!-- END timeline item -->
 
@@ -2699,10 +2709,15 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
               </div>
               <div class="tab-pane" id="anexos">
 
+                <hr>
                 <h2>Upload de Documentos</h2>
                 <form action="?codigo=<?= $codigo ?>" method="post" enctype="multipart/form-data">
                   <label for="file">Selecione o Documento:</label>
                   <input type="file" name="file" required><br><br>
+
+                  <label for="novo_nome">Novo Nome (opcional):</label>
+                  <input type="text" name="novo_nome" placeholder="Digite um novo nome para o arquivo"><br><br>
+
                   <button type="submit" class="btn btn-success" name="upload">Upload</button>
                 </form>
 
