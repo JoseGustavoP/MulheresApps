@@ -258,19 +258,26 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
           <div class="card-header p-2">
             <ul class="nav nav-pills">
               <li class="nav-item"><a class="nav-link <?php if ($aba == "timeline")
-                echo "active"; ?>" href="#timeline" data-toggle="tab" id="timeline-tab" onclick="alternarAba('timeline')" class="btn btn-primary">Linha do Tempo</a></li>
+                echo "active"; ?>" href="#timeline" data-toggle="tab" id="timeline-tab"
+                  onclick="alternarAba('timeline')" class="btn btn-primary">Linha do Tempo</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "cadastro")
-                echo "active"; ?>" href="#cadastro" data-toggle="tab" id="cadastro-tab" onclick="alternarAba('cadastro')" class="btn btn-secondary">Cadastro</a></li>
+                echo "active"; ?>" href="#cadastro" data-toggle="tab" id="cadastro-tab"
+                  onclick="alternarAba('cadastro')" class="btn btn-secondary">Cadastro</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "saude")
-                echo "active"; ?>" href="#saude" data-toggle="tab" id="saude-tab" onclick="alternarAba('saude')" class="btn btn-success">Saúde</a></li>
+                echo "active"; ?>" href="#saude" data-toggle="tab" id="saude-tab" onclick="alternarAba('saude')"
+                  class="btn btn-success">Saúde</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "pessoas")
-                echo "active"; ?>" href="#social" data-toggle="tab" id="social-tab" onclick="alternarAba('social')" class="btn btn-success">Família</a></li>
+                echo "active"; ?>" href="#social" data-toggle="tab" id="social-tab" onclick="alternarAba('social')"
+                  class="btn btn-success">Família</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "adversa")
-                echo "active"; ?>" href="#parteadversa" data-toggle="tab" id="parteadversa-tab" onclick="alternarAba('parteadversa')" class="btn btn-success">Parte Adversa</a></li>
+                echo "active"; ?>" href="#parteadversa" data-toggle="tab" id="parteadversa-tab"
+                  onclick="alternarAba('parteadversa')" class="btn btn-success">Parte Adversa</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "atendimento")
-                echo "active"; ?>" href="#atendimento" data-toggle="tab" id="atendimento-tab"onclick="alternarAba('atendimento')" class="btn btn-success">Atendimentos</a></li>
+                echo "active"; ?>" href="#atendimento" data-toggle="tab" id="atendimento-tab"
+                  onclick="alternarAba('atendimento')" class="btn btn-success">Atendimentos</a></li>
               <li class="nav-item"><a class="nav-link <?php if ($aba == "anexos")
-                echo "active"; ?>" href="#anexos" data-toggle="tab" id="anexos-tab"onclick="alternarAba('anexos')" class="btn btn-success">Anexos</a></li>
+                echo "active"; ?>" href="#anexos" data-toggle="tab" id="anexos-tab" onclick="alternarAba('anexos')"
+                  class="btn btn-success">Anexos</a></li>
             </ul>
           </div><!-- /.card-header -->
 
@@ -611,6 +618,55 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
 
                     <?php } ?>
                   <?php } ?>
+                  <!-- implementando logica para anexo -->
+                  <?php
+                  // Função para fazer upload de documentos
+                  if (isset($_POST['upload']) && isset($codigo)) {
+                    $arquivo = $_FILES['file'];
+                    $mul_codigo = $codigo; // Utiliza o código já carregado na página
+                  
+                    // Validação do upload
+                    if ($arquivo['error'] === UPLOAD_ERR_OK) {
+                      $nomeArquivo = basename($arquivo['name']);
+                      $caminhoDestino = 'uploads/' . $nomeArquivo;
+
+                      // Cria a pasta "uploads" se não existir
+                      if (!is_dir('uploads')) {
+                        mkdir('uploads', 0777, true);
+                      }
+
+                      // Move o arquivo para o diretório de destino
+                      if (move_uploaded_file($arquivo['tmp_name'], $caminhoDestino)) {
+                        // Insere o registro na tabela "documentos"
+                        $consultaUpload = $MySQLi->prepare("INSERT INTO documentos (mulher_codigo, nome_arquivo, caminho_arquivo) VALUES (?, ?, ?)");
+                        $consultaUpload->bind_param('iss', $mul_codigo, $nomeArquivo, $caminhoDestino);
+                        $consultaUpload->execute();
+
+                        if ($consultaUpload->affected_rows > 0) {
+                          echo "<script>alert('Documento carregado com sucesso!');</script>";
+                        } else {
+                          echo "<script>alert('Erro ao salvar o documento.');</script>";
+                        }
+
+                        $consultaUpload->close();
+                      } else {
+                        echo "<script>alert('Erro ao mover o arquivo.');</script>";
+                      }
+                    } else {
+                      echo "<script>alert('Erro no upload do arquivo.');</script>";
+                    }
+                  }
+
+                  // Função para buscar documentos relacionados à mulher
+                  function buscarDocumentos($MySQLi, $codigo)
+                  {
+                    $consultaDocs = $MySQLi->prepare("SELECT id, nome_arquivo, caminho_arquivo, data_upload FROM documentos WHERE mulher_codigo = ?");
+                    $consultaDocs->bind_param('i', $codigo);
+                    $consultaDocs->execute();
+                    return $consultaDocs->get_result();
+                  }
+
+                  ?>
                   <!-- END timeline item -->
 
 
@@ -2643,7 +2699,33 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
               </div>
               <div class="tab-pane" id="anexos">
 
-                  OI
+                <h2>Upload de Documentos</h2>
+                <form action="?codigo=<?= $codigo ?>" method="post" enctype="multipart/form-data">
+                  <label for="file">Selecione o Documento:</label>
+                  <input type="file" name="file" required><br><br>
+                  <button type="submit" class="btn btn-success" name="upload">Upload</button>
+                </form>
+
+                <h2>Documentos Anexados</h2>
+                <table border="1" cellpadding="8" cellspacing="0">
+                  <tr>
+                    <th>ID</th>
+                    <th>Nome do Documento</th>
+                    <th>Data de Upload</th>
+                    <th>Ações</th>
+                  </tr>
+                  <?php
+                  $documentos = buscarDocumentos($MySQLi, $codigo);
+                  while ($row = $documentos->fetch_assoc()) {
+                    echo "<tr>
+            <td>{$row['id']}</td>
+            <td>{$row['nome_arquivo']}</td>
+            <td>{$row['data_upload']}</td>
+            <td><a href='{$row['caminho_arquivo']}' download>Baixar</a></td>
+        </tr>";
+                  }
+                  ?>
+                </table>
 
               </div>
               <div class="<?php if ($aba == "atendimento")
