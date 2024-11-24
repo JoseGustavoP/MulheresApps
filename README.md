@@ -28,7 +28,7 @@ Novos recursos:
  
 	- Colocar mais links para ver mais informações sem ter que clicar muito
  
-	- Separar a pagina de configurações do usuario e configurações do sistema
+	- Separar a pagina de configurações do usuario e configurações do sistema (!!! FEITO !!!)
  
 
 OBSERVAÇÃO:
