@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26/10/2024 às 21:35
+-- Tempo de geração: 26/11/2024 às 10:35
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -64,7 +64,10 @@ INSERT INTO `tblreports` (`id`, `appliedConditions`, `txtReportName`, `lstSortNa
 (13, NULL, 'Todas as Abrigadas', NULL, NULL, NULL, '`Abrigamentos`.`Nome`~`Abrigamentos`.`CPF`~`Abrigamentos`.`Técnico responsável pelo Abrigamento`~`Abrigamentos`.`Telefone 1`~`Abrigamentos`.`Idade`~`Abrigamentos`.`Bairro`~`Abrigamentos`.`Faixa Salarial`~`Abrigamentos`.`Quantidade de Dependentes`~`Abrigamentos`.`Início do Abrigamento`~`Abrigamentos`.`Fim do Abrigamento`~', '`Abrigamentos`~', 0),
 (14, NULL, 'RELATÓRIO MENSAL DE ABRIGAMENTO', '`Abrigamentos`.`Início do Abrigamento1`', 'ASC', NULL, '`Abrigamentos`.`Nome`~`Abrigamentos`.`CPF`~`Abrigamentos`.`Início do Abrigamento1`~`Abrigamentos`.`Fim do Abrigamento1`~', '`Abrigamentos`~', 0),
 (50, NULL, 'teste', NULL, NULL, NULL, 'tb_agressores.`agr_nome`~tb_mulheres.`mul_nome`~', '`tb_agressores`~`tb_mulheres`', 0),
-(51, NULL, 'Inicio dos abrigamentos', NULL, NULL, NULL, 'tb_abrigamentos.`abr_data_inicio`~', '`tb_abrigamentos`', 0);
+(51, NULL, 'Inicio dos abrigamentos', NULL, NULL, NULL, 'tb_abrigamentos.`abr_data_inicio`~', '`tb_abrigamentos`', 0),
+(52, NULL, 'czdasdas', NULL, NULL, NULL, 'tb_cargos.`car_codigo`~tb_cargos.`car_cargo`~', '`tb_cargos`', 0),
+(53, NULL, 'Teste de atendimentos', NULL, NULL, NULL, 'tb_atendimentos.`ate_relatorio`~tb_atendimentos.`ate_data`~tb_atendimentos.`ate_codigo`~', '`tb_atendimentos`', 0),
+(54, NULL, 'Testess', NULL, NULL, NULL, 'tb_mulheres.`mul_nome`~tb_mulheres.`mul_cpf`~', '`tb_mulheres`', 0);
 
 -- --------------------------------------------------------
 
@@ -116,7 +119,7 @@ ALTER TABLE `relatorios`
 -- AUTO_INCREMENT de tabela `tblreports`
 --
 ALTER TABLE `tblreports`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
