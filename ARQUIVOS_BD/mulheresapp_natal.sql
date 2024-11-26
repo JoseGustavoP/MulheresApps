@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26/11/2024 às 10:35
+-- Tempo de geração: 26/11/2024 às 19:31
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -76,6 +76,37 @@ CREATE TABLE `atendimentos` (
 ,`Código da Mulher` int(11)
 ,`Tipo do Atendimento` varchar(12)
 );
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `documentos`
+--
+
+CREATE TABLE `documentos` (
+  `id` int(11) NOT NULL,
+  `mulher_codigo` int(11) DEFAULT NULL,
+  `nome_arquivo` varchar(255) DEFAULT NULL,
+  `caminho_arquivo` varchar(255) DEFAULT NULL,
+  `data_upload` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `documentos`
+--
+
+INSERT INTO `documentos` (`id`, `mulher_codigo`, `nome_arquivo`, `caminho_arquivo`, `data_upload`) VALUES
+(1, 17, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:31:06'),
+(2, NULL, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:32:46'),
+(3, 17, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:33:48'),
+(4, 17, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:38:37'),
+(5, 17, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:39:03'),
+(6, 17, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:39:27'),
+(7, 17, 'MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', 'uploads/MulheresApp _ Dashboard - Google Chrome 23_08_2024 19_46_18.png', '2024-11-18 10:40:39'),
+(8, 17, 'RG Teste.png', 'uploads/RG Teste.png', '2024-11-18 10:50:23'),
+(9, 17, 'Documento sem título - Documentos Google - Google Chrome 09_09_2024 11_14_54.png', 'uploads/Documento sem título - Documentos Google - Google Chrome 09_09_2024 11_14_54.png', '2024-11-18 10:50:33'),
+(10, 17, 'MulheresApp _ Você não tem permissão para acessar essa página. - Google Chrome 30_10_2024 22_31_44.png', 'uploads/MulheresApp _ Você não tem permissão para acessar essa página. - Google Chrome 30_10_2024 22_31_44.png', '2024-11-24 17:13:53'),
+(11, 17, 'MulheresApp _ Você não tem permissão para acessar essa página. - Google Chrome 30_10_2024 22_31_44.png', 'uploads/MulheresApp _ Você não tem permissão para acessar essa página. - Google Chrome 30_10_2024 22_31_44.png', '2024-11-24 17:15:55');
 
 -- --------------------------------------------------------
 
@@ -1399,6 +1430,13 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINE
 --
 
 --
+-- Índices de tabela `documentos`
+--
+ALTER TABLE `documentos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `mulher_codigo` (`mulher_codigo`);
+
+--
 -- Índices de tabela `relatorios`
 --
 ALTER TABLE `relatorios`
@@ -1435,6 +1473,12 @@ ALTER TABLE `usuarios`
 --
 
 --
+-- AUTO_INCREMENT de tabela `documentos`
+--
+ALTER TABLE `documentos`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
 -- AUTO_INCREMENT de tabela `relatorios`
 --
 ALTER TABLE `relatorios`
@@ -1467,6 +1511,12 @@ ALTER TABLE `usuarios`
 --
 -- Restrições para tabelas despejadas
 --
+
+--
+-- Restrições para tabelas `documentos`
+--
+ALTER TABLE `documentos`
+  ADD CONSTRAINT `documentos_ibfk_1` FOREIGN KEY (`mulher_codigo`) REFERENCES `tb_mulheres` (`mul_codigo`) ON DELETE CASCADE;
 
 --
 -- Restrições para tabelas `relatorios`
