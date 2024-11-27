@@ -14,21 +14,55 @@ if (!isset($_SESSION['id'])) {
 // Verificar se a chave is_admin está definida na sessão
 $isAdmin = isset($_SESSION['is_admin']) ? $_SESSION['is_admin'] : false;
 
+
 if (isset($_GET['codigo'])) {
-  $codigo = $_GET['codigo'];
+  $codigo = $_GET['codigo'];  // Código da mulher
   $usuarioId = $_SESSION['id'];
 
   // Consultar o criador do atendimento
-  $consultaPermissao = $MySQLi->query("SELECT ate_tec_codigo1 FROM tb_atendimentos WHERE ate_mul_codigo = $codigo");
-  $resultadoPermissao = $consultaPermissao->fetch_assoc();
+  $consultaCriador = $MySQLi->query("
+      SELECT ate_tec_codigo1
+      FROM tb_atendimentos
+      WHERE ate_mul_codigo = $codigo
+  ");
+  $resultadoCriador = $consultaCriador->fetch_assoc();
 
-  // Verificar se o usuário é o criador do atendimento ou administrador
-  if ($resultadoPermissao['ate_tec_codigo1'] != $usuarioId && !$isAdmin) {
-    // Se não for o criador nem administrador, redireciona ou exibe uma mensagem de erro
-    header("Location: sem-permissao.php"); // Redireciona para uma página de acesso negado
+  // Consultar técnicos autorizados com base no mul_codigo
+  $consultaPermissao = $MySQLi->query("
+      SELECT tec_codigo
+      FROM tb_tecnicos_mulheres
+      WHERE mul_codigo = $codigo  -- Relacionamento com a mulher
+  ");
+
+  // Definir a autorização: administrador tem permissão
+  $isAuthorized = $isAdmin;
+
+  // Verificar se o usuário é o criador ou um técnico autorizado
+  if ($resultadoCriador['ate_tec_codigo1'] == $usuarioId) {
+    $isAuthorized = true; // O usuário é o criador
+  } else {
+    // Verificar se o usuário é um dos técnicos autorizados
+    while ($resultadoPermissao = $consultaPermissao->fetch_assoc()) {
+      if ($resultadoPermissao['tec_codigo'] == $usuarioId) {
+        $isAuthorized = true;
+        break;  // Encontramos o técnico autorizado, não precisa continuar a busca
+      }
+    }
+  }
+
+  // Se não for autorizado, redireciona para página de erro
+  if (!$isAuthorized) {
+    header("Location: sem-permissao.php");
     exit();
   }
+
+  // Registrar visualização, já que o usuário tem permissão
+  $MySQLi->query("
+      INSERT INTO tb_visualizacoes (vis_mul_codigo, vis_tec_codigo)
+      VALUES ($codigo, $usuarioId)
+  ");
 }
+
 
 // Variáveis para definição antes de incluir o design1.php class="nav-link active"
 
@@ -278,6 +312,9 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
               <li class="nav-item"><a class="nav-link <?php if ($aba == "anexos")
                 echo "active"; ?>" href="#anexos" data-toggle="tab" id="anexos-tab" onclick="alternarAba('anexos')"
                   class="btn btn-success">Anexos</a></li>
+              <li class="nav-item"><a class="nav-link <?php if ($aba == "anexos")
+                echo "active"; ?>" href="#permissao" data-toggle="tab" id="permissao-tab"
+                  onclick="alternarAba('permissao')" class="btn btn-success">Permissão</a></li>
             </ul>
           </div><!-- /.card-header -->
 
@@ -2705,6 +2742,24 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
 
                     </div>
                   </div>
+                </form>
+              </div>
+              <div class="tab-pane" id="permissao">
+                <form method="POST" action="salvar_atendimento.php">
+                  <label for="tecnicos">Selecione Técnicos:</label>
+                  <select name="tecnicos[]" class="form-select" aria-label="Seleção de técnicos" multiple>
+                    <?php
+                    // Recuperar os técnicos do banco de dados
+                    $tecnicos = $MySQLi->query("SELECT tec_codigo, tec_nome FROM tb_tecnicos");
+
+                    // Iterar sobre os técnicos e criar as opções do select
+                    while ($tecnico = $tecnicos->fetch_assoc()) {
+                      echo "<option value='{$tecnico['tec_codigo']}'>{$tecnico['tec_nome']}</option>";
+                    }
+                    ?>
+                  </select>
+                  <input type="hidden" name="codigo" value="<?= $codigo ?>"> <!-- Código da mulher -->
+                  <button type="submit">Salvar</button>
                 </form>
               </div>
               <div class="tab-pane" id="anexos">

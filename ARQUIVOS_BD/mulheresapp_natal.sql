@@ -65,7 +65,7 @@ CREATE TABLE `abrigamentos` (
 -- Estrutura stand-in para view `atendimentos`
 -- (Veja abaixo para a visão atual)
 --
-CREATE TABLE `atendimentos` (
+CREATE TABLE `atendimentos` (  
 `Data1` timestamp
 ,`Data` varchar(21)
 ,`Técnico 1` varchar(45)
