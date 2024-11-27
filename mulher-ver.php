@@ -2746,11 +2746,19 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
               </div>
               <div class="tab-pane" id="permissao">
                 <form method="POST" action="salvar_atendimento.php">
-                  <label for="tecnicos">Selecione Técnicos:</label>
+                  <label for="tecnicos" class="form-label">Selecione Técnicos:</label>
                   <select name="tecnicos[]" class="form-select" aria-label="Seleção de técnicos" multiple>
                     <?php
                     // Recuperar o código da mulher
                     $codigo = $_GET['codigo'];
+
+                    // Recuperar o ID do criador da mulher
+                    $criadorQuery = $MySQLi->query("
+      SELECT mul_tec_codigo 
+      FROM tb_mulheres 
+      WHERE mul_codigo = $codigo
+    ");
+                    $criador = $criadorQuery->fetch_assoc()['mul_tec_codigo'];
 
                     // Consultar os técnicos já associados ao atendimento da mulher
                     $tecnicosAssociados = $MySQLi->query("
@@ -2768,16 +2776,16 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                     // Recuperar os técnicos disponíveis para serem adicionados
                     $tecnicos = $MySQLi->query("SELECT tec_codigo, tec_nome FROM tb_tecnicos");
 
-                    // Iterar sobre os técnicos e exibir apenas os que ainda não foram associados
+                    // Iterar sobre os técnicos e exibir apenas os que ainda não foram associados e não são o criador
                     while ($tecnico = $tecnicos->fetch_assoc()) {
-                      if (!in_array($tecnico['tec_codigo'], $tecnicosAssociadosArray)) {
+                      if (!in_array($tecnico['tec_codigo'], $tecnicosAssociadosArray) && $tecnico['tec_codigo'] != $criador) {
                         echo "<option value='{$tecnico['tec_codigo']}'>{$tecnico['tec_nome']}</option>";
                       }
                     }
                     ?>
                   </select>
                   <input type="hidden" name="codigo" value="<?= $codigo ?>"> <!-- Código da mulher -->
-                  <button type="submit">Salvar</button>
+                  <button type="submit" class="btn btn-primary mt-3">Salvar</button>
                 </form>
 
               </div>
