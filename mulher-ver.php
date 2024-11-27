@@ -199,34 +199,17 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
 <link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
 <link rel="stylesheet" href="plugins/toastr/toastr.min.css">
+<script src="https://cdn.tiny.cloud/1/k7vhbf0ybiy0bsqxhlfwwfww6zcohn8dz5eo1rg71vgdzsx3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
 <script src="arovim/arovim.js"></script>
 <script type="text/javascript">
   tinymce.init({
-    selector: '#mytextareaa',
+    selector: '#mytextarea',
     menubar: false,
     language: 'pt_BR',
     toolbar: 'undo redo bold italic alignleft aligncenter alignright bullist numlist outdent indent code'
   });
 </script>
-<script src="https://cdn.tiny.cloud/1/k7vhbf0ybiy0bsqxhlfwwfww6zcohn8dz5eo1rg71vgdzsx3/tinymce/7/tinymce.min.js"></script>
-<script>
-  // Inicializando o TinyMCE
-  tinymce.init({
-    selector: '#mytextareaa',
-    menubar: false,
-    language: 'pt_BR',
-    toolbar: 'undo redo bold italic alignleft aligncenter alignright bullist numlist outdent indent code',
-    setup: function (editor) {
-      editor.on('blur', function () {
-        const content = editor.getContent();
-        const atendimento = <?php echo $atendimento; ?>;
-        const campo = 'ate_relatorio';
-        alert(content);
-        submetevaloratendimento(content, atendimento, campo);
-      });
-    }
-  });
-</script>
+
 <!-- Main content -->
 <section class="content">
   <div class="container-fluid">
@@ -2769,14 +2752,14 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                       placeholder="Digite o nome do técnico para filtrar" onkeyup="filtrarTecnicos()">
                   </div>
                   <div class="card-body">
-                    <div class="card-header">
-                      <label for="tecnicos" class="form-label">Selecione Técnicos:</label>
-                    </div>
+                  <div class="card-header">
+                  <label for="tecnicos" class="form-label">Selecione Técnicos:</label>
+                  </div>
                     <div class="row">
                       <div class="col-12">
                         <form method="POST" action="salvar_atendimento.php">
-                          <select name="tecnicos[]" id="tecnicos" class="form-select col-12"
-                            aria-label="Seleção de técnicos" multiple>
+                          <select name="tecnicos[]" id="tecnicos" class="form-select col-12" aria-label="Seleção de técnicos"
+                            multiple>
                             <?php
                             // Recuperar o código da mulher
                             $codigo = $_GET['codigo'];
@@ -3003,10 +2986,10 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                         <p><b>Relatório:</b></p>
                         <div class="card-body pad">
                           <div class="mb-3">
-                            <textarea id="mytextareaa" name="relatorio"
-                              style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
-        <?php echo isset($resultado12['ate_relatorio']) ? htmlspecialchars($resultado12['ate_relatorio']) : ''; ?>
-      </textarea>
+                            <textarea class="textarea" style="width: 100%; height: 200px; font-size: 14px;
+                            line-height: 18px; border: 1px solid #dddddd; padding: 10px;" id="mytextarea"
+                              name="relatorio"
+                              onblur="alert(this.value);submetevaloratendimento(tinyMCE.activeEditor.getContent(), <?php echo $atendimento ?>, 'ate_relatorio')"><?php echo $resultado12['ate_relatorio']; ?></textarea>
                           </div>
                         </div>
 
@@ -3169,14 +3152,4 @@ include("design2.php");
   });
 
 
-</script>
-<!-- Include TinyMCE from CDN -->
-<script src="https://cdn.tiny.cloud/1/k7vhbf0ybiy0bsqxhlfwwfww6zcohn8dz5eo1rg71vgdzsx3/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-  tinymce.init({
-    selector: '#mytextareaa', // Change this to the ID of your textarea
-    plugins: 'lists link image table', // Add any other plugins you want to include
-    toolbar: 'undo redo | styleselect | bold italic | link image | alignleft aligncenter alignright | bullist numlist outdent indent | table',
-    menubar: false,
-  });
 </script>
