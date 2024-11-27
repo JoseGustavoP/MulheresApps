@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 26/11/2024 às 19:31
+-- Tempo de geração: 27/11/2024 às 15:59
 -- Versão do servidor: 10.4.32-MariaDB
 -- Versão do PHP: 8.2.12
 
@@ -65,7 +65,7 @@ CREATE TABLE `abrigamentos` (
 -- Estrutura stand-in para view `atendimentos`
 -- (Veja abaixo para a visão atual)
 --
-CREATE TABLE `atendimentos` (  
+CREATE TABLE `atendimentos` (
 `Data1` timestamp
 ,`Data` varchar(21)
 ,`Técnico 1` varchar(45)
@@ -684,19 +684,23 @@ INSERT INTO `tb_atendimentos` (`ate_codigo`, `ate_mul_codigo`, `ate_tec_codigo1`
 (59, 17, 40, NULL, NULL, '2022-03-30 18:16:19', ''),
 (60, 17, 40, NULL, '<p>A usuaria&nbsp; relatou que estava desempregada h&aacute; cerca de um ano e que tinha interesse em ser inserida novamente no mercado de trabalho.</p>\n<p>Diante do contexto a referida foi encaminhada para o Centro Municipal de Trabalho e Empreendedorismo localizado no bairro do Alecrim.</p>', '2022-03-30 18:19:00', 'Situação de vulnerabilidade econômica em decorrência do desemprego'),
 (61, 18, 45, 43, '<p>Atendida e encaminhada para...</p>', '2022-04-06 15:08:09', 'Teste de sistema'),
-(0, 17, 40, NULL, '', '2022-11-09 11:10:00', 'Teste'),
-(0, 19, 40, NULL, '', '2022-11-09 11:10:00', ''),
-(0, 19, 40, NULL, '', '2022-11-09 11:10:00', ''),
-(0, 0, 2, NULL, NULL, '2024-10-27 13:13:20', NULL),
-(0, 0, 2, NULL, NULL, '2024-10-27 13:16:03', NULL),
-(0, 51, 2, NULL, NULL, '2024-10-27 13:30:03', NULL),
-(0, 52, 2, NULL, NULL, '2024-10-27 13:32:18', NULL),
-(0, 53, 2, NULL, NULL, '2024-10-27 13:34:23', NULL),
-(0, 54, 2, NULL, NULL, '2024-10-27 13:36:20', NULL),
-(0, 55, 2, NULL, NULL, '2024-10-31 01:23:04', NULL),
-(0, 55, 2, NULL, NULL, '2024-10-31 01:24:11', ''),
-(0, 55, 2, NULL, NULL, '2024-10-31 01:24:28', NULL),
-(0, 55, 2, NULL, NULL, '2024-10-31 01:24:35', '');
+(0, 17, 64, 2, '<p>oi</p>', '2022-11-09 11:10:00', 'Testehghh'),
+(0, 19, 64, 2, '<p>oi</p>', '2022-11-09 11:10:00', 'Testehghh'),
+(0, 19, 64, 2, '<p>oi</p>', '2022-11-09 11:10:00', 'Testehghh'),
+(0, 0, 64, 2, '<p>oi</p>', '2024-10-27 13:13:20', 'Testehghh'),
+(0, 0, 64, 2, '<p>oi</p>', '2024-10-27 13:16:03', 'Testehghh'),
+(0, 51, 64, 2, '<p>oi</p>', '2024-10-27 13:30:03', 'Testehghh'),
+(0, 52, 64, 2, '<p>oi</p>', '2024-10-27 13:32:18', 'Testehghh'),
+(0, 53, 64, 2, '<p>oi</p>', '2024-10-27 13:34:23', 'Testehghh'),
+(0, 54, 64, 2, '<p>oi</p>', '2024-10-27 13:36:20', 'Testehghh'),
+(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:23:04', 'Testehghh'),
+(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:24:11', 'Testehghh'),
+(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:24:28', 'Testehghh'),
+(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:24:35', 'Testehghh'),
+(0, 56, 64, 2, '<p>oi</p>', '2024-11-27 13:32:56', 'Testehghh'),
+(0, 57, 64, 2, '<p>oi</p>', '2024-11-27 14:02:54', 'Testehghh'),
+(0, 17, 64, NULL, '<p>oi</p>', '2024-11-27 14:42:58', 'Testehghh'),
+(0, 17, 64, NULL, '<p>oi</p>', '2024-11-27 14:42:59', 'Testehghh');
 
 -- --------------------------------------------------------
 
@@ -1137,7 +1141,9 @@ INSERT INTO `tb_mulheres` (`mul_codigo`, `mul_nome`, `mul_cpf`, `mul_prontuario`
 (52, NULL, '390.687.340-40', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-10-27 13:32:18', NULL),
 (53, NULL, '034.295.870-42', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-10-27 13:34:23', NULL),
 (54, 'Sei la', '769.343.110-19', '45234', 38, NULL, 2, '2000-10-01', 'RN', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-10-27 13:36:20', NULL),
-(55, 'Teste', '991.910.330-63', '2132432', 38, NULL, 2, '2000-01-01', 'Rn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-10-31 01:23:04', NULL);
+(55, 'Teste', '991.910.330-63', '2132432', 38, NULL, 2, '2000-01-01', 'Rn', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 0, '2024-10-31 01:23:04', NULL),
+(56, 'Teste muito doido', '763.186.320-26', '4423', 40, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 56, '2024-11-27 13:32:56', NULL),
+(57, 'Teste 1031283', '232.571.170-60', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 57, '2024-11-27 14:02:54', NULL);
 
 -- --------------------------------------------------------
 
@@ -1319,7 +1325,208 @@ INSERT INTO `tb_tecnicos` (`tec_codigo`, `tec_nome`, `tec_apelido`, `tec_matricu
 (56, 'Valéria de Oliveira Ferreira', 'Valéria', '', 'd4709b1128c899d457522f6962921939', 'valeris.oliveira10@gmail.com', 1, 1, 1, 1, '', 1, NULL, NULL, 0),
 (57, 'Irene Ferreira da Silva', 'Irene', '', '25d55ad283aa400af464c76d713c07ad', 'irene.psicologia30@gmail.com', 1, 1, 1, 1, '', 1, NULL, NULL, 0),
 (58, 'Janaine Mary de Moura', 'Janaine', '50.812-8', '25d55ad283aa400af464c76d713c07ad', 'janaine18@gmail.com', 1, 1, 3, 1, '', 1, NULL, NULL, 0),
-(61, 'Isadora Beatriz Lucena de Medeiros', 'Isa', '', '$2y$10$3/uVy7/jsxDOTF4bk4AgyuH7N3Aak8M6iCeBNRfMFl6qSW9UYd70a', 'isadorabeatriz595@gmail.com', 1, 1, 1, 1, NULL, 0, NULL, NULL, 0);
+(61, 'Isadora Beatriz Lucena de Medeiros', 'Isa', '', '$2y$10$3/uVy7/jsxDOTF4bk4AgyuH7N3Aak8M6iCeBNRfMFl6qSW9UYd70a', 'isadorabeatriz595@gmail.com', 1, 1, 1, 1, NULL, 0, NULL, NULL, 0),
+(62, 'Teste', 'Teste', '', '$2y$10$IJi68ws59.o8n2rWRrnHGuT7pB8uwK1ZPLT5rXr3ndnVIW63hYsm2', 'teste@gmail.com', 1, 0, 1, 1, NULL, 1, NULL, NULL, 0),
+(63, 'teste', 'teste', '', '$2y$10$SC8OCZp2LKkfQgsRt8Q97e.V60sqdYsbNYkqCy6Ft5YKOfyaOYtJu', 'teste2@gmail.com', 1, 0, 1, 1, NULL, 1, NULL, NULL, 0),
+(64, 'Gustavo', 'Gustavo', '', '25d55ad283aa400af464c76d713c07ad', 'teste3107@gmail.com', 1, 0, 1, 1, '', 1, '374b1045782ee08bfe0bed4bedd89728650b7959', '2024-11-26 23:47:42', 0);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tb_tecnicos_mulheres`
+--
+
+CREATE TABLE `tb_tecnicos_mulheres` (
+  `mul_codigo` int(11) NOT NULL,
+  `tec_codigo` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `tb_tecnicos_mulheres`
+--
+
+INSERT INTO `tb_tecnicos_mulheres` (`mul_codigo`, `tec_codigo`) VALUES
+(17, 51),
+(17, 52),
+(17, 64),
+(56, 2),
+(56, 36),
+(56, 37),
+(56, 64),
+(57, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Estrutura para tabela `tb_visualizacoes`
+--
+
+CREATE TABLE `tb_visualizacoes` (
+  `vis_codigo` int(11) NOT NULL,
+  `vis_mul_codigo` int(11) NOT NULL,
+  `vis_tec_codigo` int(11) NOT NULL,
+  `vis_data` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Despejando dados para a tabela `tb_visualizacoes`
+--
+
+INSERT INTO `tb_visualizacoes` (`vis_codigo`, `vis_mul_codigo`, `vis_tec_codigo`, `vis_data`) VALUES
+(1, 17, 2, '2024-11-26 18:59:28'),
+(2, 17, 2, '2024-11-26 18:59:49'),
+(3, 17, 2, '2024-11-26 19:01:48'),
+(4, 17, 2, '2024-11-26 19:01:50'),
+(5, 17, 2, '2024-11-26 19:04:08'),
+(6, 17, 2, '2024-11-26 19:04:09'),
+(7, 17, 2, '2024-11-26 19:04:38'),
+(8, 17, 2, '2024-11-26 19:04:55'),
+(9, 17, 2, '2024-11-26 20:40:59'),
+(10, 17, 2, '2024-11-26 20:41:05'),
+(11, 17, 2, '2024-11-26 20:41:08'),
+(12, 17, 2, '2024-11-26 20:41:19'),
+(13, 17, 2, '2024-11-26 20:41:22'),
+(14, 17, 2, '2024-11-26 20:42:23'),
+(15, 17, 2, '2024-11-26 20:42:26'),
+(16, 17, 2, '2024-11-26 20:44:24'),
+(17, 17, 2, '2024-11-26 20:44:29'),
+(18, 17, 2, '2024-11-26 20:44:32'),
+(19, 17, 2, '2024-11-26 20:46:56'),
+(20, 17, 64, '2024-11-26 20:47:09'),
+(21, 17, 2, '2024-11-26 21:11:19'),
+(22, 17, 2, '2024-11-26 21:11:23'),
+(23, 17, 2, '2024-11-26 21:11:48'),
+(24, 17, 2, '2024-11-26 21:11:55'),
+(25, 17, 2, '2024-11-26 21:12:18'),
+(26, 17, 2, '2024-11-26 21:13:00'),
+(27, 17, 2, '2024-11-26 21:14:25'),
+(28, 17, 2, '2024-11-26 21:14:29'),
+(29, 17, 2, '2024-11-26 21:15:31'),
+(30, 17, 2, '2024-11-26 21:15:34'),
+(31, 17, 2, '2024-11-26 21:15:48'),
+(32, 17, 2, '2024-11-26 21:25:11'),
+(33, 17, 2, '2024-11-26 21:25:16'),
+(34, 17, 2, '2024-11-26 21:25:26'),
+(35, 17, 2, '2024-11-26 21:25:56'),
+(36, 17, 2, '2024-11-26 21:26:00'),
+(37, 17, 2, '2024-11-26 21:26:48'),
+(38, 17, 2, '2024-11-26 21:26:53'),
+(39, 17, 2, '2024-11-26 21:31:10'),
+(40, 17, 2, '2024-11-26 21:31:23'),
+(41, 17, 64, '2024-11-26 21:31:37'),
+(42, 17, 64, '2024-11-26 21:36:35'),
+(43, 17, 64, '2024-11-26 21:36:38'),
+(44, 17, 64, '2024-11-26 21:36:43'),
+(45, 17, 64, '2024-11-26 21:37:29'),
+(46, 17, 64, '2024-11-26 21:39:07'),
+(47, 17, 64, '2024-11-26 21:39:09'),
+(48, 17, 64, '2024-11-26 21:39:39'),
+(49, 17, 64, '2024-11-26 21:40:35'),
+(50, 17, 64, '2024-11-26 21:41:04'),
+(51, 17, 64, '2024-11-26 21:41:14'),
+(52, 17, 64, '2024-11-26 21:41:24'),
+(53, 17, 64, '2024-11-26 21:41:46'),
+(54, 17, 64, '2024-11-26 21:41:57'),
+(55, 17, 64, '2024-11-26 21:42:21'),
+(56, 17, 64, '2024-11-26 21:42:42'),
+(57, 17, 64, '2024-11-26 21:42:42'),
+(58, 17, 64, '2024-11-26 21:42:43'),
+(59, 17, 64, '2024-11-26 21:42:43'),
+(60, 17, 64, '2024-11-26 21:43:38'),
+(61, 17, 64, '2024-11-26 21:43:45'),
+(62, 17, 64, '2024-11-26 21:45:04'),
+(63, 17, 64, '2024-11-26 21:45:17'),
+(64, 17, 64, '2024-11-26 21:46:06'),
+(65, 17, 64, '2024-11-26 21:46:45'),
+(66, 17, 64, '2024-11-26 21:46:52'),
+(67, 17, 64, '2024-11-26 21:49:16'),
+(68, 17, 64, '2024-11-26 21:50:46'),
+(69, 17, 64, '2024-11-26 21:51:18'),
+(70, 17, 64, '2024-11-26 21:51:30'),
+(71, 17, 64, '2024-11-26 21:55:14'),
+(72, 17, 64, '2024-11-26 21:56:28'),
+(73, 17, 64, '2024-11-27 10:27:03'),
+(74, 56, 64, '2024-11-27 10:32:56'),
+(75, 56, 64, '2024-11-27 10:33:29'),
+(76, 56, 64, '2024-11-27 10:33:29'),
+(77, 56, 64, '2024-11-27 10:33:47'),
+(78, 56, 2, '2024-11-27 10:33:53'),
+(79, 56, 2, '2024-11-27 10:35:47'),
+(80, 56, 2, '2024-11-27 10:46:48'),
+(81, 56, 2, '2024-11-27 10:50:04'),
+(82, 56, 2, '2024-11-27 10:50:31'),
+(83, 56, 2, '2024-11-27 10:50:59'),
+(84, 56, 2, '2024-11-27 10:52:19'),
+(85, 56, 2, '2024-11-27 10:52:35'),
+(86, 56, 2, '2024-11-27 10:53:14'),
+(87, 56, 2, '2024-11-27 10:53:38'),
+(88, 56, 2, '2024-11-27 10:53:44'),
+(89, 56, 2, '2024-11-27 10:53:48'),
+(90, 56, 2, '2024-11-27 10:54:19'),
+(91, 56, 2, '2024-11-27 10:54:32'),
+(92, 56, 2, '2024-11-27 10:54:56'),
+(93, 56, 2, '2024-11-27 10:55:56'),
+(94, 56, 2, '2024-11-27 10:56:05'),
+(95, 56, 2, '2024-11-27 10:56:24'),
+(96, 56, 2, '2024-11-27 10:57:14'),
+(97, 56, 2, '2024-11-27 10:57:23'),
+(98, 56, 2, '2024-11-27 10:57:29'),
+(99, 56, 2, '2024-11-27 10:59:57'),
+(100, 56, 2, '2024-11-27 11:00:55'),
+(101, 56, 2, '2024-11-27 11:01:27'),
+(102, 56, 2, '2024-11-27 11:01:47'),
+(103, 56, 2, '2024-11-27 11:01:55'),
+(104, 56, 2, '2024-11-27 11:02:10'),
+(105, 56, 64, '2024-11-27 11:02:43'),
+(106, 57, 64, '2024-11-27 11:02:54'),
+(107, 57, 64, '2024-11-27 11:03:17'),
+(108, 57, 64, '2024-11-27 11:03:18'),
+(109, 57, 64, '2024-11-27 11:03:36'),
+(110, 57, 2, '2024-11-27 11:04:00'),
+(111, 57, 2, '2024-11-27 11:04:57'),
+(112, 57, 2, '2024-11-27 11:05:48'),
+(113, 57, 2, '2024-11-27 11:06:38'),
+(114, 57, 2, '2024-11-27 11:06:48'),
+(115, 57, 2, '2024-11-27 11:06:50'),
+(116, 57, 2, '2024-11-27 11:09:03'),
+(117, 57, 2, '2024-11-27 11:09:09'),
+(118, 57, 2, '2024-11-27 11:09:25'),
+(119, 57, 2, '2024-11-27 11:11:42'),
+(120, 57, 2, '2024-11-27 11:12:08'),
+(121, 57, 2, '2024-11-27 11:13:40'),
+(122, 57, 2, '2024-11-27 11:14:17'),
+(123, 57, 2, '2024-11-27 11:15:59'),
+(124, 57, 2, '2024-11-27 11:16:04'),
+(125, 57, 2, '2024-11-27 11:18:21'),
+(126, 57, 2, '2024-11-27 11:18:35'),
+(127, 57, 2, '2024-11-27 11:18:47'),
+(128, 57, 2, '2024-11-27 11:23:03'),
+(129, 57, 2, '2024-11-27 11:24:47'),
+(130, 57, 2, '2024-11-27 11:24:51'),
+(131, 57, 2, '2024-11-27 11:24:55'),
+(132, 57, 2, '2024-11-27 11:27:24'),
+(133, 57, 2, '2024-11-27 11:29:34'),
+(134, 57, 2, '2024-11-27 11:33:47'),
+(135, 57, 2, '2024-11-27 11:33:48'),
+(136, 17, 2, '2024-11-27 11:42:46'),
+(137, 17, 2, '2024-11-27 11:42:58'),
+(138, 17, 2, '2024-11-27 11:42:58'),
+(139, 17, 2, '2024-11-27 11:42:58'),
+(140, 17, 2, '2024-11-27 11:42:59'),
+(141, 17, 2, '2024-11-27 11:45:12'),
+(142, 57, 64, '2024-11-27 11:46:47'),
+(143, 57, 64, '2024-11-27 11:46:59'),
+(144, 17, 2, '2024-11-27 11:49:42'),
+(145, 57, 64, '2024-11-27 11:50:31'),
+(146, 17, 2, '2024-11-27 11:50:45'),
+(147, 17, 2, '2024-11-27 11:53:31'),
+(148, 17, 2, '2024-11-27 11:54:12'),
+(149, 17, 2, '2024-11-27 11:54:34'),
+(150, 17, 2, '2024-11-27 11:57:09'),
+(151, 17, 2, '2024-11-27 11:57:33'),
+(152, 17, 2, '2024-11-27 11:57:36'),
+(153, 17, 2, '2024-11-27 11:58:07'),
+(154, 17, 2, '2024-11-27 11:59:06');
 
 -- --------------------------------------------------------
 
@@ -1462,6 +1669,21 @@ ALTER TABLE `tb_tecnicos`
   ADD PRIMARY KEY (`tec_codigo`);
 
 --
+-- Índices de tabela `tb_tecnicos_mulheres`
+--
+ALTER TABLE `tb_tecnicos_mulheres`
+  ADD PRIMARY KEY (`mul_codigo`,`tec_codigo`),
+  ADD KEY `tec_codigo` (`tec_codigo`);
+
+--
+-- Índices de tabela `tb_visualizacoes`
+--
+ALTER TABLE `tb_visualizacoes`
+  ADD PRIMARY KEY (`vis_codigo`),
+  ADD KEY `vis_mul_codigo` (`vis_mul_codigo`),
+  ADD KEY `vis_tec_codigo` (`vis_tec_codigo`);
+
+--
 -- Índices de tabela `usuarios`
 --
 ALTER TABLE `usuarios`
@@ -1494,13 +1716,19 @@ ALTER TABLE `tblreports`
 -- AUTO_INCREMENT de tabela `tb_mulheres`
 --
 ALTER TABLE `tb_mulheres`
-  MODIFY `mul_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `mul_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT de tabela `tb_tecnicos`
 --
 ALTER TABLE `tb_tecnicos`
-  MODIFY `tec_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=62;
+  MODIFY `tec_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=65;
+
+--
+-- AUTO_INCREMENT de tabela `tb_visualizacoes`
+--
+ALTER TABLE `tb_visualizacoes`
+  MODIFY `vis_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
@@ -1523,6 +1751,20 @@ ALTER TABLE `documentos`
 --
 ALTER TABLE `relatorios`
   ADD CONSTRAINT `relatorios_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
+
+--
+-- Restrições para tabelas `tb_tecnicos_mulheres`
+--
+ALTER TABLE `tb_tecnicos_mulheres`
+  ADD CONSTRAINT `tb_tecnicos_mulheres_ibfk_1` FOREIGN KEY (`mul_codigo`) REFERENCES `tb_mulheres` (`mul_codigo`),
+  ADD CONSTRAINT `tb_tecnicos_mulheres_ibfk_2` FOREIGN KEY (`tec_codigo`) REFERENCES `tb_tecnicos` (`tec_codigo`);
+
+--
+-- Restrições para tabelas `tb_visualizacoes`
+--
+ALTER TABLE `tb_visualizacoes`
+  ADD CONSTRAINT `tb_visualizacoes_ibfk_1` FOREIGN KEY (`vis_mul_codigo`) REFERENCES `tb_mulheres` (`mul_codigo`),
+  ADD CONSTRAINT `tb_visualizacoes_ibfk_2` FOREIGN KEY (`vis_tec_codigo`) REFERENCES `tb_tecnicos` (`tec_codigo`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
