@@ -2745,50 +2745,79 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                 </form>
               </div>
               <div class="tab-pane" id="permissao">
-                <form method="POST" action="salvar_atendimento.php">
+                <div class="card">
+                  <div class="card-header">
+                    <label for="filter-tecnicos" class="form-label">Filtrar Técnicos:</label>
+                    <input type="text" id="filter-tecnicos" class="form-control mb-3"
+                      placeholder="Digite o nome do técnico para filtrar" onkeyup="filtrarTecnicos()">
+                  </div>
+                  <div class="card-body">
+                  <div class="card-header">
                   <label for="tecnicos" class="form-label">Selecione Técnicos:</label>
-                  <select name="tecnicos[]" class="form-select" aria-label="Seleção de técnicos" multiple>
-                    <?php
-                    // Recuperar o código da mulher
-                    $codigo = $_GET['codigo'];
+                  </div>
+                    <div class="row">
+                      <div class="col-12">
+                        <form method="POST" action="salvar_atendimento.php">
+                          <select name="tecnicos[]" id="tecnicos" class="form-select col-12" aria-label="Seleção de técnicos"
+                            multiple>
+                            <?php
+                            // Recuperar o código da mulher
+                            $codigo = $_GET['codigo'];
 
-                    // Recuperar o ID do criador da mulher
-                    $criadorQuery = $MySQLi->query("
-      SELECT mul_tec_codigo 
-      FROM tb_mulheres 
-      WHERE mul_codigo = $codigo
-    ");
-                    $criador = $criadorQuery->fetch_assoc()['mul_tec_codigo'];
+                            // Recuperar o ID do criador da mulher
+                            $criadorQuery = $MySQLi->query("
+                SELECT mul_tec_codigo 
+                FROM tb_mulheres 
+                WHERE mul_codigo = $codigo
+              ");
+                            $criador = $criadorQuery->fetch_assoc()['mul_tec_codigo'];
 
-                    // Consultar os técnicos já associados ao atendimento da mulher
-                    $tecnicosAssociados = $MySQLi->query("
-      SELECT tec_codigo
-      FROM tb_tecnicos_mulheres
-      WHERE mul_codigo = $codigo
-    ");
+                            // Consultar os técnicos já associados ao atendimento da mulher
+                            $tecnicosAssociados = $MySQLi->query("
+                SELECT tec_codigo
+                FROM tb_tecnicos_mulheres
+                WHERE mul_codigo = $codigo
+              ");
 
-                    // Criar um array com os IDs dos técnicos já associados
-                    $tecnicosAssociadosArray = [];
-                    while ($tec = $tecnicosAssociados->fetch_assoc()) {
-                      $tecnicosAssociadosArray[] = $tec['tec_codigo'];
-                    }
+                            // Criar um array com os IDs dos técnicos já associados
+                            $tecnicosAssociadosArray = [];
+                            while ($tec = $tecnicosAssociados->fetch_assoc()) {
+                              $tecnicosAssociadosArray[] = $tec['tec_codigo'];
+                            }
 
-                    // Recuperar os técnicos disponíveis para serem adicionados
-                    $tecnicos = $MySQLi->query("SELECT tec_codigo, tec_nome FROM tb_tecnicos");
+                            // Recuperar os técnicos disponíveis para serem adicionados
+                            $tecnicos = $MySQLi->query("SELECT tec_codigo, tec_nome FROM tb_tecnicos");
 
-                    // Iterar sobre os técnicos e exibir apenas os que ainda não foram associados e não são o criador
-                    while ($tecnico = $tecnicos->fetch_assoc()) {
-                      if (!in_array($tecnico['tec_codigo'], $tecnicosAssociadosArray) && $tecnico['tec_codigo'] != $criador) {
-                        echo "<option value='{$tecnico['tec_codigo']}'>{$tecnico['tec_nome']}</option>";
-                      }
-                    }
-                    ?>
-                  </select>
-                  <input type="hidden" name="codigo" value="<?= $codigo ?>"> <!-- Código da mulher -->
-                  <button type="submit" class="btn btn-primary mt-3">Salvar</button>
-                </form>
-
+                            // Iterar sobre os técnicos e exibir apenas os que ainda não foram associados e não são o criador
+                            while ($tecnico = $tecnicos->fetch_assoc()) {
+                              if (!in_array($tecnico['tec_codigo'], $tecnicosAssociadosArray) && $tecnico['tec_codigo'] != $criador) {
+                                echo "<option value='{$tecnico['tec_codigo']}'>{$tecnico['tec_nome']}</option>";
+                              }
+                            }
+                            ?>
+                          </select>
+                          <input type="hidden" name="codigo" value="<?= $codigo ?>"> <!-- Código da mulher -->
+                          <button type="submit" class="btn btn-primary mt-3 col-12">Salvar</button>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
+
+              <script>
+                // Função para filtrar técnicos pelo nome
+                function filtrarTecnicos() {
+                  const input = document.getElementById('filter-tecnicos').value.toLowerCase();
+                  const options = document.getElementById('tecnicos').options;
+
+                  for (let i = 0; i < options.length; i++) {
+                    const tecnico = options[i].text.toLowerCase();
+                    options[i].style.display = tecnico.includes(input) ? '' : 'none';
+                  }
+                }
+              </script>
+
               <div class="tab-pane" id="anexos">
 
                 <hr>
