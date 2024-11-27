@@ -2749,18 +2749,37 @@ $consulta8 = $MySQLi->query("SELECT ate_codigo, date_format(ate_data,'%d/%m/%Y %
                   <label for="tecnicos">Selecione Técnicos:</label>
                   <select name="tecnicos[]" class="form-select" aria-label="Seleção de técnicos" multiple>
                     <?php
-                    // Recuperar os técnicos do banco de dados
+                    // Recuperar o código da mulher
+                    $codigo = $_GET['codigo'];
+
+                    // Consultar os técnicos já associados ao atendimento da mulher
+                    $tecnicosAssociados = $MySQLi->query("
+      SELECT tec_codigo
+      FROM tb_tecnicos_mulheres
+      WHERE mul_codigo = $codigo
+    ");
+
+                    // Criar um array com os IDs dos técnicos já associados
+                    $tecnicosAssociadosArray = [];
+                    while ($tec = $tecnicosAssociados->fetch_assoc()) {
+                      $tecnicosAssociadosArray[] = $tec['tec_codigo'];
+                    }
+
+                    // Recuperar os técnicos disponíveis para serem adicionados
                     $tecnicos = $MySQLi->query("SELECT tec_codigo, tec_nome FROM tb_tecnicos");
 
-                    // Iterar sobre os técnicos e criar as opções do select
+                    // Iterar sobre os técnicos e exibir apenas os que ainda não foram associados
                     while ($tecnico = $tecnicos->fetch_assoc()) {
-                      echo "<option value='{$tecnico['tec_codigo']}'>{$tecnico['tec_nome']}</option>";
+                      if (!in_array($tecnico['tec_codigo'], $tecnicosAssociadosArray)) {
+                        echo "<option value='{$tecnico['tec_codigo']}'>{$tecnico['tec_nome']}</option>";
+                      }
                     }
                     ?>
                   </select>
                   <input type="hidden" name="codigo" value="<?= $codigo ?>"> <!-- Código da mulher -->
                   <button type="submit">Salvar</button>
                 </form>
+
               </div>
               <div class="tab-pane" id="anexos">
 
