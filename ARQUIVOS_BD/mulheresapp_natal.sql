@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Tempo de geração: 27/11/2024 às 15:59
--- Versão do servidor: 10.4.32-MariaDB
--- Versão do PHP: 8.2.12
+-- Tempo de geração: 27-Nov-2024 às 19:48
+-- Versão do servidor: 10.4.27-MariaDB
+-- versão do PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -24,8 +24,8 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `abrigamentos`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `abrigamentos`
+-- (Veja abaixo para a view atual)
 --
 CREATE TABLE `abrigamentos` (
 `Código` int(11)
@@ -62,8 +62,8 @@ CREATE TABLE `abrigamentos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `atendimentos`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `atendimentos`
+-- (Veja abaixo para a view atual)
 --
 CREATE TABLE `atendimentos` (
 `Data1` timestamp
@@ -80,7 +80,7 @@ CREATE TABLE `atendimentos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `documentos`
+-- Estrutura da tabela `documentos`
 --
 
 CREATE TABLE `documentos` (
@@ -92,7 +92,7 @@ CREATE TABLE `documentos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `documentos`
+-- Extraindo dados da tabela `documentos`
 --
 
 INSERT INTO `documentos` (`id`, `mulher_codigo`, `nome_arquivo`, `caminho_arquivo`, `data_upload`) VALUES
@@ -111,8 +111,8 @@ INSERT INTO `documentos` (`id`, `mulher_codigo`, `nome_arquivo`, `caminho_arquiv
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `mulheres`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `mulheres`
+-- (Veja abaixo para a view atual)
 --
 CREATE TABLE `mulheres` (
 `Nome` varchar(45)
@@ -145,7 +145,7 @@ CREATE TABLE `mulheres` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `relatorios`
+-- Estrutura da tabela `relatorios`
 --
 
 CREATE TABLE `relatorios` (
@@ -159,7 +159,7 @@ CREATE TABLE `relatorios` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tblreports`
+-- Estrutura da tabela `tblreports`
 --
 
 CREATE TABLE `tblreports` (
@@ -175,7 +175,7 @@ CREATE TABLE `tblreports` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Despejando dados para a tabela `tblreports`
+-- Extraindo dados da tabela `tblreports`
 --
 
 INSERT INTO `tblreports` (`id`, `appliedConditions`, `txtReportName`, `lstSortName`, `lstSortOrder`, `txtRecPerPage`, `selectedFields`, `selectedTables`, `status`) VALUES
@@ -189,7 +189,7 @@ INSERT INTO `tblreports` (`id`, `appliedConditions`, `txtReportName`, `lstSortNa
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_abrigamentos`
+-- Estrutura da tabela `tb_abrigamentos`
 --
 
 CREATE TABLE `tb_abrigamentos` (
@@ -202,7 +202,7 @@ CREATE TABLE `tb_abrigamentos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_abrigamentos`
+-- Extraindo dados da tabela `tb_abrigamentos`
 --
 
 INSERT INTO `tb_abrigamentos` (`abr_codigo`, `abr_data_inicio`, `abr_data_fim`, `abr_mul_codigo`, `abr_tec_codigo`, `abr_roldepertences`) VALUES
@@ -219,7 +219,7 @@ INSERT INTO `tb_abrigamentos` (`abr_codigo`, `abr_data_inicio`, `abr_data_fim`, 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_acompanhamento_abrigamentos`
+-- Estrutura da tabela `tb_acompanhamento_abrigamentos`
 --
 
 CREATE TABLE `tb_acompanhamento_abrigamentos` (
@@ -231,7 +231,7 @@ CREATE TABLE `tb_acompanhamento_abrigamentos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_acompanhamento_abrigamentos`
+-- Extraindo dados da tabela `tb_acompanhamento_abrigamentos`
 --
 
 INSERT INTO `tb_acompanhamento_abrigamentos` (`aco_codigo`, `aco_data`, `aco_relatorio`, `aco_abr_codigo`, `aco_tec_codigo`) VALUES
@@ -246,7 +246,7 @@ INSERT INTO `tb_acompanhamento_abrigamentos` (`aco_codigo`, `aco_data`, `aco_rel
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_agressores`
+-- Estrutura da tabela `tb_agressores`
 --
 
 CREATE TABLE `tb_agressores` (
@@ -313,7 +313,7 @@ CREATE TABLE `tb_agressores` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_agressores`
+-- Extraindo dados da tabela `tb_agressores`
 --
 
 INSERT INTO `tb_agressores` (`agr_codigo`, `agr_nome`, `agr_apelido`, `agr_data_nasc`, `agr_idade`, `agr_sexo`, `agr_naturalidade`, `agr_cor`, `agr_endereco`, `agr_bairro`, `agr_referencia`, `agr_cidade`, `agr_estado`, `agr_telefone1`, `agr_telefone2`, `agr_telefone3`, `agr_grau_instrucao`, `agr_historico_de_agressoes`, `agr_sob_medida_protetiva`, `agr_sob_medida_protetiva_usuaria`, `agr_drogas`, `agr_drogas_quais`, `agr_ocupacao`, `agr_ocupacao_empresa`, `agr_ocupacao_funcao`, `agr_ocupacao_telefone`, `agr_faixa_salarial`, `agr_tipo_agressao`, `agr_local_agressao`, `agr_data_inicio_agressoes`, `agr_frequencia`, `agr_relacao`, `agr_fez_bo`, `agr_numero_bo`, `agr_data_bo`, `agr_local_bo`, `agr_motivo_sem_bo`, `agr_oitiva`, `agr_oitiva_data`, `agr_oitiva_local`, `agr_motivo_sem_oitiva`, `agr_corpo_delito`, `agr_exame_itep`, `agr_exame_itep_motivo`, `agr_profilaxia`, `agr_profilaxia_data`, `agr_profilaxia_local`, `agr_itep_natureza`, `agr_itep_arma`, `agr_medida_protetiva`, `agr_numero_medida`, `agr_data_medida`, `agr_ciencia_ofendida`, `agr_ciencia_ofendida_data`, `agr_ciencia_agressor`, `agr_ciencia_agressor_data`, `agr_data_cadastro`, `agr_pes_codigo`, `agr_mul_codigo`, `agr_justificativa`) VALUES
@@ -328,7 +328,7 @@ INSERT INTO `tb_agressores` (`agr_codigo`, `agr_nome`, `agr_apelido`, `agr_data_
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_alternativas`
+-- Estrutura da tabela `tb_alternativas`
 --
 
 CREATE TABLE `tb_alternativas` (
@@ -339,7 +339,7 @@ CREATE TABLE `tb_alternativas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_alternativas`
+-- Extraindo dados da tabela `tb_alternativas`
 --
 
 INSERT INTO `tb_alternativas` (`alt_codigo`, `alt_alternativa`, `alt_per_codigo`, `alt_ativa`) VALUES
@@ -636,7 +636,7 @@ INSERT INTO `tb_alternativas` (`alt_codigo`, `alt_alternativa`, `alt_per_codigo`
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_atendimentos`
+-- Estrutura da tabela `tb_atendimentos`
 --
 
 CREATE TABLE `tb_atendimentos` (
@@ -650,7 +650,7 @@ CREATE TABLE `tb_atendimentos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_atendimentos`
+-- Extraindo dados da tabela `tb_atendimentos`
 --
 
 INSERT INTO `tb_atendimentos` (`ate_codigo`, `ate_mul_codigo`, `ate_tec_codigo1`, `ate_tec_codigo2`, `ate_relatorio`, `ate_data`, `ate_resumo`) VALUES
@@ -684,28 +684,32 @@ INSERT INTO `tb_atendimentos` (`ate_codigo`, `ate_mul_codigo`, `ate_tec_codigo1`
 (59, 17, 40, NULL, NULL, '2022-03-30 18:16:19', ''),
 (60, 17, 40, NULL, '<p>A usuaria&nbsp; relatou que estava desempregada h&aacute; cerca de um ano e que tinha interesse em ser inserida novamente no mercado de trabalho.</p>\n<p>Diante do contexto a referida foi encaminhada para o Centro Municipal de Trabalho e Empreendedorismo localizado no bairro do Alecrim.</p>', '2022-03-30 18:19:00', 'Situação de vulnerabilidade econômica em decorrência do desemprego'),
 (61, 18, 45, 43, '<p>Atendida e encaminhada para...</p>', '2022-04-06 15:08:09', 'Teste de sistema'),
-(0, 17, 64, 2, '<p>oi</p>', '2022-11-09 11:10:00', 'Testehghh'),
-(0, 19, 64, 2, '<p>oi</p>', '2022-11-09 11:10:00', 'Testehghh'),
-(0, 19, 64, 2, '<p>oi</p>', '2022-11-09 11:10:00', 'Testehghh'),
-(0, 0, 64, 2, '<p>oi</p>', '2024-10-27 13:13:20', 'Testehghh'),
-(0, 0, 64, 2, '<p>oi</p>', '2024-10-27 13:16:03', 'Testehghh'),
-(0, 51, 64, 2, '<p>oi</p>', '2024-10-27 13:30:03', 'Testehghh'),
-(0, 52, 64, 2, '<p>oi</p>', '2024-10-27 13:32:18', 'Testehghh'),
-(0, 53, 64, 2, '<p>oi</p>', '2024-10-27 13:34:23', 'Testehghh'),
-(0, 54, 64, 2, '<p>oi</p>', '2024-10-27 13:36:20', 'Testehghh'),
-(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:23:04', 'Testehghh'),
-(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:24:11', 'Testehghh'),
-(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:24:28', 'Testehghh'),
-(0, 55, 64, 2, '<p>oi</p>', '2024-10-31 01:24:35', 'Testehghh'),
-(0, 56, 64, 2, '<p>oi</p>', '2024-11-27 13:32:56', 'Testehghh'),
-(0, 57, 64, 2, '<p>oi</p>', '2024-11-27 14:02:54', 'Testehghh'),
-(0, 17, 64, NULL, '<p>oi</p>', '2024-11-27 14:42:58', 'Testehghh'),
-(0, 17, 64, NULL, '<p>oi</p>', '2024-11-27 14:42:59', 'Testehghh');
+(62, 17, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2022-11-09 11:10:00', 'Testehghh'),
+(63, 19, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2022-11-09 11:10:00', 'Testehghh'),
+(64, 19, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2022-11-09 11:10:00', 'Testehghh'),
+(65, 0, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-27 13:13:20', 'Testehghh'),
+(66, 0, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-27 13:16:03', 'Testehghh'),
+(67, 51, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-27 13:30:03', 'Testehghh'),
+(68, 52, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-27 13:32:18', 'Testehghh'),
+(69, 53, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-27 13:34:23', 'Testehghh'),
+(70, 54, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-27 13:36:20', 'Testehghh'),
+(71, 55, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-31 01:23:04', 'Testehghh'),
+(72, 55, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-31 01:24:11', 'Testehghh'),
+(73, 55, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-31 01:24:28', 'Testehghh'),
+(74, 55, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-10-31 01:24:35', 'Testehghh'),
+(75, 56, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-11-27 13:32:56', 'Testehghh'),
+(76, 57, 64, 2, '<p>oi eaeeaegggggggggggggggg</p>', '2024-11-27 14:02:54', 'Testehghh'),
+(77, 17, 64, NULL, '<p>oi eaeeaegggggggggggggggg</p>', '2024-11-27 14:42:58', 'Testehghh'),
+(78, 17, 64, NULL, '<p>oi eaeeaegggggggggggggggg</p>', '2024-11-27 14:42:59', 'Testehghh'),
+(79, 17, 2, NULL, NULL, '2024-11-27 18:41:31', ''),
+(110, 17, 2, NULL, NULL, '2024-11-27 18:44:51', ''),
+(111, 17, 2, NULL, '<p>eaeeeeee</p>', '2024-11-27 18:44:51', ''),
+(112, 57, 2, NULL, '<p>Boraaa&nbsp;</p>', '2024-11-27 18:45:57', 'sei la');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_cargos`
+-- Estrutura da tabela `tb_cargos`
 --
 
 CREATE TABLE `tb_cargos` (
@@ -714,7 +718,7 @@ CREATE TABLE `tb_cargos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_cargos`
+-- Extraindo dados da tabela `tb_cargos`
 --
 
 INSERT INTO `tb_cargos` (`car_codigo`, `car_cargo`) VALUES
@@ -727,7 +731,7 @@ INSERT INTO `tb_cargos` (`car_codigo`, `car_cargo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_chamados`
+-- Estrutura da tabela `tb_chamados`
 --
 
 CREATE TABLE `tb_chamados` (
@@ -740,7 +744,7 @@ CREATE TABLE `tb_chamados` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_chamados`
+-- Extraindo dados da tabela `tb_chamados`
 --
 
 INSERT INTO `tb_chamados` (`cha_codigo`, `cha_data_pedido`, `cha_data_resposta`, `cha_pedido`, `cha_resposta`, `cha_tec_codigo`) VALUES
@@ -752,7 +756,7 @@ INSERT INTO `tb_chamados` (`cha_codigo`, `cha_data_pedido`, `cha_data_resposta`,
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_check_agr`
+-- Estrutura da tabela `tb_check_agr`
 --
 
 CREATE TABLE `tb_check_agr` (
@@ -761,7 +765,7 @@ CREATE TABLE `tb_check_agr` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_check_agr`
+-- Extraindo dados da tabela `tb_check_agr`
 --
 
 INSERT INTO `tb_check_agr` (`cha_alt_codigo`, `cha_agr_codigo`) VALUES
@@ -802,7 +806,7 @@ INSERT INTO `tb_check_agr` (`cha_alt_codigo`, `cha_agr_codigo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_check_mul`
+-- Estrutura da tabela `tb_check_mul`
 --
 
 CREATE TABLE `tb_check_mul` (
@@ -811,7 +815,7 @@ CREATE TABLE `tb_check_mul` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_check_mul`
+-- Extraindo dados da tabela `tb_check_mul`
 --
 
 INSERT INTO `tb_check_mul` (`chm_mul_codigo`, `chm_alt_codigo`) VALUES
@@ -906,7 +910,7 @@ INSERT INTO `tb_check_mul` (`chm_mul_codigo`, `chm_alt_codigo`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_check_pes`
+-- Estrutura da tabela `tb_check_pes`
 --
 
 CREATE TABLE `tb_check_pes` (
@@ -917,7 +921,7 @@ CREATE TABLE `tb_check_pes` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_componentes_abrigamento`
+-- Estrutura da tabela `tb_componentes_abrigamento`
 --
 
 CREATE TABLE `tb_componentes_abrigamento` (
@@ -926,7 +930,7 @@ CREATE TABLE `tb_componentes_abrigamento` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_componentes_abrigamento`
+-- Extraindo dados da tabela `tb_componentes_abrigamento`
 --
 
 INSERT INTO `tb_componentes_abrigamento` (`cab_abr_codigo`, `cab_pes_codigo`) VALUES
@@ -940,7 +944,7 @@ INSERT INTO `tb_componentes_abrigamento` (`cab_abr_codigo`, `cab_pes_codigo`) VA
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_encaminhamentos`
+-- Estrutura da tabela `tb_encaminhamentos`
 --
 
 CREATE TABLE `tb_encaminhamentos` (
@@ -952,7 +956,7 @@ CREATE TABLE `tb_encaminhamentos` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_logs`
+-- Estrutura da tabela `tb_logs`
 --
 
 CREATE TABLE `tb_logs` (
@@ -963,7 +967,7 @@ CREATE TABLE `tb_logs` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_lotacoes`
+-- Estrutura da tabela `tb_lotacoes`
 --
 
 CREATE TABLE `tb_lotacoes` (
@@ -972,7 +976,7 @@ CREATE TABLE `tb_lotacoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_lotacoes`
+-- Extraindo dados da tabela `tb_lotacoes`
 --
 
 INSERT INTO `tb_lotacoes` (`lot_codigo`, `lot_lotacao`) VALUES
@@ -983,7 +987,7 @@ INSERT INTO `tb_lotacoes` (`lot_codigo`, `lot_lotacao`) VALUES
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_mensagens`
+-- Estrutura da tabela `tb_mensagens`
 --
 
 CREATE TABLE `tb_mensagens` (
@@ -997,7 +1001,7 @@ CREATE TABLE `tb_mensagens` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_mensagens`
+-- Extraindo dados da tabela `tb_mensagens`
 --
 
 INSERT INTO `tb_mensagens` (`men_codigo`, `men_lida`, `men_titulo`, `men_texto`, `men_tec_remetente`, `men_tec_destinatario`, `men_data`) VALUES
@@ -1028,7 +1032,7 @@ INSERT INTO `tb_mensagens` (`men_codigo`, `men_lida`, `men_titulo`, `men_texto`,
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_mulheres`
+-- Estrutura da tabela `tb_mulheres`
 --
 
 CREATE TABLE `tb_mulheres` (
@@ -1109,7 +1113,7 @@ CREATE TABLE `tb_mulheres` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_mulheres`
+-- Extraindo dados da tabela `tb_mulheres`
 --
 
 INSERT INTO `tb_mulheres` (`mul_codigo`, `mul_nome`, `mul_cpf`, `mul_prontuario`, `mul_encaminhada`, `mul_encaminhada_outros`, `mul_tec_codigo`, `mul_data_nasc`, `mul_naturalidade`, `mul_rg`, `mul_religiao`, `mul_cor`, `mul_estado_civil`, `mul_estado_civil_data`, `mul_identidade_genero`, `mul_identidade_genero_outros`, `mul_orientacao_sexual`, `mul_orientacao_sexual_outros`, `mul_endereco`, `mul_bairro`, `mul_cidade`, `mul_referencia`, `mul_telefone1`, `mul_telefone2`, `mul_residencia`, `mul_tipo_residencia`, `mul_grau_instrucao`, `mul_estudando`, `mul_curso_atual`, `mul_ate_que_serie`, `mul_motivo_evasao`, `mul_cursos_interesse_outros`, `mul_cursos_realizados_outros`, `mul_profissao`, `mul_experiencia_profissional`, `mul_ocupacao`, `mul_empresa`, `mul_telefone_empresa`, `mul_data_desempregada`, `mul_aviso_empresa_por_abrigamento`, `mul_aviso_empresa_motivo`, `mul_faixa_salarial`, `mul_nis`, `mul_total_beneficios`, `mul_outras_doencas`, `mul_medicamento_psico`, `mul_medicamento_psico_qual`, `mul_medicamento_psico_data`, `mul_atualmente_em_uso`, `mul_psiquiatra`, `mul_psiquiatra_data`, `mul_psiquiatra_internacao`, `mul_psiquiatra_dias`, `mul_psiquiatra_local`, `mul_psicologo`, `mul_psicologo_data`, `mul_psicologo_local`, `mul_psicologo_motivo`, `mul_drogas`, `mul_droga_data`, `mul_droga_qual`, `mul_doenca`, `mul_doenca_qual`, `mul_dificuldade_tratamento`, `mul_dificuldade_tratamento_qual`, `mul_acompanha_saude`, `mul_acompanhamento_saude_local`, `mul_alergias`, `mul_ja_abrigada`, `mul_abrigada_vezes`, `mul_local_seguro`, `mul_foto`, `mul_data_cadastro`, `mul_email`) VALUES
@@ -1148,7 +1152,7 @@ INSERT INTO `tb_mulheres` (`mul_codigo`, `mul_nome`, `mul_cpf`, `mul_prontuario`
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_ocorrencias`
+-- Estrutura da tabela `tb_ocorrencias`
 --
 
 CREATE TABLE `tb_ocorrencias` (
@@ -1160,7 +1164,7 @@ CREATE TABLE `tb_ocorrencias` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_perguntas`
+-- Estrutura da tabela `tb_perguntas`
 --
 
 CREATE TABLE `tb_perguntas` (
@@ -1170,7 +1174,7 @@ CREATE TABLE `tb_perguntas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_perguntas`
+-- Extraindo dados da tabela `tb_perguntas`
 --
 
 INSERT INTO `tb_perguntas` (`per_codigo`, `per_pergunta`, `per_nome_coluna`) VALUES
@@ -1215,7 +1219,7 @@ INSERT INTO `tb_perguntas` (`per_codigo`, `per_pergunta`, `per_nome_coluna`) VAL
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_pessoas`
+-- Estrutura da tabela `tb_pessoas`
 --
 
 CREATE TABLE `tb_pessoas` (
@@ -1254,7 +1258,7 @@ CREATE TABLE `tb_pessoas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_pessoas`
+-- Extraindo dados da tabela `tb_pessoas`
 --
 
 INSERT INTO `tb_pessoas` (`pes_codigo`, `pes_nome`, `pes_mul_codigo`, `pes_data_nasc`, `pes_grau_parentesco`, `pes_telefone`, `pes_mesma_casa`, `pes_privacao_liberdade`, `pes_privacao_liberdade_situacao`, `pes_medida_socioeducativa`, `pes_medida_socioeducativa_situacao`, `pes_acolhimento`, `pes_acolhimento_situacao`, `pes_internado`, `pes_internado_situacao`, `pes_doenca`, `pes_doenca_detalhes`, `pes_deficiencia`, `pes_deficiencia_tipo`, `pes_deficiencia_detalhes`, `pes_gestante`, `pes_gestante_detalhes`, `pes_drogas`, `pes_drogas_detalhes`, `pes_cuidador`, `pes_cuidador_detalhes`, `pes_estudante`, `pes_estudante_escola`, `pes_estudante_serie`, `pes_estudante_turno`, `pes_ativo`, `pes_data_cadastro`) VALUES
@@ -1276,7 +1280,7 @@ INSERT INTO `tb_pessoas` (`pes_codigo`, `pes_nome`, `pes_mul_codigo`, `pes_data_
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_tecnicos`
+-- Estrutura da tabela `tb_tecnicos`
 --
 
 CREATE TABLE `tb_tecnicos` (
@@ -1298,7 +1302,7 @@ CREATE TABLE `tb_tecnicos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
--- Despejando dados para a tabela `tb_tecnicos`
+-- Extraindo dados da tabela `tb_tecnicos`
 --
 
 INSERT INTO `tb_tecnicos` (`tec_codigo`, `tec_nome`, `tec_apelido`, `tec_matricula`, `tec_senha`, `tec_email`, `tec_lot_codigo`, `tec_admin`, `tec_car_codigo`, `tec_ativo`, `tec_telefone`, `tec_atende`, `tec_token`, `tec_token_data`, `tec_token_usado`) VALUES
@@ -1333,7 +1337,7 @@ INSERT INTO `tb_tecnicos` (`tec_codigo`, `tec_nome`, `tec_apelido`, `tec_matricu
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_tecnicos_mulheres`
+-- Estrutura da tabela `tb_tecnicos_mulheres`
 --
 
 CREATE TABLE `tb_tecnicos_mulheres` (
@@ -1342,7 +1346,7 @@ CREATE TABLE `tb_tecnicos_mulheres` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `tb_tecnicos_mulheres`
+-- Extraindo dados da tabela `tb_tecnicos_mulheres`
 --
 
 INSERT INTO `tb_tecnicos_mulheres` (`mul_codigo`, `tec_codigo`) VALUES
@@ -1352,13 +1356,14 @@ INSERT INTO `tb_tecnicos_mulheres` (`mul_codigo`, `tec_codigo`) VALUES
 (56, 2),
 (56, 36),
 (56, 37),
+(56, 63),
 (56, 64),
 (57, 2);
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `tb_visualizacoes`
+-- Estrutura da tabela `tb_visualizacoes`
 --
 
 CREATE TABLE `tb_visualizacoes` (
@@ -1369,7 +1374,7 @@ CREATE TABLE `tb_visualizacoes` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Despejando dados para a tabela `tb_visualizacoes`
+-- Extraindo dados da tabela `tb_visualizacoes`
 --
 
 INSERT INTO `tb_visualizacoes` (`vis_codigo`, `vis_mul_codigo`, `vis_tec_codigo`, `vis_data`) VALUES
@@ -1526,12 +1531,32 @@ INSERT INTO `tb_visualizacoes` (`vis_codigo`, `vis_mul_codigo`, `vis_tec_codigo`
 (151, 17, 2, '2024-11-27 11:57:33'),
 (152, 17, 2, '2024-11-27 11:57:36'),
 (153, 17, 2, '2024-11-27 11:58:07'),
-(154, 17, 2, '2024-11-27 11:59:06');
+(154, 17, 2, '2024-11-27 11:59:06'),
+(155, 56, 2, '2024-11-27 15:32:10'),
+(156, 56, 2, '2024-11-27 15:37:00'),
+(157, 56, 2, '2024-11-27 15:37:13'),
+(158, 56, 2, '2024-11-27 15:38:26'),
+(159, 56, 2, '2024-11-27 15:38:41'),
+(160, 57, 2, '2024-11-27 15:38:51'),
+(161, 57, 2, '2024-11-27 15:38:57'),
+(162, 56, 2, '2024-11-27 15:39:13'),
+(163, 56, 2, '2024-11-27 15:39:17'),
+(164, 17, 2, '2024-11-27 15:41:25'),
+(165, 17, 2, '2024-11-27 15:41:31'),
+(166, 17, 2, '2024-11-27 15:41:32'),
+(167, 17, 2, '2024-11-27 15:41:39'),
+(168, 17, 2, '2024-11-27 15:44:51'),
+(169, 17, 2, '2024-11-27 15:44:51'),
+(170, 17, 2, '2024-11-27 15:44:51'),
+(171, 57, 2, '2024-11-27 15:45:44'),
+(172, 57, 2, '2024-11-27 15:45:53'),
+(173, 57, 2, '2024-11-27 15:45:57'),
+(174, 57, 2, '2024-11-27 15:45:58');
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para tabela `usuarios`
+-- Estrutura da tabela `usuarios`
 --
 
 CREATE TABLE `usuarios` (
@@ -1543,8 +1568,8 @@ CREATE TABLE `usuarios` (
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `vw_atendimentos_semanais`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `vw_atendimentos_semanais`
+-- (Veja abaixo para a view atual)
 --
 CREATE TABLE `vw_atendimentos_semanais` (
 `atendimentos` bigint(21)
@@ -1555,8 +1580,8 @@ CREATE TABLE `vw_atendimentos_semanais` (
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `vw_timeline_mulher`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `vw_timeline_mulher`
+-- (Veja abaixo para a view atual)
 --
 CREATE TABLE `vw_timeline_mulher` (
 `mulher` int(11)
@@ -1570,8 +1595,8 @@ CREATE TABLE `vw_timeline_mulher` (
 -- --------------------------------------------------------
 
 --
--- Estrutura stand-in para view `vw_tipo_atendimento`
--- (Veja abaixo para a visão atual)
+-- Estrutura stand-in para vista `vw_tipo_atendimento`
+-- (Veja abaixo para a view atual)
 --
 CREATE TABLE `vw_tipo_atendimento` (
 `codigo` int(11)
@@ -1581,102 +1606,108 @@ CREATE TABLE `vw_tipo_atendimento` (
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `abrigamentos`
+-- Estrutura para vista `abrigamentos`
 --
 DROP TABLE IF EXISTS `abrigamentos`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `abrigamentos`  AS SELECT `tb_mulheres`.`mul_codigo` AS `Código`, `tb_mulheres`.`mul_nome` AS `Nome`, `tb_mulheres`.`mul_cpf` AS `CPF`, `tb_mulheres`.`mul_rg` AS `RG`, `tb_mulheres`.`mul_prontuario` AS `Prontuário`, `h`.`tec_nome` AS `Técnico de Referência`, `i`.`tec_nome` AS `Técnico responsável pelo Abrigamento`, `tb_mulheres`.`mul_telefone1` AS `Telefone 1`, `tb_mulheres`.`mul_telefone2` AS `Telefone 2`, `tb_mulheres`.`mul_email` AS `E-mail`, `a`.`alt_alternativa` AS `Encaminhada de`, `b`.`alt_alternativa` AS `Religião`, `c`.`alt_alternativa` AS `Cor`, `d`.`alt_alternativa` AS `Estado Civil`, date_format(`tb_mulheres`.`mul_data_nasc`,'%d/%m/%Y') AS `Data Nascimento`, timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,current_timestamp()) AS `Idade`, `tb_mulheres`.`mul_endereco` AS `Endereço`, `e`.`alt_alternativa` AS `Bairro`, `f`.`alt_alternativa` AS `Cidade`, `g`.`alt_alternativa` AS `Faixa Salarial`, (select count(0) from `tb_componentes_abrigamento` where `tb_componentes_abrigamento`.`cab_abr_codigo` = `tb_abrigamentos`.`abr_codigo`) AS `Quantidade de Dependentes`, 1 + (select count(0) from `tb_componentes_abrigamento` where `tb_componentes_abrigamento`.`cab_abr_codigo` = `tb_abrigamentos`.`abr_codigo`) AS `Total de Abrigados`, `tb_abrigamentos`.`abr_data_inicio` AS `Início do Abrigamento1`, `tb_abrigamentos`.`abr_data_fim` AS `Fim do Abrigamento1`, `tb_abrigamentos`.`abr_roldepertences` AS `Pertences`, date_format(`tb_abrigamentos`.`abr_data_inicio`,'%d/%m/%Y %H:%i') AS `Início do Abrigamento`, date_format(`tb_abrigamentos`.`abr_data_fim`,'%d/%m/%Y %H:%i') AS `Fim do Abrigamento`, NULL AS `Nulo`, current_timestamp() AS `Agora` FROM ((((((((((`tb_abrigamentos` join `tb_mulheres` on(`tb_mulheres`.`mul_codigo` = `tb_abrigamentos`.`abr_mul_codigo`)) left join `tb_tecnicos` `h` on(`h`.`tec_codigo` = `tb_mulheres`.`mul_tec_codigo`)) left join `tb_tecnicos` `i` on(`i`.`tec_codigo` = `tb_abrigamentos`.`abr_tec_codigo`)) left join `tb_alternativas` `a` on(`a`.`alt_codigo` = `tb_mulheres`.`mul_encaminhada`)) left join `tb_alternativas` `b` on(`b`.`alt_codigo` = `tb_mulheres`.`mul_religiao`)) left join `tb_alternativas` `c` on(`c`.`alt_codigo` = `tb_mulheres`.`mul_cor`)) left join `tb_alternativas` `d` on(`d`.`alt_codigo` = `tb_mulheres`.`mul_estado_civil`)) left join `tb_alternativas` `e` on(`e`.`alt_codigo` = `tb_mulheres`.`mul_bairro`)) left join `tb_alternativas` `f` on(`f`.`alt_codigo` = `tb_mulheres`.`mul_cidade`)) left join `tb_alternativas` `g` on(`g`.`alt_codigo` = `tb_mulheres`.`mul_faixa_salarial`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `abrigamentos`  AS SELECT `tb_mulheres`.`mul_codigo` AS `Código`, `tb_mulheres`.`mul_nome` AS `Nome`, `tb_mulheres`.`mul_cpf` AS `CPF`, `tb_mulheres`.`mul_rg` AS `RG`, `tb_mulheres`.`mul_prontuario` AS `Prontuário`, `h`.`tec_nome` AS `Técnico de Referência`, `i`.`tec_nome` AS `Técnico responsável pelo Abrigamento`, `tb_mulheres`.`mul_telefone1` AS `Telefone 1`, `tb_mulheres`.`mul_telefone2` AS `Telefone 2`, `tb_mulheres`.`mul_email` AS `E-mail`, `a`.`alt_alternativa` AS `Encaminhada de`, `b`.`alt_alternativa` AS `Religião`, `c`.`alt_alternativa` AS `Cor`, `d`.`alt_alternativa` AS `Estado Civil`, date_format(`tb_mulheres`.`mul_data_nasc`,'%d/%m/%Y') AS `Data Nascimento`, timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,current_timestamp()) AS `Idade`, `tb_mulheres`.`mul_endereco` AS `Endereço`, `e`.`alt_alternativa` AS `Bairro`, `f`.`alt_alternativa` AS `Cidade`, `g`.`alt_alternativa` AS `Faixa Salarial`, (select count(0) from `tb_componentes_abrigamento` where `tb_componentes_abrigamento`.`cab_abr_codigo` = `tb_abrigamentos`.`abr_codigo`) AS `Quantidade de Dependentes`, 1 + (select count(0) from `tb_componentes_abrigamento` where `tb_componentes_abrigamento`.`cab_abr_codigo` = `tb_abrigamentos`.`abr_codigo`) AS `Total de Abrigados`, `tb_abrigamentos`.`abr_data_inicio` AS `Início do Abrigamento1`, `tb_abrigamentos`.`abr_data_fim` AS `Fim do Abrigamento1`, `tb_abrigamentos`.`abr_roldepertences` AS `Pertences`, date_format(`tb_abrigamentos`.`abr_data_inicio`,'%d/%m/%Y %H:%i') AS `Início do Abrigamento`, date_format(`tb_abrigamentos`.`abr_data_fim`,'%d/%m/%Y %H:%i') AS `Fim do Abrigamento`, NULL AS `Nulo`, current_timestamp() AS `Agora` FROM ((((((((((`tb_abrigamentos` join `tb_mulheres` on(`tb_mulheres`.`mul_codigo` = `tb_abrigamentos`.`abr_mul_codigo`)) left join `tb_tecnicos` `h` on(`h`.`tec_codigo` = `tb_mulheres`.`mul_tec_codigo`)) left join `tb_tecnicos` `i` on(`i`.`tec_codigo` = `tb_abrigamentos`.`abr_tec_codigo`)) left join `tb_alternativas` `a` on(`a`.`alt_codigo` = `tb_mulheres`.`mul_encaminhada`)) left join `tb_alternativas` `b` on(`b`.`alt_codigo` = `tb_mulheres`.`mul_religiao`)) left join `tb_alternativas` `c` on(`c`.`alt_codigo` = `tb_mulheres`.`mul_cor`)) left join `tb_alternativas` `d` on(`d`.`alt_codigo` = `tb_mulheres`.`mul_estado_civil`)) left join `tb_alternativas` `e` on(`e`.`alt_codigo` = `tb_mulheres`.`mul_bairro`)) left join `tb_alternativas` `f` on(`f`.`alt_codigo` = `tb_mulheres`.`mul_cidade`)) left join `tb_alternativas` `g` on(`g`.`alt_codigo` = `tb_mulheres`.`mul_faixa_salarial`))  ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `atendimentos`
+-- Estrutura para vista `atendimentos`
 --
 DROP TABLE IF EXISTS `atendimentos`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `atendimentos`  AS SELECT `tb_atendimentos`.`ate_data` AS `Data1`, date_format(`tb_atendimentos`.`ate_data`,'%d/%m/%Y %H:%i') AS `Data`, `a`.`tec_apelido` AS `Técnico 1`, `b`.`tec_apelido` AS `Técnico 2`, `b`.`tec_apelido` AS `Técnico Referência`, `tb_mulheres`.`mul_nome` AS `Nome Mulher`, `tb_atendimentos`.`ate_resumo` AS `Resumo`, `tb_mulheres`.`mul_codigo` AS `Código da Mulher`, `vw_tipo_atendimento`.`tipo` AS `Tipo do Atendimento` FROM (((((`tb_atendimentos` join `tb_mulheres` on(`tb_atendimentos`.`ate_mul_codigo` = `tb_mulheres`.`mul_codigo`)) join `tb_tecnicos` `a` on(`a`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo1`)) join `tb_tecnicos` `b` on(`b`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo2`)) join `tb_tecnicos` `c` on(`c`.`tec_codigo` = `tb_mulheres`.`mul_tec_codigo`)) join `vw_tipo_atendimento` on(`vw_tipo_atendimento`.`codigo` = `tb_atendimentos`.`ate_codigo`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `atendimentos`  AS SELECT `tb_atendimentos`.`ate_data` AS `Data1`, date_format(`tb_atendimentos`.`ate_data`,'%d/%m/%Y %H:%i') AS `Data`, `a`.`tec_apelido` AS `Técnico 1`, `b`.`tec_apelido` AS `Técnico 2`, `b`.`tec_apelido` AS `Técnico Referência`, `tb_mulheres`.`mul_nome` AS `Nome Mulher`, `tb_atendimentos`.`ate_resumo` AS `Resumo`, `tb_mulheres`.`mul_codigo` AS `Código da Mulher`, `vw_tipo_atendimento`.`tipo` AS `Tipo do Atendimento` FROM (((((`tb_atendimentos` join `tb_mulheres` on(`tb_atendimentos`.`ate_mul_codigo` = `tb_mulheres`.`mul_codigo`)) join `tb_tecnicos` `a` on(`a`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo1`)) join `tb_tecnicos` `b` on(`b`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo2`)) join `tb_tecnicos` `c` on(`c`.`tec_codigo` = `tb_mulheres`.`mul_tec_codigo`)) join `vw_tipo_atendimento` on(`vw_tipo_atendimento`.`codigo` = `tb_atendimentos`.`ate_codigo`))  ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `mulheres`
+-- Estrutura para vista `mulheres`
 --
 DROP TABLE IF EXISTS `mulheres`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `mulheres`  AS SELECT `tb_mulheres`.`mul_nome` AS `Nome`, `tb_mulheres`.`mul_cpf` AS `CPF`, `tb_mulheres`.`mul_rg` AS `RG`, `tb_mulheres`.`mul_prontuario` AS `Prontuário`, `tb_tecnicos`.`tec_nome` AS `Técnico de Referência`, `tb_mulheres`.`mul_telefone1` AS `Telefone 1`, `tb_mulheres`.`mul_telefone2` AS `Telefone 2`, `tb_mulheres`.`mul_email` AS `E-mail`, `a`.`alt_alternativa` AS `Encaminhada de`, `b`.`alt_alternativa` AS `Religião`, `c`.`alt_alternativa` AS `Cor`, `d`.`alt_alternativa` AS `Estado Civil`, date_format(`tb_mulheres`.`mul_data_nasc`,'%d/%m/%Y') AS `Data Nascimento`, timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,current_timestamp()) AS `Idade`, `tb_mulheres`.`mul_endereco` AS `Endereço`, `e`.`alt_alternativa` AS `Bairro`, `f`.`alt_alternativa` AS `Cidade`, `g`.`alt_alternativa` AS `Faixa Salarial`, CASE WHEN `tb_mulheres`.`mul_ja_abrigada` = 0 THEN 'Não' ELSE 'Sim' END AS `Já foi abrigada`, CASE WHEN `tb_mulheres`.`mul_atualmente_em_uso` = 0 THEN 'Não' ELSE 'Sim' END AS `Usa Psicotrópicos`, CASE WHEN `tb_mulheres`.`mul_psiquiatra` = 0 THEN 'Não' ELSE 'Sim' END AS `Atendimento Psiquiátrico`, CASE WHEN `tb_mulheres`.`mul_psicologo` = 0 THEN 'Não' ELSE 'Sim' END AS `Atendimento Psicológico`, CASE WHEN `tb_mulheres`.`mul_drogas` = 0 THEN 'Não' ELSE 'Sim' END AS `Substâncias psicoativas`, (select date_format(`tb_atendimentos`.`ate_data`,'%d/%m/%Y') from `tb_atendimentos` where `tb_atendimentos`.`ate_mul_codigo` = `tb_mulheres`.`mul_codigo` order by `tb_atendimentos`.`ate_data` desc limit 1) AS `Último atendimento`, (select date_format(`tb_agressores`.`agr_data_inicio_agressoes`,'%d/%m/%Y') from `tb_agressores` where `tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo` order by `tb_agressores`.`agr_data_inicio_agressoes` desc limit 1) AS `Início das Agressões` FROM ((((((((`tb_mulheres` left join `tb_tecnicos` on(`tb_tecnicos`.`tec_codigo` = `tb_mulheres`.`mul_tec_codigo`)) left join `tb_alternativas` `a` on(`a`.`alt_codigo` = `tb_mulheres`.`mul_encaminhada`)) left join `tb_alternativas` `b` on(`b`.`alt_codigo` = `tb_mulheres`.`mul_religiao`)) left join `tb_alternativas` `c` on(`c`.`alt_codigo` = `tb_mulheres`.`mul_cor`)) left join `tb_alternativas` `d` on(`d`.`alt_codigo` = `tb_mulheres`.`mul_estado_civil`)) left join `tb_alternativas` `e` on(`e`.`alt_codigo` = `tb_mulheres`.`mul_bairro`)) left join `tb_alternativas` `f` on(`f`.`alt_codigo` = `tb_mulheres`.`mul_cidade`)) left join `tb_alternativas` `g` on(`g`.`alt_codigo` = `tb_mulheres`.`mul_faixa_salarial`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `mulheres`  AS SELECT `tb_mulheres`.`mul_nome` AS `Nome`, `tb_mulheres`.`mul_cpf` AS `CPF`, `tb_mulheres`.`mul_rg` AS `RG`, `tb_mulheres`.`mul_prontuario` AS `Prontuário`, `tb_tecnicos`.`tec_nome` AS `Técnico de Referência`, `tb_mulheres`.`mul_telefone1` AS `Telefone 1`, `tb_mulheres`.`mul_telefone2` AS `Telefone 2`, `tb_mulheres`.`mul_email` AS `E-mail`, `a`.`alt_alternativa` AS `Encaminhada de`, `b`.`alt_alternativa` AS `Religião`, `c`.`alt_alternativa` AS `Cor`, `d`.`alt_alternativa` AS `Estado Civil`, date_format(`tb_mulheres`.`mul_data_nasc`,'%d/%m/%Y') AS `Data Nascimento`, timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,current_timestamp()) AS `Idade`, `tb_mulheres`.`mul_endereco` AS `Endereço`, `e`.`alt_alternativa` AS `Bairro`, `f`.`alt_alternativa` AS `Cidade`, `g`.`alt_alternativa` AS `Faixa Salarial`, CASE WHEN `tb_mulheres`.`mul_ja_abrigada` = 0 THEN 'Não' ELSE 'Sim' END AS `Já foi abrigada`, CASE WHEN `tb_mulheres`.`mul_atualmente_em_uso` = 0 THEN 'Não' ELSE 'Sim' END AS `Usa Psicotrópicos`, CASE WHEN `tb_mulheres`.`mul_psiquiatra` = 0 THEN 'Não' ELSE 'Sim' END AS `Atendimento Psiquiátrico`, CASE WHEN `tb_mulheres`.`mul_psicologo` = 0 THEN 'Não' ELSE 'Sim' END AS `Atendimento Psicológico`, CASE WHEN `tb_mulheres`.`mul_drogas` = 0 THEN 'Não' ELSE 'Sim' END AS `Substâncias psicoativas`, (select date_format(`tb_atendimentos`.`ate_data`,'%d/%m/%Y') from `tb_atendimentos` where `tb_atendimentos`.`ate_mul_codigo` = `tb_mulheres`.`mul_codigo` order by `tb_atendimentos`.`ate_data` desc limit 1) AS `Último atendimento`, (select date_format(`tb_agressores`.`agr_data_inicio_agressoes`,'%d/%m/%Y') from `tb_agressores` where `tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo` order by `tb_agressores`.`agr_data_inicio_agressoes` desc limit 1) AS `Início das Agressões` FROM ((((((((`tb_mulheres` left join `tb_tecnicos` on(`tb_tecnicos`.`tec_codigo` = `tb_mulheres`.`mul_tec_codigo`)) left join `tb_alternativas` `a` on(`a`.`alt_codigo` = `tb_mulheres`.`mul_encaminhada`)) left join `tb_alternativas` `b` on(`b`.`alt_codigo` = `tb_mulheres`.`mul_religiao`)) left join `tb_alternativas` `c` on(`c`.`alt_codigo` = `tb_mulheres`.`mul_cor`)) left join `tb_alternativas` `d` on(`d`.`alt_codigo` = `tb_mulheres`.`mul_estado_civil`)) left join `tb_alternativas` `e` on(`e`.`alt_codigo` = `tb_mulheres`.`mul_bairro`)) left join `tb_alternativas` `f` on(`f`.`alt_codigo` = `tb_mulheres`.`mul_cidade`)) left join `tb_alternativas` `g` on(`g`.`alt_codigo` = `tb_mulheres`.`mul_faixa_salarial`))  ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `vw_atendimentos_semanais`
+-- Estrutura para vista `vw_atendimentos_semanais`
 --
 DROP TABLE IF EXISTS `vw_atendimentos_semanais`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `vw_atendimentos_semanais`  AS SELECT count(0) AS `atendimentos`, `vw_tipo_atendimento`.`tipo` AS `tipo`, date_format(`tb_atendimentos`.`ate_data` + interval 2 - dayofweek(`tb_atendimentos`.`ate_data`) day,'%d/%m/%Y') AS `dia` FROM (`tb_atendimentos` join `vw_tipo_atendimento` on(`vw_tipo_atendimento`.`codigo` = `tb_atendimentos`.`ate_codigo`)) WHERE cast(`tb_atendimentos`.`ate_data` as date) between curdate() + interval -49 day and curdate() GROUP BY date_format(`tb_atendimentos`.`ate_data` + interval 2 - dayofweek(`tb_atendimentos`.`ate_data`) day,'%d/%m/%Y'), `vw_tipo_atendimento`.`tipo` ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `vw_atendimentos_semanais`  AS SELECT count(0) AS `atendimentos`, `vw_tipo_atendimento`.`tipo` AS `tipo`, date_format(`tb_atendimentos`.`ate_data` + interval 2 - dayofweek(`tb_atendimentos`.`ate_data`) day,'%d/%m/%Y') AS `dia` FROM (`tb_atendimentos` join `vw_tipo_atendimento` on(`vw_tipo_atendimento`.`codigo` = `tb_atendimentos`.`ate_codigo`)) WHERE cast(`tb_atendimentos`.`ate_data` as date) between curdate() + interval -49 day and curdate() GROUP BY date_format(`tb_atendimentos`.`ate_data` + interval 2 - dayofweek(`tb_atendimentos`.`ate_data`) day,'%d/%m/%Y'), `vw_tipo_atendimento`.`tipo``tipo`  ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `vw_timeline_mulher`
+-- Estrutura para vista `vw_timeline_mulher`
 --
 DROP TABLE IF EXISTS `vw_timeline_mulher`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `vw_timeline_mulher`  AS SELECT `tb_mulheres`.`mul_codigo` AS `mulher`, `tb_mulheres`.`mul_data_nasc` AS `data`, 'Nascimento' AS `descricao`, '1' AS `tipo`, '0' AS `codigo`, timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_data_nasc`) AS `idade` FROM `tb_mulheres`union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_estado_civil_data` AS `data`,concat('Mudou estado civil para <b>',`tb_alternativas`.`alt_alternativa`,'</b>') AS `descricao`,'2' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_estado_civil_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_estado_civil_data)` from (`tb_mulheres` join `tb_alternativas` on(`tb_alternativas`.`alt_codigo` = `tb_mulheres`.`mul_estado_civil`)) where `tb_mulheres`.`mul_estado_civil_data` is not null union select `tb_atendimentos`.`ate_mul_codigo` AS `mulher`,`tb_atendimentos`.`ate_data` AS `data`,concat('Atendimento por <b>',`tb_tecnicos`.`tec_apelido`,'</b>: ',`tb_atendimentos`.`ate_resumo`) AS `descricao`,'3' AS `tipo`,`tb_atendimentos`.`ate_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_atendimentos`.`ate_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, ate_data)` from ((`tb_atendimentos` join `tb_tecnicos` on(`tb_atendimentos`.`ate_tec_codigo1` = `tb_tecnicos`.`tec_codigo`)) join `tb_mulheres` on(`tb_atendimentos`.`ate_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_data_desempregada` AS `data`,'Ficou <b>desempregada</b>' AS `descricao`,'4' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_data_desempregada`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_data_desempregada)` from `tb_mulheres` where `tb_mulheres`.`mul_data_desempregada` is not null union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_psiquiatra_data` AS `data`,'Iniciou acompanhamento <b>psiquiatrico</b>' AS `descricao`,'5' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_psiquiatra_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_psiquiatra_data)` from `tb_mulheres` where `tb_mulheres`.`mul_psiquiatra_data` is not null union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_psicologo_data` AS `data`,'Iniciou acompanhamento <b>psicológico</b>' AS `descricao`,'6' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_psicologo_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_psicologo_data)` from `tb_mulheres` where `tb_mulheres`.`mul_psicologo_data` is not null union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_droga_data` AS `data`,concat('Iniciou o uso de <b>substância psicoativa</b> (',`tb_mulheres`.`mul_droga_qual`,')') AS `descricao`,'7' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_droga_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_droga_data)` from `tb_mulheres` where `tb_mulheres`.`mul_droga_data` is not null union select `tb_agressores`.`agr_mul_codigo` AS `mulher`,`tb_agressores`.`agr_data_inicio_agressoes` AS `data`,concat('Início das Agreções por <b>',`tb_agressores`.`agr_nome`,'</b>') AS `descricao`,'8' AS `tipo`,`tb_agressores`.`agr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_agressores`.`agr_data_inicio_agressoes`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, agr_data_inicio_agressoes)` from (`tb_agressores` join `tb_mulheres` on(`tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_agressores`.`agr_mul_codigo` AS `mulher`,`tb_agressores`.`agr_data_bo` AS `data`,concat('Feito BO contra <b>',`tb_agressores`.`agr_nome`,'</b>') AS `descricao`,'9' AS `tipo`,`tb_agressores`.`agr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_agressores`.`agr_data_bo`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, agr_data_bo)` from (`tb_agressores` join `tb_mulheres` on(`tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_agressores`.`agr_mul_codigo` AS `mulher`,`tb_agressores`.`agr_data_medida` AS `data`,concat('Obteve medida protetiva contra <b>',`tb_agressores`.`agr_nome`,'</b>') AS `descricao`,'10' AS `tipo`,`tb_agressores`.`agr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_agressores`.`agr_data_medida`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, agr_data_medida)` from (`tb_agressores` join `tb_mulheres` on(`tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_pessoas`.`pes_mul_codigo` AS `mulher`,`tb_pessoas`.`pes_data_nasc` AS `data`,concat('Nascimento do <b>filho</b> ',`tb_pessoas`.`pes_nome`) AS `descricao`,'11' AS `tipo`,`tb_pessoas`.`pes_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_pessoas`.`pes_data_nasc`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, pes_data_nasc)` from ((`tb_pessoas` join `tb_alternativas` on(`tb_alternativas`.`alt_codigo` = `tb_pessoas`.`pes_grau_parentesco`)) join `tb_mulheres` on(`tb_pessoas`.`pes_mul_codigo` = `tb_mulheres`.`mul_codigo`)) where `tb_alternativas`.`alt_alternativa` in ('Filho','filho') union select `tb_pessoas`.`pes_mul_codigo` AS `mulher`,`tb_pessoas`.`pes_data_nasc` AS `data`,concat('Nascimento da <b>filha</b> ',`tb_pessoas`.`pes_nome`) AS `descricao`,'11' AS `tipo`,`tb_pessoas`.`pes_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_pessoas`.`pes_data_nasc`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, pes_data_nasc)` from ((`tb_pessoas` join `tb_alternativas` on(`tb_alternativas`.`alt_codigo` = `tb_pessoas`.`pes_grau_parentesco`)) join `tb_mulheres` on(`tb_pessoas`.`pes_mul_codigo` = `tb_mulheres`.`mul_codigo`)) where `tb_alternativas`.`alt_alternativa` in ('Filha','filha') union select `tb_abrigamentos`.`abr_mul_codigo` AS `mulher`,`tb_abrigamentos`.`abr_data_inicio` AS `data`,'Abrigada na <b>CACC</b>' AS `descricao`,'12' AS `tipo`,`tb_abrigamentos`.`abr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_abrigamentos`.`abr_data_inicio`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, abr_data_inicio)` from (`tb_abrigamentos` join `tb_mulheres` on(`tb_abrigamentos`.`abr_mul_codigo` = `tb_mulheres`.`mul_codigo`))  ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `vw_timeline_mulher`  AS SELECT `tb_mulheres`.`mul_codigo` AS `mulher`, `tb_mulheres`.`mul_data_nasc` AS `data`, 'Nascimento' AS `descricao`, '1' AS `tipo`, '0' AS `codigo`, timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_data_nasc`) AS `idade` FROM `tb_mulheres` union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_estado_civil_data` AS `data`,concat('Mudou estado civil para <b>',`tb_alternativas`.`alt_alternativa`,'</b>') AS `descricao`,'2' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_estado_civil_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_estado_civil_data)` from (`tb_mulheres` join `tb_alternativas` on(`tb_alternativas`.`alt_codigo` = `tb_mulheres`.`mul_estado_civil`)) where `tb_mulheres`.`mul_estado_civil_data` is not null union select `tb_atendimentos`.`ate_mul_codigo` AS `mulher`,`tb_atendimentos`.`ate_data` AS `data`,concat('Atendimento por <b>',`tb_tecnicos`.`tec_apelido`,'</b>: ',`tb_atendimentos`.`ate_resumo`) AS `descricao`,'3' AS `tipo`,`tb_atendimentos`.`ate_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_atendimentos`.`ate_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, ate_data)` from ((`tb_atendimentos` join `tb_tecnicos` on(`tb_atendimentos`.`ate_tec_codigo1` = `tb_tecnicos`.`tec_codigo`)) join `tb_mulheres` on(`tb_atendimentos`.`ate_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_data_desempregada` AS `data`,'Ficou <b>desempregada</b>' AS `descricao`,'4' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_data_desempregada`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_data_desempregada)` from `tb_mulheres` where `tb_mulheres`.`mul_data_desempregada` is not null union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_psiquiatra_data` AS `data`,'Iniciou acompanhamento <b>psiquiatrico</b>' AS `descricao`,'5' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_psiquiatra_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_psiquiatra_data)` from `tb_mulheres` where `tb_mulheres`.`mul_psiquiatra_data` is not null union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_psicologo_data` AS `data`,'Iniciou acompanhamento <b>psicológico</b>' AS `descricao`,'6' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_psicologo_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_psicologo_data)` from `tb_mulheres` where `tb_mulheres`.`mul_psicologo_data` is not null union select `tb_mulheres`.`mul_codigo` AS `mulher`,`tb_mulheres`.`mul_droga_data` AS `data`,concat('Iniciou o uso de <b>substância psicoativa</b> (',`tb_mulheres`.`mul_droga_qual`,')') AS `descricao`,'7' AS `tipo`,'0' AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_mulheres`.`mul_droga_data`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, mul_droga_data)` from `tb_mulheres` where `tb_mulheres`.`mul_droga_data` is not null union select `tb_agressores`.`agr_mul_codigo` AS `mulher`,`tb_agressores`.`agr_data_inicio_agressoes` AS `data`,concat('Início das Agreções por <b>',`tb_agressores`.`agr_nome`,'</b>') AS `descricao`,'8' AS `tipo`,`tb_agressores`.`agr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_agressores`.`agr_data_inicio_agressoes`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, agr_data_inicio_agressoes)` from (`tb_agressores` join `tb_mulheres` on(`tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_agressores`.`agr_mul_codigo` AS `mulher`,`tb_agressores`.`agr_data_bo` AS `data`,concat('Feito BO contra <b>',`tb_agressores`.`agr_nome`,'</b>') AS `descricao`,'9' AS `tipo`,`tb_agressores`.`agr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_agressores`.`agr_data_bo`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, agr_data_bo)` from (`tb_agressores` join `tb_mulheres` on(`tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_agressores`.`agr_mul_codigo` AS `mulher`,`tb_agressores`.`agr_data_medida` AS `data`,concat('Obteve medida protetiva contra <b>',`tb_agressores`.`agr_nome`,'</b>') AS `descricao`,'10' AS `tipo`,`tb_agressores`.`agr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_agressores`.`agr_data_medida`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, agr_data_medida)` from (`tb_agressores` join `tb_mulheres` on(`tb_agressores`.`agr_mul_codigo` = `tb_mulheres`.`mul_codigo`)) union select `tb_pessoas`.`pes_mul_codigo` AS `mulher`,`tb_pessoas`.`pes_data_nasc` AS `data`,concat('Nascimento do <b>filho</b> ',`tb_pessoas`.`pes_nome`) AS `descricao`,'11' AS `tipo`,`tb_pessoas`.`pes_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_pessoas`.`pes_data_nasc`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, pes_data_nasc)` from ((`tb_pessoas` join `tb_alternativas` on(`tb_alternativas`.`alt_codigo` = `tb_pessoas`.`pes_grau_parentesco`)) join `tb_mulheres` on(`tb_pessoas`.`pes_mul_codigo` = `tb_mulheres`.`mul_codigo`)) where `tb_alternativas`.`alt_alternativa` in ('Filho','filho') union select `tb_pessoas`.`pes_mul_codigo` AS `mulher`,`tb_pessoas`.`pes_data_nasc` AS `data`,concat('Nascimento da <b>filha</b> ',`tb_pessoas`.`pes_nome`) AS `descricao`,'11' AS `tipo`,`tb_pessoas`.`pes_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_pessoas`.`pes_data_nasc`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, pes_data_nasc)` from ((`tb_pessoas` join `tb_alternativas` on(`tb_alternativas`.`alt_codigo` = `tb_pessoas`.`pes_grau_parentesco`)) join `tb_mulheres` on(`tb_pessoas`.`pes_mul_codigo` = `tb_mulheres`.`mul_codigo`)) where `tb_alternativas`.`alt_alternativa` in ('Filha','filha') union select `tb_abrigamentos`.`abr_mul_codigo` AS `mulher`,`tb_abrigamentos`.`abr_data_inicio` AS `data`,'Abrigada na <b>CACC</b>' AS `descricao`,'12' AS `tipo`,`tb_abrigamentos`.`abr_codigo` AS `codigo`,timestampdiff(YEAR,`tb_mulheres`.`mul_data_nasc`,`tb_abrigamentos`.`abr_data_inicio`) AS `TIMESTAMPDIFF(YEAR, mul_data_nasc, abr_data_inicio)` from (`tb_abrigamentos` join `tb_mulheres` on(`tb_abrigamentos`.`abr_mul_codigo` = `tb_mulheres`.`mul_codigo`))  ;
 
 -- --------------------------------------------------------
 
 --
--- Estrutura para view `vw_tipo_atendimento`
+-- Estrutura para vista `vw_tipo_atendimento`
 --
 DROP TABLE IF EXISTS `vw_tipo_atendimento`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `vw_tipo_atendimento`  AS SELECT `tb_atendimentos`.`ate_codigo` AS `codigo`, CASE WHEN `a`.`tec_car_codigo` = 2 AND `b`.`tec_car_codigo` = 3 THEN 'Psicossocial' WHEN `a`.`tec_car_codigo` = 3 AND `b`.`tec_car_codigo` = 2 THEN 'Psicossocial' WHEN `a`.`tec_car_codigo` = 2 AND `b`.`tec_car_codigo` = 2 THEN 'Social' WHEN `a`.`tec_car_codigo` = 3 AND `b`.`tec_car_codigo` = 3 THEN 'Psicológico' WHEN `a`.`tec_car_codigo` = 4 AND `b`.`tec_car_codigo` = 4 THEN 'Jurídico' WHEN `a`.`tec_car_codigo` = 3 OR `b`.`tec_car_codigo` = 3 THEN 'Psicológico' WHEN `a`.`tec_car_codigo` = 2 OR `b`.`tec_car_codigo` = 2 THEN 'Social' WHEN `a`.`tec_car_codigo` = 4 OR `b`.`tec_car_codigo` = 4 THEN 'Jurídico' ELSE 'Outro' END AS `tipo` FROM ((`tb_atendimentos` join `tb_tecnicos` `a` on(`a`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo1`)) left join `tb_tecnicos` `b` on(`b`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo2`)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`mulheresapp`@`localhost` SQL SECURITY DEFINER VIEW `vw_tipo_atendimento`  AS SELECT `tb_atendimentos`.`ate_codigo` AS `codigo`, CASE WHEN `a`.`tec_car_codigo` = 2 AND `b`.`tec_car_codigo` = 3 THEN 'Psicossocial' WHEN `a`.`tec_car_codigo` = 3 AND `b`.`tec_car_codigo` = 2 THEN 'Psicossocial' WHEN `a`.`tec_car_codigo` = 2 AND `b`.`tec_car_codigo` = 2 THEN 'Social' WHEN `a`.`tec_car_codigo` = 3 AND `b`.`tec_car_codigo` = 3 THEN 'Psicológico' WHEN `a`.`tec_car_codigo` = 4 AND `b`.`tec_car_codigo` = 4 THEN 'Jurídico' WHEN `a`.`tec_car_codigo` = 3 OR `b`.`tec_car_codigo` = 3 THEN 'Psicológico' WHEN `a`.`tec_car_codigo` = 2 OR `b`.`tec_car_codigo` = 2 THEN 'Social' WHEN `a`.`tec_car_codigo` = 4 OR `b`.`tec_car_codigo` = 4 THEN 'Jurídico' ELSE 'Outro' END AS `tipo` FROM ((`tb_atendimentos` join `tb_tecnicos` `a` on(`a`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo1`)) left join `tb_tecnicos` `b` on(`b`.`tec_codigo` = `tb_atendimentos`.`ate_tec_codigo2`))  ;
 
 --
 -- Índices para tabelas despejadas
 --
 
 --
--- Índices de tabela `documentos`
+-- Índices para tabela `documentos`
 --
 ALTER TABLE `documentos`
   ADD PRIMARY KEY (`id`),
   ADD KEY `mulher_codigo` (`mulher_codigo`);
 
 --
--- Índices de tabela `relatorios`
+-- Índices para tabela `relatorios`
 --
 ALTER TABLE `relatorios`
   ADD PRIMARY KEY (`id`),
   ADD KEY `usuario_id` (`usuario_id`);
 
 --
--- Índices de tabela `tblreports`
+-- Índices para tabela `tblreports`
 --
 ALTER TABLE `tblreports`
   ADD PRIMARY KEY (`id`);
 
 --
--- Índices de tabela `tb_mulheres`
+-- Índices para tabela `tb_atendimentos`
+--
+ALTER TABLE `tb_atendimentos`
+  ADD PRIMARY KEY (`ate_codigo`);
+
+--
+-- Índices para tabela `tb_mulheres`
 --
 ALTER TABLE `tb_mulheres`
   ADD PRIMARY KEY (`mul_codigo`);
 
 --
--- Índices de tabela `tb_tecnicos`
+-- Índices para tabela `tb_tecnicos`
 --
 ALTER TABLE `tb_tecnicos`
   ADD PRIMARY KEY (`tec_codigo`);
 
 --
--- Índices de tabela `tb_tecnicos_mulheres`
+-- Índices para tabela `tb_tecnicos_mulheres`
 --
 ALTER TABLE `tb_tecnicos_mulheres`
   ADD PRIMARY KEY (`mul_codigo`,`tec_codigo`),
   ADD KEY `tec_codigo` (`tec_codigo`);
 
 --
--- Índices de tabela `tb_visualizacoes`
+-- Índices para tabela `tb_visualizacoes`
 --
 ALTER TABLE `tb_visualizacoes`
   ADD PRIMARY KEY (`vis_codigo`),
@@ -1684,14 +1715,14 @@ ALTER TABLE `tb_visualizacoes`
   ADD KEY `vis_tec_codigo` (`vis_tec_codigo`);
 
 --
--- Índices de tabela `usuarios`
+-- Índices para tabela `usuarios`
 --
 ALTER TABLE `usuarios`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `email` (`email`);
 
 --
--- AUTO_INCREMENT para tabelas despejadas
+-- AUTO_INCREMENT de tabelas despejadas
 --
 
 --
@@ -1713,6 +1744,12 @@ ALTER TABLE `tblreports`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
+-- AUTO_INCREMENT de tabela `tb_atendimentos`
+--
+ALTER TABLE `tb_atendimentos`
+  MODIFY `ate_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=113;
+
+--
 -- AUTO_INCREMENT de tabela `tb_mulheres`
 --
 ALTER TABLE `tb_mulheres`
@@ -1728,7 +1765,7 @@ ALTER TABLE `tb_tecnicos`
 -- AUTO_INCREMENT de tabela `tb_visualizacoes`
 --
 ALTER TABLE `tb_visualizacoes`
-  MODIFY `vis_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=155;
+  MODIFY `vis_codigo` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=175;
 
 --
 -- AUTO_INCREMENT de tabela `usuarios`
@@ -1737,30 +1774,30 @@ ALTER TABLE `usuarios`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- Restrições para tabelas despejadas
+-- Restrições para despejos de tabelas
 --
 
 --
--- Restrições para tabelas `documentos`
+-- Limitadores para a tabela `documentos`
 --
 ALTER TABLE `documentos`
   ADD CONSTRAINT `documentos_ibfk_1` FOREIGN KEY (`mulher_codigo`) REFERENCES `tb_mulheres` (`mul_codigo`) ON DELETE CASCADE;
 
 --
--- Restrições para tabelas `relatorios`
+-- Limitadores para a tabela `relatorios`
 --
 ALTER TABLE `relatorios`
   ADD CONSTRAINT `relatorios_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`);
 
 --
--- Restrições para tabelas `tb_tecnicos_mulheres`
+-- Limitadores para a tabela `tb_tecnicos_mulheres`
 --
 ALTER TABLE `tb_tecnicos_mulheres`
   ADD CONSTRAINT `tb_tecnicos_mulheres_ibfk_1` FOREIGN KEY (`mul_codigo`) REFERENCES `tb_mulheres` (`mul_codigo`),
   ADD CONSTRAINT `tb_tecnicos_mulheres_ibfk_2` FOREIGN KEY (`tec_codigo`) REFERENCES `tb_tecnicos` (`tec_codigo`);
 
 --
--- Restrições para tabelas `tb_visualizacoes`
+-- Limitadores para a tabela `tb_visualizacoes`
 --
 ALTER TABLE `tb_visualizacoes`
   ADD CONSTRAINT `tb_visualizacoes_ibfk_1` FOREIGN KEY (`vis_mul_codigo`) REFERENCES `tb_mulheres` (`mul_codigo`),
